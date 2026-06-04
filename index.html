@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Sneaker - Thời Trang Giới Trẻ</title>
+<meta name="description" content="Mini Sneaker - Thời Trang Giới Trẻ" />
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #FF6B9D;
+  --primary-dark: #E8558A;
+  --primary-light: #FFF0F5;
+  --primary-mid: #FFD6E7;
+  --secondary: #FF9F43;
+  --success: #10B981;
+  --danger: #EF4444;
+  --dark: #1A1A2E;
+  --text: #2D3748;
+  --text-muted: #718096;
+  --border: #FFE4EE;
+  --bg: #FFF5F8;
+  --white: #FFFFFF;
+  --radius: 14px;
+  --shadow: 0 4px 20px rgba(255,107,157,0.1);
+  --shadow-hover: 0 8px 30px rgba(255,107,157,0.2);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--primary-mid); border-radius:3px; }
+
+/* NAVBAR */
+.navbar {
+  background:var(--white); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 2px 12px rgba(255,107,157,0.08);
+}
+.nav-inner {
+  max-width:1200px; margin:0 auto; padding:0 20px;
+  display:flex; align-items:center; justify-content:space-between; height:64px;
+}
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; cursor:pointer; }
+.nav-logo .logo-box {
+  width:40px; height:40px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  border-radius:12px; overflow:hidden; padding:0;
+  box-shadow:0 4px 12px rgba(255,107,157,0.3);
+}
+.nav-logo .logo-name { font-size:18px; font-weight:800; color:var(--text); }
+.nav-logo .logo-name span { color:var(--primary); }
+.nav-menu { display:flex; align-items:center; gap:6px; }
+.nav-link {
+  padding:8px 16px; border-radius:8px; font-size:14px; font-weight:600;
+  color:var(--text-muted); text-decoration:none; cursor:pointer;
+  transition:all 0.2s; border:none; background:none; font-family:inherit;
+}
+.nav-link:hover, .nav-link.active { background:var(--primary-light); color:var(--primary); }
+.nav-right { display:flex; align-items:center; gap:10px; }
+.search-nav {
+  display:flex; align-items:center; background:var(--bg);
+  border:1.5px solid var(--border); border-radius:10px;
+  padding:6px 12px; gap:6px; transition:border-color 0.2s;
+}
+.search-nav:focus-within { border-color:var(--primary); }
+.search-nav input {
+  border:none; background:none; outline:none;
+  font-size:13px; font-family:inherit; color:var(--text); width:180px;
+}
+.search-nav input::placeholder { color:var(--text-muted); }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
+.hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:all 0.3s; }
+
+/* PAGES */
+.page { display:none; }
+.page.active { display:block; }
+
+/* HERO */
+.hero {
+  background:linear-gradient(135deg,var(--dark) 0%,#2D1B4E 50%,#1A1A2E 100%);
+  padding:60px 20px; text-align:center; position:relative; overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,107,157,0.2) 0%,transparent 70%);
+}
+.hero-content { position:relative; max-width:600px; margin:0 auto; }
+.hero-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,107,157,0.15); border:1px solid rgba(255,107,157,0.3);
+  color:var(--primary); padding:6px 16px; border-radius:20px;
+  font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px;
+}
+.hero h1 { font-size:clamp(28px,5vw,48px); font-weight:900; color:#fff; line-height:1.2; margin-bottom:12px; }
+.hero h1 span { color:var(--primary); }
+.hero p { font-size:15px; color:rgba(255,255,255,0.7); margin-bottom:28px; line-height:1.6; }
+.hero-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn {
+  display:inline-flex; align-items:center; gap:6px; padding:10px 24px;
+  border-radius:10px; font-size:14px; font-weight:700; cursor:pointer;
+  border:none; transition:all 0.2s; text-decoration:none; font-family:inherit;
+}
+.btn-primary {
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff; box-shadow:0 4px 15px rgba(255,107,157,0.35);
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,107,157,0.45); }
+.btn-primary:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+.btn-outline { background:rgba(255,255,255,0.1); color:#fff; border:1.5px solid rgba(255,255,255,0.3); }
+.btn-outline:hover { background:rgba(255,255,255,0.2); }
+
+/* MAIN */
+.container { max-width:1200px; margin:0 auto; padding:0 20px; }
+#san-pham-section { padding:48px 0; }
+.section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+.section-title { font-size:22px; font-weight:800; color:var(--text); }
+.section-title span { color:var(--primary); }
+
+/* FILTER */
+.filter-wrap {
+  background:var(--white); border-radius:var(--radius); border:1px solid var(--border);
+  padding:16px 20px; margin-bottom:24px; display:flex; align-items:center;
+  gap:12px; flex-wrap:wrap; box-shadow:var(--shadow);
+}
+.filter-wrap select {
+  padding:8px 12px; border:1.5px solid var(--border); border-radius:8px;
+  font-size:13px; font-family:inherit; color:var(--text); background:var(--bg);
+  cursor:pointer; outline:none; transition:border-color 0.2s;
+}
+.filter-wrap select:focus { border-color:var(--primary); }
+.filter-search {
+  display:flex; align-items:center; gap:6px; background:var(--bg);
+  border:1.5px solid var(--border); border-radius:8px; padding:7px 12px;
+  flex:1; min-width:200px; transition:border-color 0.2s;
+}
+.filter-search:focus-within { border-color:var(--primary); }
+.filter-search input { border:none; background:none; outline:none; font-size:13px; font-family:inherit; color:var(--text); width:100%; }
+.filter-search input::placeholder { color:var(--text-muted); }
+.sort-tabs { display:flex; gap:6px; }
+.sort-tab {
+  padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600;
+  cursor:pointer; border:1.5px solid var(--border); background:var(--white);
+  color:var(--text-muted); transition:all 0.2s; font-family:inherit;
+}
+.sort-tab.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+/* PRODUCT GRID */
+.product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
+.product-card {
+  background:var(--white); border-radius:var(--radius); border:1px solid var(--border);
+  overflow:hidden; transition:all 0.3s; cursor:pointer; box-shadow:var(--shadow);
+}
+.product-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-hover); border-color:var(--primary-mid); }
+.product-img { position:relative; overflow:hidden; aspect-ratio:1; background:var(--bg); }
+.product-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.4s; }
+.product-card:hover .product-img img { transform:scale(1.06); }
+.product-badge {
+  position:absolute; top:10px; left:10px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff; padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700;
+}
+.product-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:48px; background:var(--primary-light); }
+.product-info { padding:14px; }
+.product-brand { font-size:11px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+.product-name { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.product-desc { font-size:12px; color:var(--text-muted); margin-bottom:10px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.product-footer { display:flex; align-items:center; justify-content:space-between; }
+.product-price { font-size:16px; font-weight:800; color:var(--primary); }
+.product-sizes { font-size:11px; color:var(--text-muted); background:var(--bg); padding:3px 8px; border-radius:6px; border:1px solid var(--border); }
+
+/* EMPTY & SKELETON */
+.empty-state { text-align:center; padding:60px 20px; color:var(--text-muted); grid-column:1/-1; }
+.empty-icon { font-size:56px; margin-bottom:14px; opacity:0.5; }
+.empty-state p { font-size:14px; }
+.loading-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
+.skeleton { background:var(--white); border-radius:var(--radius); overflow:hidden; border:1px solid var(--border); }
+.skeleton-img { aspect-ratio:1; background:linear-gradient(90deg,var(--bg) 25%,var(--primary-light) 50%,var(--bg) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
+.skeleton-text { padding:14px; display:flex; flex-direction:column; gap:8px; }
+.skeleton-line { height:12px; border-radius:6px; background:linear-gradient(90deg,var(--bg) 25%,var(--primary-light) 50%,var(--bg) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* MODAL SẢN PHẨM */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
+  z-index:200; display:flex; align-items:center; justify-content:center;
+  padding:16px; opacity:0; transition:opacity 0.3s;
+}
+.modal-overlay.show { opacity:1; }
+.modal-box {
+  background:var(--white); border-radius:18px; width:100%; max-width:780px;
+  max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.2);
+  transform:scale(0.95); transition:transform 0.3s;
+}
+.modal-overlay.show .modal-box { transform:scale(1); }
+.modal-body { display:grid; grid-template-columns:1fr 1fr; }
+.modal-imgs { background:var(--bg); border-radius:18px 0 0 18px; overflow:hidden; position:relative; }
+.modal-img-main { aspect-ratio:1; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.modal-img-main img { width:100%; height:100%; object-fit:cover; }
+.modal-img-thumbs { display:flex; gap:6px; padding:10px; flex-wrap:wrap; }
+.modal-thumb { width:52px; height:52px; border-radius:8px; overflow:hidden; cursor:pointer; border:2px solid transparent; transition:border-color 0.2s; }
+.modal-thumb.active { border-color:var(--primary); }
+.modal-thumb img { width:100%; height:100%; object-fit:cover; }
+.modal-info { padding:24px; display:flex; flex-direction:column; gap:12px; position:relative; }
+.modal-brand { font-size:12px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:1px; }
+.modal-name { font-size:20px; font-weight:800; color:var(--text); line-height:1.3; }
+.modal-price { font-size:26px; font-weight:900; color:var(--primary); }
+.modal-sizes { display:flex; flex-wrap:wrap; gap:6px; }
+.modal-size-btn { width:38px; height:34px; border:1.5px solid var(--border); border-radius:6px; background:var(--white); font-size:12px; font-weight:700; color:var(--text-muted); cursor:default; display:flex; align-items:center; justify-content:center; }
+.modal-desc { font-size:13px; color:var(--text-muted); line-height:1.6; padding:12px; background:var(--bg); border-radius:8px; }
+.modal-close-btn {
+  position:absolute; top:14px; right:14px; width:34px; height:34px; border-radius:50%;
+  background:rgba(0,0,0,0.08); border:none; color:var(--text); font-size:16px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s;
+}
+.modal-close-btn:hover { background:rgba(0,0,0,0.15); }
+
+/* ====== TRANG LIÊN HỆ ====== */
+.page-hero {
+  background:linear-gradient(135deg,var(--dark) 0%,#2D1B4E 50%,#1A1A2E 100%);
+  padding:48px 20px 40px; text-align:center; position:relative; overflow:hidden;
+}
+.page-hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,107,157,0.2) 0%,transparent 70%);
+}
+.page-hero-content { position:relative; }
+.page-hero h1 { font-size:clamp(24px,4vw,40px); font-weight:900; color:#fff; margin-bottom:8px; }
+.page-hero h1 span { color:var(--primary); }
+.page-hero p { font-size:14px; color:rgba(255,255,255,0.6); }
+
+.breadcrumb {
+  max-width:1200px; margin:0 auto; padding:16px 20px;
+  display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted);
+}
+.breadcrumb span.link { color:var(--primary); cursor:pointer; }
+.breadcrumb span.link:hover { text-decoration:underline; }
+
+.lienhe-section { padding:8px 0 48px; }
+.contact-wrap { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+.contact-info {
+  background:linear-gradient(135deg,var(--dark),#2D1B4E);
+  border-radius:var(--radius); padding:32px; color:#fff; position:relative; overflow:hidden;
+}
+.contact-info::before { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; background:rgba(255,107,157,0.15); border-radius:50%; }
+.contact-info h3 { font-size:20px; font-weight:800; margin-bottom:20px; position:relative; }
+.contact-item { display:flex; align-items:center; gap:12px; margin-bottom:16px; position:relative; }
+.contact-icon { width:40px; height:40px; border-radius:10px; background:rgba(255,107,157,0.2); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.contact-label { font-size:11px; color:rgba(255,255,255,0.5); margin-bottom:2px; }
+.contact-value { font-size:14px; font-weight:600; color:#fff; }
+.social-links { display:flex; gap:10px; flex-wrap:wrap; }
+.social-link {
+  width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,0.08);
+  display:flex; align-items:center; justify-content:center; text-decoration:none;
+  font-size:18px; transition:all 0.2s; border:1px solid rgba(255,255,255,0.1);
+}
+.social-link:hover { background:var(--primary); border-color:var(--primary); transform:translateY(-2px); }
+
+.contact-form {
+  background:var(--white); border-radius:var(--radius); border:1px solid var(--border);
+  padding:32px; box-shadow:var(--shadow);
+}
+.contact-form h3 { font-size:18px; font-weight:800; color:var(--text); margin-bottom:20px; }
+.form-group { margin-bottom:14px; }
+.form-label { display:block; font-size:12px; font-weight:700; color:var(--primary); margin-bottom:5px; }
+.form-input {
+  width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px;
+  font-size:13px; font-family:inherit; color:var(--text); background:var(--bg);
+  outline:none; transition:border-color 0.2s;
+}
+.form-input:focus { border-color:var(--primary); background:var(--white); }
+.form-input::placeholder { color:var(--text-muted); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.form-select {
+  width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px;
+  font-size:13px; font-family:inherit; color:var(--text); background:var(--bg);
+  outline:none; cursor:pointer; transition:border-color 0.2s;
+}
+.form-select:focus { border-color:var(--primary); }
+
+.success-msg { display:none; text-align:center; padding:32px 16px; animation:fadeIn 0.4s ease; }
+.success-msg .success-icon { font-size:56px; margin-bottom:14px; }
+.success-msg h4 { font-size:20px; font-weight:800; color:var(--success); margin-bottom:8px; }
+.success-msg p { font-size:14px; color:var(--text-muted); }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+/* FOOTER */
+footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20px; }
+.footer-top { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:32px; margin-bottom:32px; }
+.footer-brand .brand-name { font-size:20px; font-weight:800; color:#fff; margin-bottom:10px; }
+.footer-brand .brand-name span { color:var(--primary); }
+.footer-brand p { font-size:13px; line-height:1.6; color:rgba(255,255,255,0.5); margin-bottom:16px; }
+.footer-col h4 { font-size:14px; font-weight:700; color:#fff; margin-bottom:14px; }
+.footer-col ul { list-style:none; }
+.footer-col ul li { margin-bottom:8px; }
+.footer-col ul li a { color:rgba(255,255,255,0.5); text-decoration:none; font-size:13px; transition:color 0.2s; cursor:pointer; }
+.footer-col ul li a:hover { color:var(--primary); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.08); padding-top:20px; display:flex; align-items:center; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.4); flex-wrap:wrap; gap:8px; }
+
+/* TOAST */
+#toast-wrap { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; }
+.toast { padding:12px 18px; border-radius:10px; font-size:13px; font-weight:600; min-width:240px; display:flex; align-items:center; gap:8px; box-shadow:0 4px 20px rgba(0,0,0,0.1); animation:slideIn 0.3s ease; border-left:4px solid; }
+.toast-success { background:#F0FDF4; border-color:var(--success); color:#166534; }
+.toast-error   { background:#FEF2F2; border-color:var(--danger);  color:#991B1B; }
+.toast-info    { background:var(--primary-light); border-color:var(--primary); color:var(--primary-dark); }
+@keyframes slideIn { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+/* SCROLL TOP */
+#scroll-top {
+  position:fixed; bottom:24px; left:24px; width:42px; height:42px; border-radius:50%;
+  background:var(--primary); color:#fff; border:none; cursor:pointer; font-size:18px;
+  display:none; align-items:center; justify-content:center;
+  box-shadow:0 4px 15px rgba(255,107,157,0.4); transition:all 0.2s; z-index:99;
+}
+#scroll-top:hover { transform:translateY(-2px); }
+#scroll-top.show { display:flex; }
+
+/* RESPONSIVE */
+@media (max-width:768px) {
+  .nav-menu { display:none; }
+  .nav-menu.open { display:flex; flex-direction:column; position:absolute; top:64px; left:0; right:0; background:var(--white); border-bottom:1px solid var(--border); padding:12px; gap:4px; z-index:99; }
+  .hamburger { display:flex; }
+  .nav-inner { position:relative; flex-wrap:wrap; }
+  .search-nav { display:none; }
+  .modal-body { grid-template-columns:1fr; }
+  .modal-imgs { border-radius:18px 18px 0 0; }
+  .contact-wrap { grid-template-columns:1fr; }
+  .footer-top { grid-template-columns:1fr; gap:24px; }
+  .form-row { grid-template-columns:1fr; }
+  .hero { padding:40px 16px; }
+}
+
+/* ICON MXH thật */
+.social-icon-img {
+  width:28px; height:28px; object-fit:contain; border-radius:6px;
+}
+.contact-icon-img {
+  width:22px; height:22px; object-fit:contain;
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      <div class="logo-box">
+        <img src="https://drive.google.com/thumbnail?id=1_mhr8a3-h0XuNzEIBvmSIH1WwNPXFbgI&sz=w80"
+          style="width:100%;height:100%;object-fit:cover;border-radius:12px" />
+      </div>
+      <div class="logo-name">Mini <span>Sneaker</span></div>
+    </div>
+
+    <div class="nav-menu" id="nav-menu">
+      <button class="nav-link active" id="nav-home" onclick="showPage('home',this)">🏠 Trang Chủ</button>
+      <button class="nav-link" id="nav-sp" onclick="showPage('sanpham',this)">👟 Sản Phẩm</button>
+      <button class="nav-link" id="nav-nam" onclick="showPage('nam',this)">👟 Giày Nam</button>
+      <button class="nav-link" id="nav-nu" onclick="showPage('nu',this)">👠 Giày Nữ</button>
+      <button class="nav-link" id="nav-lienhe" onclick="showPage('lienhe',this)">📞 Liên Hệ</button>
+    </div>
+
+    <div class="nav-right">
+      <div class="search-nav" id="search-box">
+        <span style="color:var(--primary)">🔍</span>
+        <input type="text" id="nav-search" placeholder="Tìm kiếm sản phẩm..."
+          oninput="searchProducts(this.value)" />
+      </div>
+      <button class="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== TRANG CHỦ / SẢN PHẨM ===== -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">✨ Mini Sneaker ✨</div>
+      <h1>Bộ Sưu Tập<br><span>Giày Thời Trang</span></h1>
+      <p>Khám phá hàng nghìn mẫu giày chính hãng từ các thương hiệu nổi tiếng. Phong cách, chất lượng, giá tốt!</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'})">
+          👟 Xem Sản Phẩm
+        </button>
+        <button class="btn btn-outline" onclick="showPage('lienhe')">
+          📞 Liên Hệ Ngay
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="san-pham-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">👟 Sản Phẩm <span>Của Chúng Tôi</span></div>
+        <div id="sp-count" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
+
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="sp-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsSP()" />
+        </div>
+        <select id="home-filter-hang" onchange="filterProductsSP()" ...>
+          <option value="">Tất cả hãng</option>
+        </select>
+        <select id="home-filter-loai" onchange="filterProductsSP()" ...>
+          <option value="">Tất cả loại</option>
+        </select>
+      </div>
+
+      <div id="product-list">
+        <div class="loading-grid" id="skeleton-list">
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-name">Mini <span>Sneaker</span></div>
+          <p>Chúng tôi cung cấp các mẫu giày thể thao trẻ trung, hiện đại và sang trọng, mang đến cho khách hàng những trải nghiệm mới mẻ về phong cách, sự thoải mái và chất lượng sản phẩm.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/nhjoi86/" target="_blank" class="social-link" title="Facebook">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              class="social-icon-img" alt="Facebook">
+            </a>
+            <a href="https://zalo.me/0358638603" target="_blank" class="social-link" title="Zalo">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              class="social-icon-img" alt="Zalo">
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" class="social-link" title="Instagram">
+              <img src= "https://drive.google.com/thumbnail?id=1sdesSiB2IsLUb8vDNSeezd1bVnCeTitI&sz=w40"
+              class="social-icon-img" alt="Instagram">
+            </a>
+            <a href="https://www.threads.net/" target="_blank" class="social-link" title="Threads">
+              <img src= "https://drive.google.com/thumbnail?id=1h6lAgHMJPiQCI1Zc_-mnlmlbT9KSm_Na&sz=w40"
+              class="social-icon-img" alt="Threads">
+            </a>
+          </div>
+          <div class="social-links" id="footer-social-1"></div>
+        </div>
+        <div class="footer-col">
+          <h4>🔗 Điều Hướng</h4>
+          <ul>
+            <li><a onclick="showPage('home')">Trang chủ</a></li>
+            <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
+            <li><a onclick="showPage('lienhe')"> Phả hồi, Liên hệ & Hỗ trợ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>📞 Liên Hệ</h4>
+          <ul>
+            <li><a href="tel:0358638603" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1UxMR5IfseBKpJs7VTRCVpp93jRo0zBc-&sz=w40" style="width:16px;height:16px;object-fit:contain"> 0358638603</a></li>
+            <li><a href="mailto:minisneaker86@gmail.com" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=18TjRtA1Wh98ooYgShIk43WuPJkfhRU5P&sz=w40" style="width:16px;height:16px;object-fit:contain"> minisneaker86@gmail.com</a></li>
+            <li><a href="https://www.facebook.com/nhjoi86/" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40" style="width:16px;height:16px;object-fit:contain;border-radius:3px"> Facebook</a></li>
+            <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40" style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Mini Sneaker. All rights reserved.</span>
+        <span>Made with ❤️ by Mini Sneaker</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ===== TRANG SẢN PHẨM ===== -->
+
+<div class="page" id="page-sanpham">
+
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>👟 Sản Phẩm <span>Của Chúng Tôi</span></h1>
+      <p>Khám phá bộ sưu tập giày chính hãng chất lượng cao</p>
+    </div>
+  </div>
+
+  <section id="san-pham-section" style="padding:48px 0">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">👟 Sản Phẩm <span>Của Chúng Tôi</span></div>
+        <div id="sp-count-2" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
+
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProducts()" />
+        </div>
+        <select id="filter-hang" onchange="filterProducts()" style="min-width:140px">
+          <option value="">Tất cả hãng</option>
+        </select>
+        <select id="filter-loai" onchange="filterProducts()" style="min-width:130px">
+          <option value="">Tất cả loại</option>
+        </select>
+      </div>
+
+      <div id="sp-product-list">
+        <div class="loading-grid" id="sp-skeleton-list">
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-name">Mini <span>Sneaker</span></div>
+          <p>Chúng tôi cung cấp các mẫu giày thể thao trẻ trung, hiện đại và sang trọng, mang đến cho khách hàng những trải nghiệm mới mẻ về phong cách, sự thoải mái và chất lượng sản phẩm.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/nhjoi86/" target="_blank" class="social-link" title="Facebook">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              class="social-icon-img" alt="Facebook">
+            </a>
+            <a href="https://zalo.me/0358638603" target="_blank" class="social-link" title="Zalo">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              class="social-icon-img" alt="Zalo">
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" class="social-link" title="Instagram">
+              <img src= "https://drive.google.com/thumbnail?id=1sdesSiB2IsLUb8vDNSeezd1bVnCeTitI&sz=w40"
+              class="social-icon-img" alt="Instagram">
+            </a>
+            <a href="https://www.threads.net/" target="_blank" class="social-link" title="Threads">
+              <img src= "https://drive.google.com/thumbnail?id=1h6lAgHMJPiQCI1Zc_-mnlmlbT9KSm_Na&sz=w40"
+              class="social-icon-img" alt="Threads">
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>🔗 Điều Hướng</h4>
+          <ul>
+            <li><a onclick="showPage('home')">Trang chủ</a></li>
+            <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
+            <li><a onclick="showPage('lienhe')">Phả hồi, Liên hệ & Hỗ trợ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>📞 Liên Hệ</h4>
+          <ul>
+            <li><a href="tel:0358638603" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1UxMR5IfseBKpJs7VTRCVpp93jRo0zBc-&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> 0358638603</a></li>
+            <li><a href="mailto:minisneaker86@gmail.com" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=18TjRtA1Wh98ooYgShIk43WuPJkfhRU5P&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> minisneaker86@gmail.com</a></li>
+            <li><a href="https://www.facebook.com/nhjoi86/" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              style="width:16px;height:16px;object-fit:contain;border-radius:3px"> Facebook</a></li>
+            <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Mini Sneaker. All rights reserved.</span>
+        <span>Made with ❤️ by Mini Sneaker</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+
+<!-- ===== TRANG GIÀY NAM ===== -->
+<div class="page" id="page-nam">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>👟 Giày <span>Nam</span></h1>
+      <p>Bộ sưu tập giày nam thời trang, chất lượng cao</p>
+    </div>
+  </div>
+  <section style="padding:48px 0">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">👟 Giày <span>Nam</span></div>
+        <div id="nam-count" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="nam-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsPhanHe('nam')" />
+        </div>
+        <select id="nam-filter-hang" onchange="filterProductsPhanHe('nam')" style="min-width:140px">
+          <option value="">Tất cả hãng</option>
+        </select>
+        <select id="nam-filter-loai" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
+          <option value="">Tất cả loại</option>
+        </select>
+        <div class="sort-tabs">
+      </div>
+      <div id="nam-product-list"></div>
+    </div>
+  </section>
+<!-- ===== Footer cuối trang ===== --> 
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-name">Mini <span>Sneaker</span></div>
+          <p>Chúng tôi cung cấp các mẫu giày thể thao trẻ trung, hiện đại và sang trọng, mang đến cho khách hàng những trải nghiệm mới mẻ về phong cách, sự thoải mái và chất lượng sản phẩm.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/nhjoi86/" target="_blank" class="social-link" title="Facebook">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              class="social-icon-img" alt="Facebook">
+            </a>
+            <a href="https://zalo.me/0358638603" target="_blank" class="social-link" title="Zalo">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              class="social-icon-img" alt="Zalo">
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" class="social-link" title="Instagram">
+              <img src= "https://drive.google.com/thumbnail?id=1sdesSiB2IsLUb8vDNSeezd1bVnCeTitI&sz=w40"
+              class="social-icon-img" alt="Instagram">
+            </a>
+            <a href="https://www.threads.net/" target="_blank" class="social-link" title="Threads">
+              <img src= "https://drive.google.com/thumbnail?id=1h6lAgHMJPiQCI1Zc_-mnlmlbT9KSm_Na&sz=w40"
+              class="social-icon-img" alt="Threads">
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>🔗 Điều Hướng</h4>
+          <ul>
+            <li><a onclick="showPage('home')">Trang chủ</a></li>
+            <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
+            <li><a onclick="showPage('lienhe')">Phả hồi, Liên hệ & Hỗ trợ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>📞 Liên Hệ</h4>
+          <ul>
+            <li><a href="tel:0358638603" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1UxMR5IfseBKpJs7VTRCVpp93jRo0zBc-&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> 0358638603</a></li>
+            <li><a href="mailto:minisneaker86@gmail.com" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=18TjRtA1Wh98ooYgShIk43WuPJkfhRU5P&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> minisneaker86@gmail.com</a></li>
+            <li><a href="https://www.facebook.com/nhjoi86/" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              style="width:16px;height:16px;object-fit:contain;border-radius:3px"> Facebook</a></li>
+            <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Mini Sneaker. All rights reserved.</span>
+        <span>Made with ❤️ by Mini Sneaker</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ===== TRANG GIÀY NỮ ===== -->
+<div class="page" id="page-nu">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>👠 Giày <span>Nữ</span></h1>
+      <p>Bộ sưu tập giày nữ thời trang, thanh lịch</p>
+    </div>
+  </div>
+  <section style="padding:48px 0">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">👠 Giày <span>Nữ</span></div>
+        <div id="nu-count" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="nu-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsPhanHe('nu')" />
+        </div>
+        <select id="nu-filter-hang" onchange="filterProductsPhanHe('nu')" style="min-width:140px">
+          <option value="">Tất cả hãng</option>
+        </select>
+        <select id="nu-filter-loai" onchange="filterProductsPhanHe('nu')" style="min-width:130px">
+          <option value="">Tất cả loại</option>
+        </select>
+        
+      </div>
+      <div id="nu-product-list"></div>
+    </div>
+  </section>
+  
+<!-- ===== Footer cuối trang ===== --> 
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-name">Mini <span>Sneaker</span></div>
+          <p>Chúng tôi cung cấp các mẫu giày thể thao trẻ trung, hiện đại và sang trọng, mang đến cho khách hàng những trải nghiệm mới mẻ về phong cách, sự thoải mái và chất lượng sản phẩm.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/nhjoi86/" target="_blank" class="social-link" title="Facebook">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              class="social-icon-img" alt="Facebook">
+            </a>
+            <a href="https://zalo.me/0358638603" target="_blank" class="social-link" title="Zalo">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              class="social-icon-img" alt="Zalo">
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" class="social-link" title="Instagram">
+              <img src= "https://drive.google.com/thumbnail?id=1sdesSiB2IsLUb8vDNSeezd1bVnCeTitI&sz=w40"
+              class="social-icon-img" alt="Instagram">
+            </a>
+            <a href="https://www.threads.net/" target="_blank" class="social-link" title="Threads">
+              <img src= "https://drive.google.com/thumbnail?id=1h6lAgHMJPiQCI1Zc_-mnlmlbT9KSm_Na&sz=w40"
+              class="social-icon-img" alt="Threads">
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>🔗 Điều Hướng</h4>
+          <ul>
+            <li><a onclick="showPage('home')">Trang chủ</a></li>
+            <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
+            <li><a onclick="showPage('lienhe')">Phả hồi, Liên hệ & Hỗ trợ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>📞 Liên Hệ</h4>
+          <ul>
+            <li><a href="tel:0358638603" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1UxMR5IfseBKpJs7VTRCVpp93jRo0zBc-&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> 0358638603</a></li>
+            <li><a href="mailto:minisneaker86@gmail.com" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=18TjRtA1Wh98ooYgShIk43WuPJkfhRU5P&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> minisneaker86@gmail.com</a></li>
+            <li><a href="https://www.facebook.com/nhjoi86/" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              style="width:16px;height:16px;object-fit:contain;border-radius:3px"> Facebook</a></li>
+            <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Mini Sneaker. All rights reserved.</span>
+        <span>Made with ❤️ by Mini Sneaker</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+
+<!-- ===== TRANG LIÊN HỆ ===== -->
+<div class="page" id="page-lienhe">
+
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>📞 Liên Hệ & <span>Hỗ Trợ</span></h1>
+      <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
+    </div>
+  </div>
+
+  <section class="lienhe-section">
+    <div class="container">
+      <div class="contact-wrap">
+
+        <div class="contact-info">
+          <h3>Liên hệ chúng tôi</h3>
+          <h4>Mini Sneaker</h4>
+          <div class="contact-item">
+            <div class="contact-icon"><img src="https://drive.google.com/thumbnail?id=1UxMR5IfseBKpJs7VTRCVpp93jRo0zBc-&sz=w40" 
+              class="contact-icon-img" alt="Phone"></div>
+            <div>
+              <div class="contact-label">SĐT</div>
+              <div class="contact-value"><a href="tel:0358638603" style="color:#fff;text-decoration:none">0358638603</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><img src="https://drive.google.com/thumbnail?id=18TjRtA1Wh98ooYgShIk43WuPJkfhRU5P&sz=w80"   class="contact-icon-img" alt="Email"></div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value"><a href="mailto:minisneaker86@gmail.com" style="color:#fff;text-decoration:none">minisneaker86@gmail.com</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><img src="https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40" 
+              class="contact-icon-img" alt="Facebook"></div>
+            <div>
+              <div class="contact-label">Facebook</div>
+              <div class="contact-value"><a href="https://www.facebook.com/nhjoi86/" target="_blank" style="color:#fff;text-decoration:none">Facebook - NH Joi</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><img src="https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w80" class="contact-icon-img" alt="Zalo"></div>
+            <div>
+              <div class="contact-label">Zalo</div>
+              <div class="contact-value"><a href="https://zalo.me/0358638603" target="_blank" style="color:#fff;text-decoration:none">Zalo - Joi</a></div>
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <div class="contact-label" style="color:rgba(255,255,255,0.5);margin-bottom:10px">Theo dõi chúng tôi</div>
+            <div class="social-links" id="footer-social-2">
+              <a href="https://www.facebook.com/profile.php?id=100091669695142" target="_blank" class="social-link" title="Facebook">
+                <img src="https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w64" class="social-icon-img" alt="Facebook">
+              </a>
+              <a href= "https://zalo.me/g/riyumn422" target="_blank" class="social-link" title="Zalo">
+                <img src="https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w64" class="social-icon-img" alt="Zalo">
+              </a>
+              <a href="https://www.instagram.com/mini_sneaker_86/" target="_blank" class="social-link" title="Instagram">
+                <img src="https://drive.google.com/thumbnail?id=1sdesSiB2IsLUb8vDNSeezd1bVnCeTitI&sz=w64" class="social-icon-img" alt="Instagram">
+              </a>
+              <a href="https://www.threads.com/@mini_sneaker_86" target="_blank" class="social-link" title="Threads">
+                <img src="https://drive.google.com/thumbnail?id=1h6lAgHMJPiQCI1Zc_-mnlmlbT9KSm_Na&sz=w64" class="social-icon-img" alt="Threads">
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form">
+          <div id="form-wrap">
+            <h3>💬 Gửi Phản Hồi</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Họ tên *</label>
+                <input type="text" id="ph-ten" class="form-input" placeholder="Nguyễn Văn A" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                <input type="text" id="ph-sdt" class="form-input" placeholder="0901234567" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" id="ph-email" class="form-input" placeholder="email@example.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Loại phản hồi</label>
+              <select id="ph-loai" class="form-select">
+                <option value="phan_hoi">💬 Phản hồi chung</option>
+                <option value="khieu_nai">⚠️ Khiếu nại</option>
+                <option value="tu_van">🤝 Tư vấn sản phẩm</option>
+                <option value="dat_hang">🛒 Đặt hàng</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nội dung *</label>
+              <textarea id="ph-noidung" class="form-input" rows="4"
+                placeholder="Nhập nội dung phản hồi của bạn..." style="resize:vertical"></textarea>
+            </div>
+            <button class="btn btn-primary" id="submit-btn"
+              style="width:100%;justify-content:center;padding:11px"
+              onclick="submitPhanHoi()">
+              ✔️ Gửi Phản Hồi
+            </button>
+          </div>
+
+          <div class="success-msg" id="success-msg">
+            <div class="success-icon">✅</div>
+            <h4>Gửi thành công!</h4>
+            <p>Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm nhất có thể!</p>
+            <button class="btn btn-primary" style="margin-top:20px" onclick="resetForm()">
+              💬 Gửi thêm phản hồi
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-name">Mini <span>Sneaker</span></div>
+          <p>Chúng tôi cung cấp các mẫu giày thể thao trẻ trung, hiện đại và sang trọng, mang đến cho khách hàng những trải nghiệm mới mẻ về phong cách, sự thoải mái và chất lượng sản phẩm.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/nhjoi86/" target="_blank" class="social-link" title="Facebook">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              class="social-icon-img" alt="Facebook">
+            </a>
+            <a href="https://zalo.me/0358638603" target="_blank" class="social-link" title="Zalo">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              class="social-icon-img" alt="Zalo">
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" class="social-link" title="Instagram">
+              <img src= "https://drive.google.com/thumbnail?id=1sdesSiB2IsLUb8vDNSeezd1bVnCeTitI&sz=w40"
+              class="social-icon-img" alt="Instagram">
+            </a>
+            <a href="https://www.threads.net/" target="_blank" class="social-link" title="Threads">
+              <img src= "https://drive.google.com/thumbnail?id=1h6lAgHMJPiQCI1Zc_-mnlmlbT9KSm_Na&sz=w40"
+              class="social-icon-img" alt="Threads">
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>🔗 Điều Hướng</h4>
+          <ul>
+            <li><a onclick="showPage('home')">Trang chủ</a></li>
+            <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
+            <li><a onclick="showPage('lienhe')">Phả hồi, Liên hệ & Hỗ trợ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>📞 Liên Hệ</h4>
+          <ul>
+            <li><a href="tel:0358638603" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1UxMR5IfseBKpJs7VTRCVpp93jRo0zBc-&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> 0358638603</a></li>
+            <li><a href="mailto:minisneaker86@gmail.com" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=18TjRtA1Wh98ooYgShIk43WuPJkfhRU5P&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> minisneaker86@gmail.com</a></li>
+            <li><a href="https://www.facebook.com/nhjoi86/" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40"
+              style="width:16px;height:16px;object-fit:contain;border-radius:3px"> Facebook</a></li>
+            <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
+              <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
+              style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Mini Sneaker. All rights reserved.</span>
+        <span>Made with ❤️ by Mini Sneaker</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- MODAL SẢN PHẨM -->
+<div class="modal-overlay" id="modal-sp" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modal-content"></div>
+</div>
+
+<div id="toast-wrap"></div>
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbzAnpzbbAsfOTXurPWBuezJtAtaIVP4EMmMlH_Tf3p5mTtEZZthKX5SKgRpgCaasJX9/exec';
+
+let allProducts = [];
+let currentSort = '';
+let modalImgs   = [];
+let currentImg  = 0;
+let productsLoaded = false;
+
+// ====== ĐIỀU HƯỚNG TRANG ======
+function showPage(name, navBtn) {
+  // Ẩn tất cả trang
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Active nav
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  if (navBtn) {
+    navBtn.classList.add('active');
+  } else {
+    var map = { home: 'nav-home', lienhe: 'nav-lienhe', nam: 'nav-nam', nu: 'nav-nu', sanpham: 'nav-sp' };
+    var el = document.getElementById(map[name]);
+    if (el) el.classList.add('active');
+  }
+
+  // Ẩn search khi ở trang liên hệ
+  var searchBox = document.getElementById('search-box');
+  if (searchBox) searchBox.style.display = name === 'lienhe' ? 'none' : 'flex';
+
+  // Khi vào trang sản phẩm thì render
+  if (name === 'sanpham' && productsLoaded) {
+    renderProductsSP(allProducts);
+  }
+  if ((name === 'nam' || name === 'nu') && productsLoaded) {
+    // Fill filter dropdowns
+    const res = { hang: [], loai: [] };
+    const hangList = allProducts.map(sp=>({id:sp.danhMucId,tenDanhMuc:sp.danhMucTen}))
+      .filter((v,i,a)=>v.id&&a.findIndex(x=>x.id===v.id)===i);
+    const loaiList = allProducts.map(sp=>({id:sp.loaiId,tenDanhMuc:sp.loaiTen}))
+      .filter((v,i,a)=>v.id&&a.findIndex(x=>x.id===v.id)===i);
+    fillPhanHeFilters(name, hangList, loaiList);
+    filterProductsPhanHe(name);
+  }
+
+  // Đóng mobile menu
+  document.getElementById('nav-menu').classList.remove('open');
+}
+
+// ====== INIT ======
+window.addEventListener('DOMContentLoaded', function() {
+  loadDanhMuc();
+  loadProducts();
+  //loadSocialLinks();
+  window.addEventListener('scroll', function() {
+    document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
+  });
+});
+
+// ====== API ======
+async function apiCall(action, params = {}) {
+  const url = new URL(API_URL);
+  url.searchParams.set('page', 'api');
+  url.searchParams.set('action', action);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+  const res  = await fetch(url.toString());
+  const data = await res.json();
+  return data;
+}
+
+// ====== DANH MỤC ======
+async function loadDanhMuc() {
+  try {
+    const res = await apiCall('getDanhMuc');
+    if (!res.success) return;
+    const hangList = res.data.filter(d => d.loai === 'hang' || !d.loai);
+    const loaiList = res.data.filter(d => d.loai === 'loai');
+    const fHang = document.getElementById('filter-hang');
+    hangList.forEach(d => { fHang.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+    const fLoai = document.getElementById('filter-loai');
+    loaiList.forEach(d => { fLoai.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+
+    // Fill cho trang sản phẩm riêng
+    const spFHang = document.getElementById('home-filter-hang');
+
+    hangList.forEach(d => { spFHang.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+    const spFLoai = document.getElementById('home-filter-loai');
+
+    loaiList.forEach(d => { spFLoai.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+  } catch(e) { console.error(e); }
+}
+
+// ====== SẢN PHẨM ======
+async function loadProducts() {
+  try {
+    document.getElementById('skeleton-list').style.display = 'grid';
+    const res = await apiCall('getSanPham');
+    document.getElementById('skeleton-list').style.display = 'none';
+    if (!res.success) { showToast('Không thể tải sản phẩm!','error'); return; }
+    allProducts = res.data;
+    productsLoaded = true;
+    renderProducts(allProducts);
+  } catch(e) {
+    document.getElementById('skeleton-list').style.display = 'none';
+    showToast('Lỗi kết nối!','error');
+  }
+}
+
+function renderProducts(list) {
+  const el = document.getElementById('product-list');
+  document.getElementById('sp-count').textContent = list.length + ' sản phẩm';
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="product-grid"><div class="empty-state"><div class="empty-icon">👟</div><p>Không tìm thấy sản phẩm phù hợp</p></div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-grid">` + list.map(sp => `
+    <div class="product-card" onclick="openProductModal('${sp.id}')">
+      <div class="product-img">
+        ${sp.hinhAnh && sp.hinhAnh[0]
+          ? `<img src="${sp.hinhAnh[0]}" alt="${sp.tenSanPham}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>👟</div>'">`
+          : `<div class="product-img-placeholder">👟</div>`}
+        <span class="product-badge">✨MiniSneaker✨</span>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
+        <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc">${sp.moTa || 'Giày chính hãng chất lượng cao'}</div>
+        
+        <div class="product-footer">
+          <div>
+            ${sp.phanTramGiam > 0
+              ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                  <div class="product-price">${formatMoney(Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)))}</div>
+                  <span style="font-size:11px;background:#EF4444;color:#fff;padding:2px 7px;border-radius:20px;font-weight:700">-${sp.phanTramGiam}%</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);text-decoration:line-through">${formatMoney(sp.giaBan)}</div>`
+              : `<div class="product-price">${formatMoney(sp.giaBan)}</div>`
+            }
+          </div>
+          <div class="product-sizes">${sp.sizes && sp.sizes.length > 0 ? sp.sizes[0]+(sp.sizes.length>1?' - '+sp.sizes[sp.sizes.length-1]:'') : 'Liên hệ'}</div>
+        </div>
+
+      </div>
+    </div>
+  `).join('') + `</div>`;
+}
+
+function filterProducts() {
+  const kw   = document.getElementById('filter-search').value.toLowerCase();
+  const hang = document.getElementById('filter-hang').value;
+  const loai = document.getElementById('filter-loai').value;
+  let filtered = allProducts.filter(sp => {
+    const matchKw   = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
+    const matchHang = !hang || sp.danhMucId === hang;
+    const matchLoai = !loai || sp.loaiId    === loai;
+    return matchKw && matchHang && matchLoai;
+  });
+  if (currentSort === 'price_asc')  filtered.sort((a,b) => a.giaBan - b.giaBan);
+  if (currentSort === 'price_desc') filtered.sort((a,b) => b.giaBan - a.giaBan);
+  renderProductsSP(filtered);
+}
+
+function setSortTab(sort, btn) {
+  currentSort = sort;
+  document.querySelectorAll('.sort-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterProducts();
+}
+
+function searchProducts(kw) {
+  if (!productsLoaded) return;
+  showPage('home');
+  document.getElementById('filter-search').value = kw;
+  filterProducts();
+  setTimeout(() => document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}), 150);
+}
+
+// ====== MODAL ======
+function openProductModal(id) {
+  const sp = allProducts.find(s => s.id === id);
+  if (!sp) return;
+  modalImgs  = sp.hinhAnh && sp.hinhAnh.length > 0 ? sp.hinhAnh : [];
+  currentImg = 0;
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-body">
+      <div class="modal-imgs">
+        <div class="modal-img-main">
+          ${modalImgs[0] ? `<img src="${modalImgs[0]}" id="main-img" alt="${sp.tenSanPham}" />` : `<div class="product-img-placeholder" style="height:300px">👟</div>`}
+        </div>
+        ${modalImgs.length > 1 ? `<div class="modal-img-thumbs">${modalImgs.map((url,i)=>`<div class="modal-thumb ${i===0?'active':''}" onclick="switchModalImg(${i})"><img src="${url}" /></div>`).join('')}</div>` : ''}
+      </div>
+      <div class="modal-info">
+        <button class="modal-close-btn" onclick="closeModal()">✕</button>
+        <div class="modal-brand">${sp.danhMucTen||''} ${sp.loaiTen?'• '+sp.loaiTen:''}</div>
+        <div class="modal-name">${sp.tenSanPham}</div>
+        
+        ${sp.phanTramGiam > 0
+          ? `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <div class="modal-price">${formatMoney(Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)))}</div>
+              <span style="font-size:13px;background:#EF4444;color:#fff;padding:3px 10px;border-radius:20px;font-weight:700">-${sp.phanTramGiam}%</span>
+            </div>
+            <div style="font-size:13px;color:var(--text-muted);text-decoration:line-through;margin-top:-4px">${formatMoney(sp.giaBan)}</div>`
+          : `<div class="modal-price">${formatMoney(sp.giaBan)}</div>`
+        }
+
+        ${sp.sizes && sp.sizes.length > 0 ? `<div><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">SIZE CÓ SẴN</div><div class="modal-sizes">${sp.sizes.map(s=>`<div class="modal-size-btn">${s}</div>`).join('')}</div></div>` : ''}
+        ${sp.moTa ? `<div class="modal-desc">📝 ${sp.moTa}</div>` : ''}
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+
+
+          <a href="https://www.facebook.com/nhjoi86/" target="_blank" class="btn btn-primary" style="justify-content:center;gap:8px">
+          <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40" style="width:20px;height:20px;object-fit:contain;border-radius:4px"> Đặt hàng qua Facebook</a>
+
+          <a href="https://zalo.me/0358638603" target="_blank" class="btn" style="background:#EEA2AD;color:#fff;justify-content:center;gap:8px">
+            <span style="
+              width:26px;height:26px;border-radius:6px;
+              background:#0068FF;color:#fff;
+              font-size:10px;font-weight:900;font-family:Arial,sans-serif;
+              display:inline-flex;align-items:center;justify-content:center;
+              flex-shrink:0;
+            ">Zalo</span>
+            Đặt hàng qua Zalo
+          </a>
+
+          <a href="tel:0358638603" class="btn" style="background:#E8F5E9;color:#1B5E20;border:1.5px solid #A5D6A7;justify-content:center;gap:8px">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#2E7D32">
+              <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
+            </svg>
+            📞 Gọi: 0358638603
+          </a>
+          
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:4px">Mã SP: <strong>${sp.maSanPham}</strong></div>
+      </div>
+    </div>`;
+  const overlay = document.getElementById('modal-sp');
+  overlay.style.display = 'flex';
+  setTimeout(() => overlay.classList.add('show'), 10);
+}
+
+function switchModalImg(i) {
+  currentImg = i;
+  const img = document.getElementById('main-img');
+  if (img) img.src = modalImgs[i];
+  document.querySelectorAll('.modal-thumb').forEach((t,j) => t.classList.toggle('active', j===i));
+}
+
+function closeModal() {
+  const o = document.getElementById('modal-sp');
+  o.classList.remove('show');
+  setTimeout(() => { o.style.display = 'none'; }, 300);
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+
+// ====== PHẢN HỒI ======
+async function submitPhanHoi() {
+  const ten     = document.getElementById('ph-ten').value.trim();
+  const sdt     = document.getElementById('ph-sdt').value.trim();
+  const email   = document.getElementById('ph-email').value.trim();
+  const loai    = document.getElementById('ph-loai').value;
+  const noiDung = document.getElementById('ph-noidung').value.trim();
+
+  if (!ten)     { showToast('Vui lòng nhập họ tên!','error');   document.getElementById('ph-ten').focus();     return; }
+  if (!noiDung) { showToast('Vui lòng nhập nội dung!','error'); document.getElementById('ph-noidung').focus(); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Đang gửi...';
+
+  try {
+    const res = await apiCall('submitPhanHoi', {
+      tenKhachHang: ten, soDienThoai: sdt, email: email, loai: loai, noiDung: noiDung
+    });
+    if (res.success) {
+      document.getElementById('form-wrap').style.display  = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    } else {
+      showToast(res.message || 'Gửi thất bại!','error');
+      btn.disabled = false;
+      btn.textContent = '✔️ Gửi Phản Hồi';
+    }
+  } catch(e) {
+    showToast('Lỗi kết nối!','error');
+    btn.disabled = false;
+    btn.textContent = '✔️ Gửi Phản Hồi';
+  }
+}
+
+function resetForm() {
+  ['ph-ten','ph-sdt','ph-email','ph-noidung'].forEach(id => document.getElementById(id).value = '');
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = false;
+  btn.textContent = '✔️ Gửi Phản Hồi';
+  document.getElementById('form-wrap').style.display   = 'block';
+  document.getElementById('success-msg').style.display = 'none';
+}
+
+// ====== HELPERS ======
+function toggleMenu() { document.getElementById('nav-menu').classList.toggle('open'); }
+
+function formatMoney(n) {
+  if (!n) return 'Liên hệ';
+  return new Intl.NumberFormat('vi-VN').format(n) + ' đ';
+}
+
+function showToast(msg, type = 'info') {
+  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.innerHTML = `<span>${icons[type]}</span>${msg}`;
+  document.getElementById('toast-wrap').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+// ====== TRANG SẢN PHẨM RIÊNG ======
+let currentSortSP = '';
+
+function renderProductsSP(list) {
+  const el = document.getElementById('sp-product-list');
+  if (!el) return;
+  document.getElementById('sp-count-2').textContent = list.length + ' sản phẩm';
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="product-grid"><div class="empty-state"><div class="empty-icon">👟</div><p>Không tìm thấy sản phẩm phù hợp</p></div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-grid">` + list.map(sp => `
+    <div class="product-card" onclick="openProductModal('${sp.id}')">
+      <div class="product-img">
+        ${sp.hinhAnh && sp.hinhAnh[0]
+          ? `<img src="${sp.hinhAnh[0]}" alt="${sp.tenSanPham}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>👟</div>'">`
+          : `<div class="product-img-placeholder">👟</div>`}
+        <span class="product-badge">✨MiniSneaker✨</span>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
+        <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc">${sp.moTa || 'Giày chính hãng chất lượng cao'}</div>
+        
+        <div class="product-footer">
+          <div>
+            ${sp.phanTramGiam > 0
+              ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                  <div class="product-price">${formatMoney(Math.round(sp.giaBan*(1-sp.phanTramGiam/100)))}</div>
+                  <span style="font-size:11px;background:#EF4444;color:#fff;padding:2px 7px;border-radius:20px;font-weight:700">-${sp.phanTramGiam}%</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);text-decoration:line-through">${formatMoney(sp.giaBan)}</div>`
+              : `<div class="product-price">${formatMoney(sp.giaBan)}</div>`
+            }
+          </div>
+          <div class="product-sizes">${sp.sizes&&sp.sizes.length>0?sp.sizes[0]+(sp.sizes.length>1?' - '+sp.sizes[sp.sizes.length-1]:''):'Liên hệ'}</div>
+        </div>
+
+      </div>
+    </div>
+  `).join('') + `</div>`;
+}
+
+function filterProductsSP() {
+  const kw   = document.getElementById('sp-filter-search').value.toLowerCase();
+  const hang = document.getElementById('home-filter-hang') ? document.getElementById('home-filter-hang').value : '';
+  const loai = document.getElementById('home-filter-loai') ? document.getElementById('home-filter-loai').value : '';
+  let filtered = allProducts.filter(sp => {
+    const matchKw   = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
+    const matchHang = !hang || sp.danhMucId === hang;
+    const matchLoai = !loai || sp.loaiId    === loai;
+    return matchKw && matchHang && matchLoai;
+  });
+  renderProducts(filtered);
+}
+
+function setSortTabSP(sort, btn) {
+  currentSortSP = sort;
+  // Reset active chỉ trong trang sản phẩm
+  document.querySelectorAll('#page-sanpham .sort-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterProductsSP();
+}
+
+// ====== PHÂN HỆ NAM / NỮ ======
+let currentSortPhanHe = { nam: '', nu: '' };
+
+function fillPhanHeFilters(phanHe, hangList, loaiList) {
+  const hSel = document.getElementById(phanHe + '-filter-hang');
+  const lSel = document.getElementById(phanHe + '-filter-loai');
+  if (!hSel || !lSel) return;
+  // Chỉ fill 1 lần
+  if (hSel.options.length > 1) return;
+  hangList.forEach(d => { hSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+  loaiList.forEach(d => { lSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+}
+
+function renderProductsPhanHe(phanHe, list) {
+  const el = document.getElementById(phanHe + '-product-list');
+  const countEl = document.getElementById(phanHe + '-count');
+  if (!el) return;
+  if (countEl) countEl.textContent = list.length + ' sản phẩm';
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="product-grid"><div class="empty-state"><div class="empty-icon">${phanHe==='nam'?'👟':'👠'}</div><p>Không có sản phẩm nào</p></div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-grid">` + list.map(sp => `
+    <div class="product-card" onclick="openProductModal('${sp.id}')">
+      <div class="product-img">
+        ${sp.hinhAnh && sp.hinhAnh[0]
+          ? `<img src="${sp.hinhAnh[0]}" alt="${sp.tenSanPham}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>${phanHe==='nam'?'👟':'👠'}</div>'">`
+          : `<div class="product-img-placeholder">${phanHe==='nam'?'👟':'👠'}</div>`}
+        <span class="product-badge">✨MiniSneaker✨</span>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
+        <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc">${sp.moTa || 'Giày chính hãng chất lượng cao'}</div>
+        <div class="product-footer">
+          <div>
+            ${sp.phanTramGiam > 0
+              ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                   <div class="product-price">${formatMoney(Math.round(sp.giaBan*(1-sp.phanTramGiam/100)))}</div>
+                   <span style="font-size:11px;background:#EF4444;color:#fff;padding:2px 7px;border-radius:20px;font-weight:700">-${sp.phanTramGiam}%</span>
+                 </div>
+                 <div style="font-size:12px;color:var(--text-muted);text-decoration:line-through">${formatMoney(sp.giaBan)}</div>`
+              : `<div class="product-price">${formatMoney(sp.giaBan)}</div>`
+            }
+          </div>
+          <div class="product-sizes">${sp.sizes&&sp.sizes.length>0?sp.sizes[0]+(sp.sizes.length>1?' - '+sp.sizes[sp.sizes.length-1]:''):'Liên hệ'}</div>
+        </div>
+      </div>
+    </div>
+  `).join('') + `</div>`;
+}
+
+function filterProductsPhanHe(phanHe) {
+  const kw   = document.getElementById(phanHe + '-filter-search').value.toLowerCase();
+  const hang = document.getElementById(phanHe + '-filter-hang').value;
+  const loai = document.getElementById(phanHe + '-filter-loai').value;
+  let filtered = allProducts.filter(sp => {
+    const matchPhanHe = sp.phanHe && sp.phanHe.toString().split(',').map(s=>s.trim()).includes(phanHe);
+    const matchKw     = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
+    const matchHang   = !hang || sp.danhMucId === hang;
+    const matchLoai   = !loai || sp.loaiId    === loai;
+    return matchPhanHe && matchKw && matchHang && matchLoai;
+  });
+  const sort = currentSortPhanHe[phanHe];
+  if (sort === 'price_asc')  filtered.sort((a,b) => a.giaBan - b.giaBan);
+  if (sort === 'price_desc') filtered.sort((a,b) => b.giaBan - a.giaBan);
+  renderProductsPhanHe(phanHe, filtered);
+}
+
+function setSortTabPhanHe(sort, phanHe, btn) {
+  currentSortPhanHe[phanHe] = sort;
+  document.querySelectorAll(`#page-${phanHe} .sort-tab`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterProductsPhanHe(phanHe);
+}
+
+</script>
+</body>
+</html>
