@@ -148,6 +148,9 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text);
 
 /* PRODUCT GRID */
 .product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
+@media(max-width:768px) {
+  .product-grid { grid-template-columns:repeat(2,1fr); gap:12px; }
+}
 .product-card {
   background:var(--white); border-radius:var(--radius); border:1px solid var(--border);
   overflow:hidden; transition:all 0.3s; cursor:pointer; box-shadow:var(--shadow);
@@ -324,14 +327,45 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 #scroll-top.show { display:flex; }
 
 /* RESPONSIVE */
+@media(max-width:768px) {
+  .nav-menu.open .nav-link {
+    padding:14px 20px;
+    border-radius:0;
+    border-bottom:1px solid var(--border);
+    font-size:15px;
+    text-align:left;
+    width:100%;
+  }
+  .nav-menu.open .nav-link:hover,
+  .nav-menu.open .nav-link.active {
+    background:var(--primary-light);
+    color:var(--primary);
+    border-left:3px solid var(--primary);
+    padding-left:17px;
+  }
+}
+
 @media (max-width:768px) {
   .nav-menu { display:none; }
-  .nav-menu.open { 
-    display:flex; flex-direction:column; 
-    position:fixed; top:64px; left:0; right:0; width:100%;
-    background:var(--white); border-bottom:1px solid var(--border); 
-    padding:12px; gap:4px; z-index:999; 
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  .nav-menu { transition: transform 0.3s ease; }
+  .nav-menu.open {
+    display:flex; flex-direction:column;
+    position:fixed; top:0; left:0; bottom:0; width:280px;
+    background:var(--white);
+    padding:0; gap:0; z-index:9999;
+    box-shadow:4px 0 24px rgba(0,0,0,0.25);
+    overflow-y:auto;
+    animation: slideInLeft 0.25s ease;
+  }
+  @keyframes slideInLeft {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
+  }
+
+  .nav-left-mobile { display:none; }
+  @media(max-width:768px) {
+    .nav-left-mobile { display:flex; align-items:center; }
+    .hamburger { display:flex; }
   }
   .hamburger { display:flex; }
   .nav-inner { position:relative; flex-wrap:wrap; }
@@ -352,9 +386,34 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
   width:22px; height:22px; object-fit:contain;
 }
 
+
+/* MOBILE NAV - Logo trái, hamburger trái */
+@media (max-width: 768px) {
+  .nav-inner {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+  .nav-left-mobile {
+    display: flex !important;
+    align-items: center;
+    order: -1;
+  }
+  .nav-logo {
+    order: 0;
+  }
+  .nav-right {
+    margin-left: auto;
+  }
+}
+
 </style>
 </head>
 <body>
+
+
+<div id="menu-overlay" onclick="toggleMenu()"
+  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998"></div>
 
 <!-- NAVBAR -->
 <nav class="navbar">
@@ -367,7 +426,22 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
       <div class="logo-name">Mini <span>Sneaker</span></div>
     </div>
 
+    
     <div class="nav-menu" id="nav-menu">
+      <div style="display:flex;align-items:center;gap:12px;padding:20px 16px;
+        background:linear-gradient(135deg,var(--dark),#2D1B4E);border-bottom:1px solid rgba(255,255,255,0.1)">
+        <div style="width:44px;height:44px;border-radius:12px;overflow:hidden;flex-shrink:0;
+          box-shadow:0 4px 12px rgba(255,107,157,0.4)">
+          <img src="https://drive.google.com/thumbnail?id=1_mhr8a3-h0XuNzEIBvmSIH1WwNPXFbgI&sz=w80"
+            style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div>
+          <div style="font-weight:900;font-size:16px;color:#fff">Mini <span style="color:var(--primary)">Sneaker</span></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5)">Giày chính hãng 100%</div>
+        </div>
+        <button onclick="toggleMenu()" style="margin-left:auto;background:rgba(255,255,255,0.1);border:none;cursor:pointer;font-size:16px;color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+
       <button class="nav-link active" id="nav-home" onclick="showPage('home',this)">🏠 Trang Chủ</button>
       <button class="nav-link" id="nav-sp" onclick="showPage('sanpham',this)">👟 Sản Phẩm</button>
       <button class="nav-link" id="nav-nam" onclick="showPage('nam',this)">👟 Giày Nam</button>
@@ -375,11 +449,13 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
       <button class="nav-link" id="nav-lienhe" onclick="showPage('lienhe',this)">📞 Liên Hệ</button>
     </div>
 
-    <div class="nav-right">
-      
+    <div class="nav-left-mobile">
       <button class="hamburger" onclick="toggleMenu()">
         <span></span><span></span><span></span>
       </button>
+    </div>
+    <div class="nav-right">
+
     </div>
   </div>
 </nav>
@@ -1267,7 +1343,12 @@ function resetForm() {
 }
 
 // ====== HELPERS ======
-function toggleMenu() { document.getElementById('nav-menu').classList.toggle('open'); }
+function toggleMenu() {
+  const menu    = document.getElementById('nav-menu');
+  const overlay = document.getElementById('menu-overlay');
+  const isOpen  = menu.classList.toggle('open');
+  overlay.style.display = isOpen ? 'block' : 'none';
+}
 
 function formatMoney(n) {
   if (!n) return 'Liên hệ';
