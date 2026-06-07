@@ -535,6 +535,12 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <option value="">Tất cả loại</option>
         </select>
 
+        <select id="home-filter-gia" onchange="filterProductsSP()" style="min-width:150px">
+          <option value="">Sắp xếp giá</option>
+          <option value="asc">Thấp ⬆ Cao</option>
+          <option value="desc">Cao ⬇ thấp</option>
+        </select>
+
         <select id="home-filter-ban" onchange="filterProductsSP()" style="min-width:130px">
           <option value="">Tất cả bản</option>
           <option value="under_authentic">Under Authentic</option>
@@ -542,7 +548,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <option value="likeauth">Likeauth</option>
           <option value="sieu_cap">Siêu Cấp</option>
           <option value="rep_1_1">Rep 1:1</option>
-        </select>
+        </select>+
 
       </div>
 
@@ -1405,8 +1411,11 @@ function filterProducts() {
     const matchBan  = !ban  || sp.ban === ban;
     return matchKw && matchHang && matchLoai && matchBan;
   });
-  if (gia === 'asc')  filtered.sort((a,b) => a.giaBan - b.giaBan);
-  if (gia === 'desc') filtered.sort((a,b) => b.giaBan - a.giaBan);
+  
+  const giaThucTe = sp => sp.phanTramGiam > 0 ? Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)) : sp.giaBan;
+  if (gia === 'asc')  filtered.sort((a,b) => giaThucTe(a) - giaThucTe(b));
+  if (gia === 'desc') filtered.sort((a,b) => giaThucTe(b) - giaThucTe(a));
+
   filteredCache.sanpham = filtered;
   pageState.sanpham.page = 1;
   applyPage('sanpham');
@@ -1722,6 +1731,7 @@ function filterProductsSP() {
   const hang = document.getElementById('home-filter-hang') ? document.getElementById('home-filter-hang').value : '';
   const loai = document.getElementById('home-filter-loai') ? document.getElementById('home-filter-loai').value : '';
   const ban  = document.getElementById('home-filter-ban')  ? document.getElementById('home-filter-ban').value  : '';
+  const gia  = document.getElementById('home-filter-gia')  ? document.getElementById('home-filter-gia').value  : '';
   let filtered = allProducts.filter(sp => {
     const matchKw   = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
     const matchHang = !hang || sp.danhMucId === hang;
@@ -1729,6 +1739,11 @@ function filterProductsSP() {
     const matchBan  = !ban  || sp.ban === ban;
     return matchKw && matchHang && matchLoai && matchBan;
   });
+
+  const giaThucTe = sp => sp.phanTramGiam > 0 ? Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)) : sp.giaBan;
+  if (gia === 'asc')  filtered.sort((a,b) => giaThucTe(a) - giaThucTe(b));
+  if (gia === 'desc') filtered.sort((a,b) => giaThucTe(b) - giaThucTe(a));
+
   filteredCache.home = filtered;
   pageState.home.page = 1;
   applyPage('home');
@@ -1809,8 +1824,11 @@ function filterProductsPhanHe(phanHe) {
     const matchBan    = !ban  || sp.ban === ban;
     return matchPhanHe && matchKw && matchHang && matchLoai && matchBan;
   });
-  if (gia === 'asc')  filtered.sort((a,b) => a.giaBan - b.giaBan);
-  if (gia === 'desc') filtered.sort((a,b) => b.giaBan - a.giaBan);
+  
+  const giaThucTe = sp => sp.phanTramGiam > 0 ? Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)) : sp.giaBan;
+  if (gia === 'asc')  filtered.sort((a,b) => giaThucTe(a) - giaThucTe(b));
+  if (gia === 'desc') filtered.sort((a,b) => giaThucTe(b) - giaThucTe(a));
+
   filteredCache[phanHe] = filtered;
   pageState[phanHe].page = 1;
   applyPage(phanHe);
