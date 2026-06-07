@@ -128,6 +128,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text);
   padding:8px 12px; border:1.5px solid var(--border); border-radius:8px;
   font-size:13px; font-family:inherit; color:var(--text); background:var(--bg);
   cursor:pointer; outline:none; transition:border-color 0.2s;
+  size:10;
 }
 .filter-wrap select:focus { border-color:var(--primary); }
 .filter-search {
@@ -536,9 +537,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
         <select id="home-filter-ban" onchange="filterProductsSP()" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="likeauth">Likeauth</option>
+          <option value="under_authentic">Under Authentic</option>
           <option value="best_quality">Best Quality</option>
+          <option value="likeauth">Likeauth</option>
+          <option value="sieu_cap">Siêu Cấp</option>
           <option value="rep_1_1">Rep 1:1</option>
         </select>
 
@@ -653,9 +655,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
         <select id="sp-filter-ban" onchange="filterProducts()" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="likeauth">Likeauth</option>
+          <option value="under_authentic">Under Authentic</option>
           <option value="best_quality">Best Quality</option>
+          <option value="likeauth">Likeauth</option>
+          <option value="sieu_cap">Siêu Cấp</option>
           <option value="rep_1_1">Rep 1:1</option>
         </select>
 
@@ -767,9 +770,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
         <select id="nam-filter-ban" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="likeauth">Likeauth</option>
+          <option value="under_authentic">Under Authentic</option>
           <option value="best_quality">Best Quality</option>
+          <option value="likeauth">Likeauth</option>
+          <option value="sieu_cap">Siêu Cấp</option>
           <option value="rep_1_1">Rep 1:1</option>
         </select>
 
@@ -875,9 +879,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
         <select id="nam-filter-ban" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="likeauth">Likeauth</option>
+          <option value="under_authentic">Under Authentic</option>
           <option value="best_quality">Best Quality</option>
+          <option value="likeauth">Likeauth</option>
+          <option value="sieu_cap">Siêu Cấp</option>
           <option value="rep_1_1">Rep 1:1</option>
         </select>
 
@@ -983,9 +988,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
         <select id="nam-filter-ban" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="likeauth">Likeauth</option>
+          <option value="under_authentic">Under Authentic</option>
           <option value="best_quality">Best Quality</option>
+          <option value="likeauth">Likeauth</option>
+          <option value="sieu_cap">Siêu Cấp</option>
           <option value="rep_1_1">Rep 1:1</option>
         </select>
 
@@ -1311,7 +1317,9 @@ async function loadDanhMuc() {
     const res = await apiCall('getDanhMuc');
     if (!res.success) return;
     const hangList = res.data.filter(d => d.loai === 'hang' || !d.loai);
+    hangList.sort((a, b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
     const loaiList = res.data.filter(d => d.loai === 'loai');
+    loaiList.sort((a, b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
     const fHang = document.getElementById('filter-hang');
     hangList.forEach(d => { fHang.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
     const fLoai = document.getElementById('filter-loai');
@@ -1513,7 +1521,7 @@ function openProductModal(id) {
           <div style="font-size:11px;font-weight:700;color:var(--text-muted);
             text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Bản</div>
           <div style="font-size:15px;font-weight:800;color:var(--primary)">
-            ${sp.ban==='sieu_cap'?'Siêu Cấp':sp.ban==='likeauth'?'Likeauth':sp.ban==='best_quality'?'Best Quality':sp.ban==='rep_1_1'?'Rep 1:1':sp.ban||'—'}
+            ${sp.ban==='under_authentic'?'Under Authentic':sp.ban==='best_quality'?'Best Quality':sp.ban==='likeauth'?'Likeauth':sp.ban==='sieu_cap'?'Siêu Cấp':sp.ban==='rep_1_1'?'Rep 1:1':sp.ban||'—'}
           </div>
         </div>
 
@@ -1741,10 +1749,11 @@ function fillPhanHeFilters(phanHe, hangList, loaiList) {
   const hSel = document.getElementById(phanHe + '-filter-hang');
   const lSel = document.getElementById(phanHe + '-filter-loai');
   if (!hSel || !lSel) return;
-  // Chỉ fill 1 lần
   if (hSel.options.length > 1) return;
-  hangList.forEach(d => { hSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
-  loaiList.forEach(d => { lSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+  const sortedHang = hangList.slice().sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
+  const sortedLoai = loaiList.slice().sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
+  sortedHang.forEach(d => { hSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+  sortedLoai.forEach(d => { lSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
 }
 
 function renderProductsPhanHe(phanHe, list) {
@@ -1923,7 +1932,7 @@ function _productCardHTML(sp) {
       <div class="product-info">
         <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
         <div class="product-name">${sp.tenSanPham}</div>
-        <div class="product-desc">Bản: ${sp.ban==='sieu_cap'?'Siêu Cấp':sp.ban==='likeauth'?'Likeauth':sp.ban==='best_quality'?'Best Quality':sp.ban==='rep_1_1'?'Rep 1:1':sp.ban||'—'}</div>
+        <div class="product-desc">Bản: ${sp.ban==='under_authentic'?'Under Authentic':sp.ban==='best_quality'?'Best Quality':sp.ban==='likeauth'?'Likeauth':sp.ban==='sieu_cap'?'Siêu Cấp':sp.ban==='rep_1_1'?'Rep 1:1':sp.ban||'—'}</div>
         <div class="product-footer">
           <div>
             ${sp.phanTramGiam > 0
@@ -1940,7 +1949,6 @@ function _productCardHTML(sp) {
       </div>
     </div>`;
 }
-
 
 </script>
 </body>
