@@ -543,12 +543,11 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
         <select id="home-filter-ban" onchange="filterProductsSP()" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="under_authentic">Under Authentic</option>
-          <option value="best_quality">Best Quality</option>
-          <option value="likeauth">Likeauth</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="rep_1_1">Rep 1:1</option>
-        </select>+
+        </select>
+
+        <select id="home-filter-size" onchange="filterProductsSP()" style="min-width:110px">
+          <option value="">Tất cả size</option>
+        </select>
 
       </div>
 
@@ -661,11 +660,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
         <select id="sp-filter-ban" onchange="filterProducts()" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="under_authentic">Under Authentic</option>
-          <option value="best_quality">Best Quality</option>
-          <option value="likeauth">Likeauth</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="rep_1_1">Rep 1:1</option>
+        </select>
+
+        <select id="sp-filter-size" onchange="filterProducts()" style="min-width:110px">
+          <option value="">Tất cả size</option>
         </select>
 
       </div>
@@ -776,11 +774,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
         <select id="nam-filter-ban" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="under_authentic">Under Authentic</option>
-          <option value="best_quality">Best Quality</option>
-          <option value="likeauth">Likeauth</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="rep_1_1">Rep 1:1</option>
+        </select>
+
+        <select id="nam-filter-size" onchange="filterProductsPhanHe('nam')" style="min-width:110px">
+          <option value="">Tất cả size</option>
         </select>
 
         <div class="sort-tabs">
@@ -883,13 +880,12 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <option value="desc">Cao ⬇ thấp</option>
         </select>
 
-        <select id="nam-filter-ban" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
+        <select id="nu-filter-ban" onchange="filterProductsPhanHe('nu')" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="under_authentic">Under Authentic</option>
-          <option value="best_quality">Best Quality</option>
-          <option value="likeauth">Likeauth</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="rep_1_1">Rep 1:1</option>
+        </select>
+
+        <select id="nu-filter-size" onchange="filterProductsPhanHe('nu')" style="min-width:110px">
+          <option value="">Tất cả size</option>
         </select>
 
       </div>
@@ -992,13 +988,12 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <option value="desc">Cao ⬇ thấp</option>
         </select>
 
-        <select id="nam-filter-ban" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
+        <select id="dep-filter-ban" onchange="filterProductsPhanHe('dep')" style="min-width:130px">
           <option value="">Tất cả bản</option>
-          <option value="under_authentic">Under Authentic</option>
-          <option value="best_quality">Best Quality</option>
-          <option value="likeauth">Likeauth</option>
-          <option value="sieu_cap">Siêu Cấp</option>
-          <option value="rep_1_1">Rep 1:1</option>
+        </select>
+
+        <select id="dep-filter-size" onchange="filterProductsPhanHe('dep')" style="min-width:110px">
+          <option value="">Tất cả size</option>
         </select>
 
       </div>
@@ -1272,16 +1267,17 @@ function showPage(name, navBtn) {
   if (name === 'sanpham' && productsLoaded) {
     filteredCache.sanpham = allProducts;
     pageState.sanpham.page = 1;
+    updateBanFilter('sanpham');
     applyPage('sanpham');
   }
+  
   if ((name === 'nam' || name === 'nu' || name === 'dep') && productsLoaded) {
-    // Fill filter dropdowns
-    const res = { hang: [], loai: [] };
     const hangList = allProducts.map(sp=>({id:sp.danhMucId,tenDanhMuc:sp.danhMucTen}))
       .filter((v,i,a)=>v.id&&a.findIndex(x=>x.id===v.id)===i);
     const loaiList = allProducts.map(sp=>({id:sp.loaiId,tenDanhMuc:sp.loaiTen}))
       .filter((v,i,a)=>v.id&&a.findIndex(x=>x.id===v.id)===i);
     fillPhanHeFilters(name, hangList, loaiList);
+    updateBanFilter(name);
     filterProductsPhanHe(name);
   }
 
@@ -1350,9 +1346,45 @@ async function loadProducts() {
     if (!res.success) { showToast('Không thể tải sản phẩm!','error'); return; }
     allProducts = res.data;
     productsLoaded = true;
+    
     filteredCache.home = allProducts;
     filteredCache.sanpham = allProducts;
+    updateBanFilter('home');
+    updateBanFilter('sanpham');
     applyPage('home');
+
+    // Fill size options theo từng phân hệ
+    const getSizes = (phanHe) => {
+      const list = phanHe
+        ? allProducts.filter(sp => sp.phanHe && sp.phanHe.toString().split(',').map(s=>s.trim()).includes(phanHe))
+        : allProducts;
+      return [...new Set(list.flatMap(sp => sp.sizes||[]))].sort((a,b)=>parseFloat(a)-parseFloat(b));
+    };
+
+    // Fill bản cho trang chủ và sản phẩm
+    const banLabels = {
+      under_authentic: 'Under Authentic',
+      best_quality: 'Best Quality',
+      likeauth: 'Likeauth',
+      sieu_cap: 'Siêu Cấp',
+      rep_1_1: 'Rep 1:1'
+    };
+
+    const sizeMap = {
+      'home-filter-size': null,
+      'sp-filter-size':   null,
+      'nam-filter-size':  'nam',
+      'nu-filter-size':   'nu',
+      'dep-filter-size':  'dep',
+    };
+
+    Object.entries(sizeMap).forEach(([id, phanHe]) => {
+      const sel = document.getElementById(id);
+      if (!sel) return;
+      sel.innerHTML = '<option value="">Tất cả size</option>';
+      getSizes(phanHe).forEach(s => { sel.innerHTML += `<option value="${s}">${s}</option>`; });
+    });
+
   } catch(e) {
     document.getElementById('skeleton-list').style.display = 'none';
     showToast('Lỗi kết nối!','error');
@@ -1404,12 +1436,15 @@ function filterProducts() {
   const loai = document.getElementById('filter-loai').value;
   const gia  = document.getElementById('filter-gia').value;
   const ban  = document.getElementById('sp-filter-ban') ? document.getElementById('sp-filter-ban').value : '';
+  const size = document.getElementById('home-filter-size') ? document.getElementById('home-filter-size').value : '';
+  // trong filter thêm:
   let filtered = allProducts.filter(sp => {
     const matchKw   = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
     const matchHang = !hang || sp.danhMucId === hang;
     const matchLoai = !loai || sp.loaiId    === loai;
     const matchBan  = !ban  || sp.ban === ban;
-    return matchKw && matchHang && matchLoai && matchBan;
+    const matchSize = !size || (sp.sizes && sp.sizes.includes(size));
+    return matchKw && matchHang && matchLoai && matchBan && matchSize;
   });
   
   const giaThucTe = sp => sp.phanTramGiam > 0 ? Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)) : sp.giaBan;
@@ -1730,14 +1765,18 @@ function filterProductsSP() {
   const kw   = document.getElementById('sp-filter-search').value.toLowerCase();
   const hang = document.getElementById('home-filter-hang') ? document.getElementById('home-filter-hang').value : '';
   const loai = document.getElementById('home-filter-loai') ? document.getElementById('home-filter-loai').value : '';
-  const ban  = document.getElementById('home-filter-ban')  ? document.getElementById('home-filter-ban').value  : '';
+  const ban  = document.getElementById('home-filter-ban') ? document.getElementById('home-filter-ban').value : '';
   const gia  = document.getElementById('home-filter-gia')  ? document.getElementById('home-filter-gia').value  : '';
+  const size = document.getElementById('home-filter-size') ? document.getElementById('home-filter-size').value : '';
+  // trong filter thêm:
+  
   let filtered = allProducts.filter(sp => {
     const matchKw   = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
     const matchHang = !hang || sp.danhMucId === hang;
     const matchLoai = !loai || sp.loaiId    === loai;
     const matchBan  = !ban  || sp.ban === ban;
-    return matchKw && matchHang && matchLoai && matchBan;
+    const matchSize = !size || (sp.sizes && sp.sizes.includes(size));
+    return matchKw && matchHang && matchLoai && matchBan && matchSize;
   });
 
   const giaThucTe = sp => sp.phanTramGiam > 0 ? Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)) : sp.giaBan;
@@ -1764,11 +1803,28 @@ function fillPhanHeFilters(phanHe, hangList, loaiList) {
   const hSel = document.getElementById(phanHe + '-filter-hang');
   const lSel = document.getElementById(phanHe + '-filter-loai');
   if (!hSel || !lSel) return;
-  if (hSel.options.length > 1) return;
-  const sortedHang = hangList.slice().sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
-  const sortedLoai = loaiList.slice().sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
-  sortedHang.forEach(d => { hSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
-  sortedLoai.forEach(d => { lSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+
+  // Lấy sản phẩm theo phân hệ
+  const spTheoPhanhHe = allProducts.filter(sp =>
+    sp.phanHe && sp.phanHe.toString().split(',').map(s=>s.trim()).includes(phanHe)
+  );
+
+  // Lọc hãng chỉ có trong phân hệ
+  const hangIds = new Set(spTheoPhanhHe.map(sp => sp.danhMucId).filter(Boolean));
+  const loaiIds = new Set(spTheoPhanhHe.map(sp => sp.loaiId).filter(Boolean));
+
+  const filteredHang = hangList.filter(d => hangIds.has(d.id))
+    .sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
+  const filteredLoai = loaiList.filter(d => loaiIds.has(d.id))
+    .sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
+
+  // Reset và fill lại mỗi lần vào trang
+  hSel.innerHTML = '<option value="">Tất cả hãng</option>';
+  lSel.innerHTML = '<option value="">Tất cả loại</option>';
+
+  filteredHang.forEach(d => { hSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+  filteredLoai.forEach(d => { lSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+
 }
 
 function renderProductsPhanHe(phanHe, list) {
@@ -1824,11 +1880,8 @@ function filterProductsPhanHe(phanHe) {
     const matchBan    = !ban  || sp.ban === ban;
     return matchPhanHe && matchKw && matchHang && matchLoai && matchBan;
   });
-  
-  const giaThucTe = sp => sp.phanTramGiam > 0 ? Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)) : sp.giaBan;
-  if (gia === 'asc')  filtered.sort((a,b) => giaThucTe(a) - giaThucTe(b));
-  if (gia === 'desc') filtered.sort((a,b) => giaThucTe(b) - giaThucTe(a));
-
+  if (gia === 'asc')  filtered.sort((a,b) => a.giaBan - b.giaBan);
+  if (gia === 'desc') filtered.sort((a,b) => b.giaBan - a.giaBan);
   filteredCache[phanHe] = filtered;
   pageState[phanHe].page = 1;
   applyPage(phanHe);
@@ -1966,6 +2019,49 @@ function _productCardHTML(sp) {
         </div>
       </div>
     </div>`;
+}
+
+function updateBanFilter(tab) {
+  // Lấy danh sách sản phẩm thuộc tab này
+  let products;
+  if (tab === 'home' || tab === 'sanpham') {
+    products = allProducts;
+  } else {
+    products = allProducts.filter(sp =>
+      sp.phanHe && sp.phanHe.toString().split(',').map(s=>s.trim()).includes(tab)
+    );
+  }
+
+  // Lấy các bản có trong sản phẩm của tab này
+  const banCoTrong = [...new Set(products.map(sp => sp.ban).filter(b => b))];
+
+  const BAN_LABELS = {
+    under_authentic: 'Under Authentic',
+    best_quality:    'Best Quality',
+    likeauth:        'Likeauth',
+    sieu_cap:        'Siêu Cấp',
+    rep_1_1:         'Rep 1:1',
+  };
+  const BAN_ORDER = ['under_authentic','best_quality','likeauth','sieu_cap','rep_1_1'];
+
+  // ID select của từng tab
+  const selectIdMap = {
+    home:    'home-filter-ban',
+    sanpham: 'sp-filter-ban',
+    nam:     'nam-filter-ban',
+    nu:      'nu-filter-ban',
+    dep:     'dep-filter-ban',
+  };
+  const sel = document.getElementById(selectIdMap[tab]);
+  if (!sel) return;
+
+  const current = sel.value; // giữ lại giá trị đang chọn
+  sel.innerHTML = '<option value="">Tất cả bản</option>';
+  BAN_ORDER.forEach(val => {
+    if (banCoTrong.includes(val)) {
+      sel.innerHTML += `<option value="${val}"${current===val?' selected':''}>${BAN_LABELS[val]}</option>`;
+    }
+  });
 }
 
 </script>
