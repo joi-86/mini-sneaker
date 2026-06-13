@@ -461,6 +461,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 .brand-scroll-track {
   --gap: 24px;
 }
+
 .brand-item {
   height:140px; flex:0 0 auto; background:var(--white);
   border:none; border-radius:0;
@@ -470,6 +471,11 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 }
 .brand-item:hover { transform:scale(1.05); }
 .brand-item img { max-width:85%; max-height:80%; object-fit:contain; display:block; }
+
+@media(max-width:768px) {
+  .brand-item { height:110px; padding:14px; }
+  .brand-item img { max-width:95%; max-height:90%; }
+}
 
 .brand-nav-wrap { position:relative; }
 .brand-nav-btn {
@@ -2236,8 +2242,10 @@ function renderBrandScroll() {
   track.innerHTML = trackHTML;
 
   const wrap = track.parentElement;
-  const gap = 24;
-  const itemWidth = (wrap.clientWidth - gap * 4) / 5;
+  const isMobile = window.innerWidth <= 768;
+  const visibleCount = isMobile ? 3 : 5;
+  const gap = isMobile ? 12 : 24;
+  const itemWidth = (wrap.clientWidth - gap * (visibleCount - 1)) / visibleCount;
   track.style.setProperty('--gap', gap + 'px');
   document.querySelectorAll('.brand-item').forEach(el => {
     el.style.width = itemWidth + 'px';
@@ -2303,6 +2311,13 @@ function goToBrand(hangId) {
     }
   }, 300);
 }
+
+window.addEventListener('resize', function() {
+  if (window._brandResizeTimer) clearTimeout(window._brandResizeTimer);
+  window._brandResizeTimer = setTimeout(function() {
+    if (allProducts.length > 0) renderBrandScroll();
+  }, 300);
+});
 
 </script>
 </body>
