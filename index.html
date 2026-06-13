@@ -295,7 +295,8 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text);
 
 /* FOOTER */
 footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20px; }
-.footer-top { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:32px; margin-bottom:32px; }
+.footer-top { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:32px; margin-bottom:32px; }
+@media(max-width:768px) { .footer-top { grid-template-columns:1fr; } }
 @media (max-width:768px) {
   .nav-inner { position:relative; flex-wrap:wrap; }
 }
@@ -441,6 +442,46 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 @media(max-width:768px) {
   .modal-detail-grid { grid-template-columns:1fr !important; }
 }
+.brand-scroll-wrap {
+  overflow:hidden; width:100%;
+}
+.brand-scroll-track {
+  display:flex; flex-wrap:nowrap; gap:var(--gap, 24px);
+  animation: brandScroll var(--scroll-duration, 100s) linear infinite;
+  width:max-content;
+}
+.brand-scroll-track:hover { animation-play-state: paused; }
+@keyframes brandScroll {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+.brand-scroll-wrap {
+  overflow:hidden; width:100%;
+}
+.brand-scroll-track {
+  --gap: 24px;
+}
+.brand-scroll-wrap {
+  overflow:hidden; width:100%;
+}
+.brand-scroll-track {
+  --gap: 24px;
+}
+.brand-item {
+  width: calc((100% - 4 * var(--gap)) / 5);
+  min-width: calc((100% - 4 * var(--gap)) / 5);
+  max-width: calc((100% - 4 * var(--gap)) / 5);
+  height:90px; flex:0 0 auto; background:var(--white);
+  border:none; border-radius:0;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all 0.2s; padding:8px;
+  box-sizing:border-box;
+}
+.brand-item:hover { transform:scale(1.05); }
+.brand-item img { max-width:80%; max-height:70%; object-fit:contain; display:block; filter:grayscale(20%); }
+.brand-item:hover { transform:scale(1.05); }
+.brand-item img { max-width:80%; max-height:70%; object-fit:contain; display:block; filter:grayscale(20%); }
+
 </style>
 </head>
 <body>
@@ -497,7 +538,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
   </div>
 </nav>
 
-<!-- ===== TRANG CHỦ / SẢN PHẨM ===== -->
+<!-- ===== TRANG CHỦ ===== -->
 <div class="page active" id="page-home">
 
   <section class="hero">
@@ -515,6 +556,16 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
       </div>
     </div>
   </section>
+  <div style="background:var(--bg);border-bottom:1px solid var(--border);padding:24px 0;overflow:hidden">
+    <div class="container">
+      <div style="font-size:22px;font-weight:800;color:var(--text);letter-spacing:0.5px;margin-bottom:16px">
+        THƯƠNG HIỆU <span style="color:var(--primary)">NỔI BẬT</span>
+      </div>
+      <div style="overflow:hidden">
+        <div id="brand-scroll" class="brand-scroll-track"></div>
+      </div>
+    </div>
+  </div>
 
   <section id="san-pham-section">
     <div class="container">
@@ -529,10 +580,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <input type="text" id="sp-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsSP()" />
         </div>
         <select id="home-filter-hang" onchange="filterProductsSP()" ...>
-          <option value="">Tất cả hãng</option>
+          <option value="">Tất thương hiệu</option>
         </select>
         <select id="home-filter-loai" onchange="filterProductsSP()" ...>
-          <option value="">Tất cả loại</option>
+          <option value="">Tất cả danh mục</option>
         </select>
 
         <select id="home-filter-gia" onchange="filterProductsSP()" style="min-width:150px">
@@ -542,7 +593,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
         </select>
 
         <select id="home-filter-ban" onchange="filterProductsSP()" style="min-width:130px">
-          <option value="">Tất cả bản</option>
+          <option value="">Tất cả phiên bản</option>
         </select>
 
         <select id="home-filter-size" onchange="filterProductsSP()" style="min-width:110px">
@@ -595,8 +646,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
         <div class="footer-col">
           <h4>🔗 Điều Hướng</h4>
           <ul>
-            <li><a onclick="showPage('home')">Trang chủ</a></li>
             <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
+            <li><a onclick="showPage('nam')">Giày Nam</a></li>
+            <li><a onclick="showPage('nu')">Giày Nữ</a></li>
+            <li><a onclick="showPage('dep')">Dép</a></li>
             <li><a onclick="showPage('lienhe')"> Phả hồi, Liên hệ & Hỗ trợ</a></li>
           </ul>
         </div>
@@ -611,6 +664,15 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
               <img src= "https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40" style="width:16px;height:16px;object-fit:contain;border-radius:3px"> Facebook</a></li>
             <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
               <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40" style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Giao Hàng</h4>
+          <ul>
+            <li><a> Miễn phí giao hàng toàn quốc</a></li>
+            <li><a> Giao nhanh 2-3 ngày</a></li>
+            <li><a> Đổi trả trong 7 ngày</a></li>
+            <li><a> Thanh toán khi nhận hàng</a></li>
           </ul>
         </div>
       </div>
@@ -646,10 +708,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <input type="text" id="filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProducts()" />
         </div>
         <select id="filter-hang" onchange="filterProducts()" style="min-width:140px">
-          <option value="">Tất cả hãng</option>
+          <option value="">Tất thương hiệu</option>
         </select>
         <select id="filter-loai" onchange="filterProducts()" style="min-width:130px">
-          <option value="">Tất cả loại</option>
+          <option value="">Tất cả danh mục</option>
         </select>
 
         <select id="filter-gia" onchange="filterProducts()" style="min-width:150px">
@@ -659,7 +721,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
         </select>
 
         <select id="sp-filter-ban" onchange="filterProducts()" style="min-width:130px">
-          <option value="">Tất cả bản</option>
+          <option value="">Tất cả phiên bản</option>
         </select>
 
         <select id="sp-filter-size" onchange="filterProducts()" style="min-width:110px">
@@ -708,8 +770,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <h4>🔗 Điều Hướng</h4>
           <ul>
             <li><a onclick="showPage('home')">Trang chủ</a></li>
-            <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
-            <li><a onclick="showPage('lienhe')">Phả hồi, Liên hệ & Hỗ trợ</a></li>
+            <li><a onclick="showPage('nam')">Giày Nam</a></li>
+            <li><a onclick="showPage('nu')">Giày Nữ</a></li>
+            <li><a onclick="showPage('dep')">Dép</a></li>
+            <li><a onclick="showPage('lienhe')"> Phả hồi, Liên hệ & Hỗ trợ</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -727,6 +791,15 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
             <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
               <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
               style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Giao Hàng</h4>
+          <ul>
+            <li><a> Miễn phí giao hàng toàn quốc</a></li>
+            <li><a> Giao nhanh 2-3 ngày</a></li>
+            <li><a> Đổi trả trong 7 ngày</a></li>
+            <li><a> Thanh toán khi nhận hàng</a></li>
           </ul>
         </div>
       </div>
@@ -760,10 +833,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <input type="text" id="nam-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsPhanHe('nam')" />
         </div>
         <select id="nam-filter-hang" onchange="filterProductsPhanHe('nam')" style="min-width:140px">
-          <option value="">Tất cả hãng</option>
+          <option value="">Tất thương hiệu</option>
         </select>
         <select id="nam-filter-loai" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
-          <option value="">Tất cả loại</option>
+          <option value="">Tất cả danh mục</option>
         </select>
 
         <select id="nam-filter-gia" onchange="filterProductsPhanHe('nam')" style="min-width:150px">
@@ -773,7 +846,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
         </select>
 
         <select id="nam-filter-ban" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
-          <option value="">Tất cả bản</option>
+          <option value="">Tất cả phiên bản</option>
         </select>
 
         <select id="nam-filter-size" onchange="filterProductsPhanHe('nam')" style="min-width:110px">
@@ -818,7 +891,9 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <ul>
             <li><a onclick="showPage('home')">Trang chủ</a></li>
             <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
-            <li><a onclick="showPage('lienhe')">Phả hồi, Liên hệ & Hỗ trợ</a></li>
+            <li><a onclick="showPage('nu')">Giày Nữ</a></li>
+            <li><a onclick="showPage('dep')">Dép</a></li>
+            <li><a onclick="showPage('lienhe')"> Phả hồi, Liên hệ & Hỗ trợ</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -836,6 +911,15 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
             <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
               <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
               style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Giao Hàng</h4>
+          <ul>
+            <li><a> Miễn phí giao hàng toàn quốc</a></li>
+            <li><a> Giao nhanh 2-3 ngày</a></li>
+            <li><a> Đổi trả trong 7 ngày</a></li>
+            <li><a> Thanh toán khi nhận hàng</a></li>
           </ul>
         </div>
       </div>
@@ -868,10 +952,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <input type="text" id="nu-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsPhanHe('nu')" />
         </div>
         <select id="nu-filter-hang" onchange="filterProductsPhanHe('nu')" style="min-width:140px">
-          <option value="">Tất cả hãng</option>
+          <option value="">Tất thương hiệu</option>
         </select>
         <select id="nu-filter-loai" onchange="filterProductsPhanHe('nu')" style="min-width:130px">
-          <option value="">Tất cả loại</option>
+          <option value="">Tất cả danh mục</option>
         </select>
         
         <select id="nu-filter-gia" onchange="filterProductsPhanHe('nu')" style="min-width:150px">
@@ -881,7 +965,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
         </select>
 
         <select id="nu-filter-ban" onchange="filterProductsPhanHe('nu')" style="min-width:130px">
-          <option value="">Tất cả bản</option>
+          <option value="">Tất cả phiên bản</option>
         </select>
 
         <select id="nu-filter-size" onchange="filterProductsPhanHe('nu')" style="min-width:110px">
@@ -926,7 +1010,9 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <ul>
             <li><a onclick="showPage('home')">Trang chủ</a></li>
             <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
-            <li><a onclick="showPage('lienhe')">Phả hồi, Liên hệ & Hỗ trợ</a></li>
+            <li><a onclick="showPage('nam')">Giày Nam</a></li>
+            <li><a onclick="showPage('dep')">Dép</a></li>
+            <li><a onclick="showPage('lienhe')"> Phả hồi, Liên hệ & Hỗ trợ</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -944,6 +1030,15 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
             <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
               <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
               style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Giao Hàng</h4>
+          <ul>
+            <li><a> Miễn phí giao hàng toàn quốc</a></li>
+            <li><a> Giao nhanh 2-3 ngày</a></li>
+            <li><a> Đổi trả trong 7 ngày</a></li>
+            <li><a> Thanh toán khi nhận hàng</a></li>
           </ul>
         </div>
       </div>
@@ -976,10 +1071,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <input type="text" id="dep-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsPhanHe('dep')" />
         </div>
         <select id="dep-filter-hang" onchange="filterProductsPhanHe('dep')" style="min-width:140px">
-          <option value="">Tất cả hãng</option>
+          <option value="">Tất thương hiệu</option>
         </select>
         <select id="dep-filter-loai" onchange="filterProductsPhanHe('dep')" style="min-width:130px">
-          <option value="">Tất cả loại</option>
+          <option value="">Tất cả danh mục</option>
         </select>
 
         <select id="dep-filter-gia" onchange="filterProductsPhanHe('dep')" style="min-width:150px">
@@ -989,7 +1084,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
         </select>
 
         <select id="dep-filter-ban" onchange="filterProductsPhanHe('dep')" style="min-width:130px">
-          <option value="">Tất cả bản</option>
+          <option value="">Tất cả phiên bản</option>
         </select>
 
         <select id="dep-filter-size" onchange="filterProductsPhanHe('dep')" style="min-width:110px">
@@ -1018,8 +1113,10 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <h4>🔗 Điều Hướng</h4>
           <ul>
             <li><a onclick="showPage('home')">Trang chủ</a></li>
-            <li><a onclick="showPage('sanpham',document.getElementById('nav-sp'))">Sản phẩm</a></li>
-            <li><a onclick="showPage('lienhe',document.getElementById('nav-lienhe'))">Liên hệ & Hỗ trợ</a></li>
+            <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
+            <li><a onclick="showPage('nam')">Giày Nam</a></li>
+            <li><a onclick="showPage('nu')">Giày Nữ</a></li>
+            <li><a onclick="showPage('lienhe')"> Phả hồi, Liên hệ & Hỗ trợ</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -1027,6 +1124,15 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <ul>
             <li><a href="tel:0358638603" style="display:flex;align-items:center;gap:6px"><img src="https://drive.google.com/thumbnail?id=1UxMR5IfseBKpJs7VTRCVpp93jRo0zBc-&sz=w40" style="width:16px;height:16px;object-fit:contain"> 0358638603</a></li>
             <li><a href="mailto:minisneaker86@gmail.com" style="display:flex;align-items:center;gap:6px"><img src="https://drive.google.com/thumbnail?id=18TjRtA1Wh98ooYgShIk43WuPJkfhRU5P&sz=w40" style="width:16px;height:16px;object-fit:contain"> minisneaker86@gmail.com</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Giao Hàng</h4>
+          <ul>
+            <li><a> Miễn phí giao hàng toàn quốc</a></li>
+            <li><a> Giao nhanh 2-3 ngày</a></li>
+            <li><a> Đổi trả trong 7 ngày</a></li>
+            <li><a> Thanh toán khi nhận hàng</a></li>
           </ul>
         </div>
       </div>
@@ -1186,7 +1292,9 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <ul>
             <li><a onclick="showPage('home')">Trang chủ</a></li>
             <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}),100)">Sản phẩm</a></li>
-            <li><a onclick="showPage('lienhe')">Phả hồi, Liên hệ & Hỗ trợ</a></li>
+            <li><a onclick="showPage('nam')">Giày Nam</a></li>
+            <li><a onclick="showPage('nu')">Giày Nữ</a></li>
+            <li><a onclick="showPage('dep')">Dép</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -1204,6 +1312,15 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
             <li><a href="https://zalo.me/0358638603" target="_blank" style="display:flex;align-items:center;gap:6px">
               <img src= "https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w40"
               style="width:16px;height:16px;object-fit:contain"> Zalo</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Giao Hàng</h4>
+          <ul>
+            <li><a> Miễn phí giao hàng toàn quốc</a></li>
+            <li><a> Giao nhanh 2-3 ngày</a></li>
+            <li><a> Đổi trả trong 7 ngày</a></li>
+            <li><a> Thanh toán khi nhận hàng</a></li>
           </ul>
         </div>
       </div>
@@ -1352,6 +1469,7 @@ async function loadProducts() {
     updateBanFilter('home');
     updateBanFilter('sanpham');
     applyPage('home');
+    renderBrandScroll();
 
     // Fill size options theo từng phân hệ
     const getSizes = (phanHe) => {
@@ -1819,8 +1937,8 @@ function fillPhanHeFilters(phanHe, hangList, loaiList) {
     .sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
 
   // Reset và fill lại mỗi lần vào trang
-  hSel.innerHTML = '<option value="">Tất cả hãng</option>';
-  lSel.innerHTML = '<option value="">Tất cả loại</option>';
+  hSel.innerHTML = '<option value="">Tất thương hiệu</option>';
+  lSel.innerHTML = '<option value="">Tất cả danh mục</option>';
 
   filteredHang.forEach(d => { hSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
   filteredLoai.forEach(d => { lSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
@@ -2056,12 +2174,81 @@ function updateBanFilter(tab) {
   if (!sel) return;
 
   const current = sel.value; // giữ lại giá trị đang chọn
-  sel.innerHTML = '<option value="">Tất cả bản</option>';
+  sel.innerHTML = '<option value="">Tất cả phiên bản</option>';
   BAN_ORDER.forEach(val => {
     if (banCoTrong.includes(val)) {
       sel.innerHTML += `<option value="${val}"${current===val?' selected':''}>${BAN_LABELS[val]}</option>`;
     }
   });
+}
+function renderBrandScroll() {
+  const BRAND_LOGOS = {
+    'Adidas':   '18218X4_L4YJWEwHbK9oW45Hq_YxMo36n',
+    'Asics':    '1cyCni5-CdUPXOLtbykqRa0O3enIzM84p',
+    'Converse': '1qnwjLhMwaSHYo0ok6it3kMECwsObsBy0',
+    'Golden Goose Deluxe Brand': '14LVRaHZ8hcwFTdqGwS1KA-cMtNVqn3zT',
+    'Hoka':     '1mXVyGUg-iyQwQ7gmfTmhMMel0Zk9mQ4l',
+    'Jordan':   '1rFD5ZxmAOPi-3EJpXDiBI7CJ-rqYQunS',
+    'Louis Vuitton': '1eUtWToYE0tBbrL42PNj9S_5aUayd6xqU',
+    'New Balance':   '15pOjfWWejhvXzy6XwHZOgYuvU-yBt-ie',
+    'Nike':     '1eDfVmtUM2I549TpN5JtqQmOHdso7AkvQ',
+    'On':       '1qLN0ytgxVpTlw87W-NRt68by4RF3A7s2',
+    'On Running': '1qLN0ytgxVpTlw87W-NRt68by4RF3A7s2',
+    'Puma':     '1CH2V0kRRWOr1Wx4wDWrMc1KCLEJmdPU-',
+    'Tiger':    '1UQJsAgEcYE969HDKuQNltjuEL6xGd12d',
+    'Onitsuka Tiger': '1UQJsAgEcYE969HDKuQNltjuEL6xGd12d',
+    'Vans':     '1Wzm4c8o6lzA0FwtTF-iW3o4O0Wx0NTwq',
+  };
+
+  const hangMap = new Map();
+  allProducts.forEach(sp => {
+    if (sp.danhMucId && sp.danhMucTen) hangMap.set(sp.danhMucId, sp.danhMucTen);
+  });
+
+  const brandItems = [];
+  hangMap.forEach((tenDanhMuc, id) => {
+    const logoId = BRAND_LOGOS[tenDanhMuc] || BRAND_LOGOS[Object.keys(BRAND_LOGOS).find(k => k.toLowerCase() === tenDanhMuc.toLowerCase())];
+    if (logoId) {
+      brandItems.push({ id, ten: tenDanhMuc, logoId });
+    }
+  });
+
+  if (brandItems.length === 0) return;
+
+  const renderItem = b => `
+    <div class="brand-item" onclick="goToBrand('${b.id}')">
+      <img src="https://drive.google.com/thumbnail?id=${b.logoId}&sz=w200" alt="${b.ten}" />
+    </div>`;
+
+  const html = brandItems.map(renderItem).join('') + brandItems.map(renderItem).join('');
+  const track = document.getElementById('brand-scroll');
+  track.innerHTML = html;
+
+  const wrap = track.parentElement;
+  const gap = 24;
+  const itemWidth = (wrap.clientWidth - gap * 4) / 5;
+  track.style.setProperty('--gap', gap + 'px');
+  document.querySelectorAll('.brand-item').forEach(el => {
+    el.style.width = itemWidth + 'px';
+    el.style.minWidth = itemWidth + 'px';
+    el.style.maxWidth = itemWidth + 'px';
+  });
+
+  track.style.setProperty('--scroll-duration', (brandItems.length * 20) + 's');
+}
+
+function goToBrand(hangId) {
+  showPage('sanpham', document.getElementById('nav-sp'));
+  setTimeout(() => {
+    const sel = document.getElementById('filter-hang');
+    if (sel) {
+      const exists = Array.from(sel.options).some(o => o.value === hangId);
+      if (exists) {
+        sel.value = hangId;
+        filterProducts();
+      }
+    }
+  }, 300);
 }
 
 </script>
