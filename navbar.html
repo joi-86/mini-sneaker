@@ -1,1 +1,51 @@
+<!-- <div id="menu-overlay" onclick="toggleMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9997"></div> -->
+
+<div id="menu-overlay" onclick="toggleMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9996"></div>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      <div class="logo-box">
+        <img src="https://drive.google.com/thumbnail?id=1_mhr8a3-h0XuNzEIBvmSIH1WwNPXFbgI&sz=w80"
+          style="width:100%;height:100%;object-fit:cover;border-radius:12px" />
+      </div>
+      <div class="logo-name">Mini <span>Sneaker</span></div>
+    </div>
+
+    
+    <div class="nav-menu" id="nav-menu">
+      <div class="nav-menu-header" style="display:flex;align-items:center;gap:12px;padding:20px 16px;margin:-0px;width:100%;
+        background:linear-gradient(135deg,var(--dark),#2D1B4E);border-bottom:1px solid rgba(255,255,255,0.1)">
+        <div style="width:44px;height:44px;border-radius:12px;overflow:hidden;flex-shrink:0;
+          box-shadow:0 4px 12px rgba(255,107,157,0.4)">
+          <img src="https://drive.google.com/thumbnail?id=1_mhr8a3-h0XuNzEIBvmSIH1WwNPXFbgI&sz=w80"
+            style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div>
+          <div style="font-weight:900;font-size:16px;color:#fff">Mini <span style="color:var(--primary)">Sneaker</span></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5)"></div>
+        </div>
+        <button onclick="toggleMenu()" style="margin-left:auto;background:rgba(255,255,255,0.1);border:none;cursor:pointer;font-size:16px;color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+
+      <button class="nav-link active" id="nav-home" onclick="showPage('home',this)">Trang Chủ</button>
+      <button class="nav-link" id="nav-sp" onclick="showPage('sanpham',this)">Sản Phẩm</button>
+      <button class="nav-link" id="nav-nam" onclick="showPage('nam',this)">Giày Nam</button>
+      <button class="nav-link" id="nav-nu" onclick="showPage('nu',this)">Giày Nữ</button>
+      <button class="nav-link" id="nav-dep" onclick="showPage('dep',this)">Dép</button>
+      <button class="nav-link" id="nav-lienhe" onclick="showPage('lienhe',this)">Liên Hệ</button>
+    </div>
+
+    <div class="nav-left-mobile">
+      <button class="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-right">
+
+    </div>
+  </div>
+</nav>
 
