@@ -1,1 +1,383 @@
+<section id="san-pham-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">👟 Sản Phẩm <span>Của Chúng Tôi</span></div>
+        <div id="sp-count" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
 
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="sp-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsSP()" />
+        </div>
+        <select id="home-filter-hang" onchange="filterProductsSP()" ...>
+          <option value="">Tất thương hiệu</option>
+        </select>
+        <select id="home-filter-loai" onchange="filterProductsSP()" ...>
+          <option value="">Tất cả danh mục</option>
+        </select>
+
+        <select id="home-filter-gia" onchange="filterProductsSP()" style="min-width:150px">
+          <option value="">Sắp xếp giá</option>
+          <option value="asc">Thấp ⬆ Cao</option>
+          <option value="desc">Cao ⬇ thấp</option>
+        </select>
+
+        <select id="home-filter-ban" onchange="filterProductsSP()" style="min-width:130px">
+          <option value="">Tất cả phiên bản</option>
+        </select>
+
+        <select id="home-filter-size" onchange="filterProductsSP()" style="min-width:110px">
+          <option value="">Tất cả size</option>
+        </select>
+
+      </div>
+
+      <div id="product-list">
+        <div class="loading-grid" id="skeleton-list">
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+        </div>
+        
+      </div>
+      <div id="home-pagination"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== TRANG SẢN PHẨM ===== -->
+
+<div class="page" id="page-sanpham">
+
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>👟 Sản Phẩm <span>Của Chúng Tôi</span></h1>
+      <p>Khám phá bộ sưu tập các sản phẩm của chúng tôi</p>
+    </div>
+  </div>
+
+  <section id="san-pham-section" style="padding:48px 0">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">👟 Sản Phẩm <span>Của Chúng Tôi</span></div>
+        <div id="sp-count-2" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
+
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProducts()" />
+        </div>
+        <select id="filter-hang" onchange="filterProducts()" style="min-width:140px">
+          <option value="">Tất thương hiệu</option>
+        </select>
+        <select id="filter-loai" onchange="filterProducts()" style="min-width:130px">
+          <option value="">Tất cả danh mục</option>
+        </select>
+
+        <select id="filter-gia" onchange="filterProducts()" style="min-width:150px">
+          <option value="">Sắp xếp giá</option>
+          <option value="asc">Thấp ⬆ Cao</option>
+          <option value="desc">Cao ⬇ thấp</option>
+        </select>
+
+        <select id="sp-filter-ban" onchange="filterProducts()" style="min-width:130px">
+          <option value="">Tất cả phiên bản</option>
+        </select>
+
+        <select id="sp-filter-size" onchange="filterProducts()" style="min-width:110px">
+          <option value="">Tất cả size</option>
+        </select>
+
+      </div>
+
+      <div id="sp-product-list">
+        <div class="loading-grid" id="sp-skeleton-list">
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:90%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+        </div>
+      </div>
+      <div id="sanpham-pagination"></div>
+    </div>
+  </section>
+
+
+</div>
+
+
+<!-- ===== TRANG GIÀY NAM ===== -->
+<div class="page" id="page-nam">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>👟 Giày <span>Nam</span></h1>
+      <p>Bộ sưu tập giày nam thời trang, chất lượng cao</p>
+    </div>
+  </div>
+  <section style="padding:48px 0">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">👟 Giày <span>Nam</span></div>
+        <div id="nam-count" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="nam-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsPhanHe('nam')" />
+        </div>
+        <select id="nam-filter-hang" onchange="filterProductsPhanHe('nam')" style="min-width:140px">
+          <option value="">Tất thương hiệu</option>
+        </select>
+        <select id="nam-filter-loai" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
+          <option value="">Tất cả danh mục</option>
+        </select>
+
+        <select id="nam-filter-gia" onchange="filterProductsPhanHe('nam')" style="min-width:150px">
+          <option value="">Sắp xếp giá</option>
+          <option value="asc">Thấp ⬆ Cao</option>
+          <option value="desc">Cao ⬇ thấp</option>
+        </select>
+
+        <select id="nam-filter-ban" onchange="filterProductsPhanHe('nam')" style="min-width:130px">
+          <option value="">Tất cả phiên bản</option>
+        </select>
+
+        <select id="nam-filter-size" onchange="filterProductsPhanHe('nam')" style="min-width:110px">
+          <option value="">Tất cả size</option>
+        </select>
+
+        <div class="sort-tabs">
+        </div>
+      </div>
+      <div id="nam-product-list"></div>
+      <div id="nam-pagination"></div>
+    </div>
+  </section>
+<!-- ===== Footer cuối trang ===== --> 
+  
+</div>
+
+<!-- ===== TRANG GIÀY NỮ ===== -->
+<div class="page" id="page-nu">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>👠 Giày <span>Nữ</span></h1>
+      <p>Bộ sưu tập giày nữ thời trang, thanh lịch</p>
+    </div>
+  </div>
+  <section style="padding:48px 0">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">👠 Giày <span>Nữ</span></div>
+        <div id="nu-count" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="nu-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsPhanHe('nu')" />
+        </div>
+        <select id="nu-filter-hang" onchange="filterProductsPhanHe('nu')" style="min-width:140px">
+          <option value="">Tất thương hiệu</option>
+        </select>
+        <select id="nu-filter-loai" onchange="filterProductsPhanHe('nu')" style="min-width:130px">
+          <option value="">Tất cả danh mục</option>
+        </select>
+        
+        <select id="nu-filter-gia" onchange="filterProductsPhanHe('nu')" style="min-width:150px">
+          <option value="">Sắp xếp giá</option>
+          <option value="asc">Thấp ⬆ Cao</option>
+          <option value="desc">Cao ⬇ thấp</option>
+        </select>
+
+        <select id="nu-filter-ban" onchange="filterProductsPhanHe('nu')" style="min-width:130px">
+          <option value="">Tất cả phiên bản</option>
+        </select>
+
+        <select id="nu-filter-size" onchange="filterProductsPhanHe('nu')" style="min-width:110px">
+          <option value="">Tất cả size</option>
+        </select>
+
+      </div>
+      <div id="nu-product-list"></div>
+      <div id="nu-pagination"></div>
+    </div>
+  </section>
+  
+<!-- ===== Footer cuối trang ===== --> 
+
+  
+</div>
+
+<!-- ===== TRANG DÉP ===== -->
+<div class="page" id="page-dep">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>🩴 <span>Dép</span></h1>
+      <p>Bộ sưu tập dép thời trang, thoải mái</p>
+    </div>
+  </div>
+  <section style="padding:48px 0">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">🩴 <span>Dép</span></div>
+        <div id="dep-count" style="font-size:13px;color:var(--text-muted)"></div>
+      </div>
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="dep-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsPhanHe('dep')" />
+        </div>
+        <select id="dep-filter-hang" onchange="filterProductsPhanHe('dep')" style="min-width:140px">
+          <option value="">Tất thương hiệu</option>
+        </select>
+        <select id="dep-filter-loai" onchange="filterProductsPhanHe('dep')" style="min-width:130px">
+          <option value="">Tất cả danh mục</option>
+        </select>
+
+        <select id="dep-filter-gia" onchange="filterProductsPhanHe('dep')" style="min-width:150px">
+          <option value="">Sắp xếp giá</option>
+          <option value="asc">Thấp ⬆ Cao</option>
+          <option value="desc">Cao ⬇ thấp</option>
+        </select>
+
+        <select id="dep-filter-ban" onchange="filterProductsPhanHe('dep')" style="min-width:130px">
+          <option value="">Tất cả phiên bản</option>
+        </select>
+
+        <select id="dep-filter-size" onchange="filterProductsPhanHe('dep')" style="min-width:110px">
+          <option value="">Tất cả size</option>
+        </select>
+
+      </div>
+      <div id="dep-product-list"></div>
+      <div id="dep-pagination"></div>
+    </div>
+  </section>
+  
+</div>
+
+<!-- ===== TRANG LIÊN HỆ ===== -->
+<div class="page" id="page-lienhe">
+
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1>📞 Liên Hệ & <span>Hỗ Trợ</span></h1>
+      <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
+    </div>
+  </div>
+
+  <section class="lienhe-section">
+    <div class="container">
+      <div class="contact-wrap">
+
+        <div class="contact-info">
+          <h3>Liên hệ chúng tôi</h3>
+          <h4>Mini Sneaker</h4>
+          <div class="contact-item">
+            <div class="contact-icon"><img src="https://drive.google.com/thumbnail?id=1UxMR5IfseBKpJs7VTRCVpp93jRo0zBc-&sz=w40" 
+              class="contact-icon-img" alt="Phone"></div>
+            <div>
+              <div class="contact-label">SĐT</div>
+              <div class="contact-value"><a href="tel:0358638603" style="color:#fff;text-decoration:none">0358638603</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><img src="https://drive.google.com/thumbnail?id=18TjRtA1Wh98ooYgShIk43WuPJkfhRU5P&sz=w80"   class="contact-icon-img" alt="Email"></div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value"><a href="mailto:minisneaker86@gmail.com" style="color:#fff;text-decoration:none">minisneaker86@gmail.com</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><img src="https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w40" 
+              class="contact-icon-img" alt="Facebook"></div>
+            <div>
+              <div class="contact-label">Facebook</div>
+              <div class="contact-value"><a href="https://www.facebook.com/nhjoi86/" target="_blank" style="color:#fff;text-decoration:none">Facebook - NH Joi</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><img src="https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w80" class="contact-icon-img" alt="Zalo"></div>
+            <div>
+              <div class="contact-label">Zalo</div>
+              <div class="contact-value"><a href="https://zalo.me/0358638603" target="_blank" style="color:#fff;text-decoration:none">Zalo - Joi</a></div>
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <div class="contact-label" style="color:rgba(255,255,255,0.5);margin-bottom:10px">Theo dõi chúng tôi</div>
+            <div class="social-links" id="footer-social-2">
+              <a href="https://www.facebook.com/profile.php?id=100091669695142" target="_blank" class="social-link" title="Facebook">
+                <img src="https://drive.google.com/thumbnail?id=1-tdnpxWp0VMlPcBTs5QlhYfHbJqvS4sl&sz=w64" class="social-icon-img" alt="Facebook">
+              </a>
+              <a href= "https://zalo.me/g/riyumn422" target="_blank" class="social-link" title="Zalo">
+                <img src="https://drive.google.com/thumbnail?id=1cal-4Te_rqec8YeAn-XU6gJ7fnEbsNhJ&sz=w64" class="social-icon-img" alt="Zalo">
+              </a>
+              <a href="https://www.instagram.com/mini_sneaker_86/" target="_blank" class="social-link" title="Instagram">
+                <img src="https://drive.google.com/thumbnail?id=1sdesSiB2IsLUb8vDNSeezd1bVnCeTitI&sz=w64" class="social-icon-img" alt="Instagram">
+              </a>
+              <a href="https://www.threads.com/@mini_sneaker_86" target="_blank" class="social-link" title="Threads">
+                <img src="https://drive.google.com/thumbnail?id=1h6lAgHMJPiQCI1Zc_-mnlmlbT9KSm_Na&sz=w64" class="social-icon-img" alt="Threads">
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form">
+          <div id="form-wrap">
+            <h3>💬 Gửi Phản Hồi</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Họ tên *</label>
+                <input type="text" id="ph-ten" class="form-input" placeholder="Nguyễn Văn A" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                <input type="text" id="ph-sdt" class="form-input" placeholder="0901234567" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" id="ph-email" class="form-input" placeholder="email@example.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Loại phản hồi</label>
+              <select id="ph-loai" class="form-select">
+                <option value="phan_hoi">💬 Phản hồi chung</option>
+                <option value="khieu_nai">⚠️ Khiếu nại</option>
+                <option value="tu_van">🤝 Tư vấn sản phẩm</option>
+                <option value="dat_hang">🛒 Đặt hàng</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nội dung *</label>
+              <textarea id="ph-noidung" class="form-input" rows="4"
+                placeholder="Nhập nội dung phản hồi của bạn..." style="resize:vertical"></textarea>
+            </div>
+            <button class="btn btn-primary" id="submit-btn"
+              style="width:100%;justify-content:center;padding:11px"
+              onclick="submitPhanHoi()">
+              ✔️ Gửi Phản Hồi
+            </button>
+          </div>
+
+          <div class="success-msg" id="success-msg">
+            <div class="success-icon">✅</div>
+            <h4>Gửi thành công!</h4>
+            <p>Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm nhất có thể!</p>
+            <button class="btn btn-primary" style="margin-top:20px" onclick="resetForm()">
+              💬 Gửi thêm phản hồi
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
