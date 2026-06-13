@@ -1,1 +1,983 @@
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbzAnpzbbAsfOTXurPWBuezJtAtaIVP4EMmMlH_Tf3p5mTtEZZthKX5SKgRpgCaasJX9/exec';
 
+let allProducts = [];
+let currentSort = '';
+let modalImgs   = [];
+let currentImg  = 0;
+let productsLoaded = false;
+
+const PAGE_SIZE_DEFAULT = 20;
+let pageState = {
+  home:    { page:1, size:20 },
+  sanpham: { page:1, size:20 },
+  nam:     { page:1, size:20 },
+  nu:      { page:1, size:20 },
+  dep:     { page:1, size:20 },
+};
+let filteredCache = { home:[], sanpham:[], nam:[], nu:[], dep:[] };
+
+// ====== ĐIỀU HƯỚNG TRANG ======
+function showPage(name, navBtn) {
+  // Ẩn tất cả trang
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Active nav
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  if (navBtn) {
+    navBtn.classList.add('active');
+  } else {
+    var map = { home: 'nav-home', lienhe: 'nav-lienhe', nam: 'nav-nam', nu: 'nav-nu', dep: 'nav-dep', sanpham: 'nav-sp' };
+    var el = document.getElementById(map[name]);
+    if (el) el.classList.add('active');
+  }
+
+  // Chỉ hiện search ở trang chủ
+  var searchBox = document.getElementById('search-box');
+  if (searchBox) searchBox.style.display = name === 'home' ? 'flex' : 'none';
+
+  // Khi vào trang sản phẩm thì render
+  if (name === 'sanpham' && productsLoaded) {
+    filteredCache.sanpham = allProducts;
+    pageState.sanpham.page = 1;
+    updateBanFilter('sanpham');
+    applyPage('sanpham');
+  }
+  
+  if ((name === 'nam' || name === 'nu' || name === 'dep') && productsLoaded) {
+    const hangList = allProducts.map(sp=>({id:sp.danhMucId,tenDanhMuc:sp.danhMucTen}))
+      .filter((v,i,a)=>v.id&&a.findIndex(x=>x.id===v.id)===i);
+    const loaiList = allProducts.map(sp=>({id:sp.loaiId,tenDanhMuc:sp.loaiTen}))
+      .filter((v,i,a)=>v.id&&a.findIndex(x=>x.id===v.id)===i);
+    fillPhanHeFilters(name, hangList, loaiList);
+    updateBanFilter(name);
+    filterProductsPhanHe(name);
+  }
+
+  // Đóng mobile menu
+  var menu = document.getElementById('nav-menu');
+  // var overlay = document.getElementById('menu-overlay');
+  menu.classList.remove('open');
+  // if (overlay) { overlay.style.display = 'none'; overlay.style.zIndex = '-1'; }
+  document.body.style.overflow = '';
+  // Reset search trang chủ khi chuyển tab mobile
+  var spSearch = document.getElementById('sp-filter-search');
+  if (spSearch) spSearch.value = '';
+}
+
+// ====== INIT ======
+window.addEventListener('DOMContentLoaded', function() {
+  loadDanhMuc();
+  loadProducts();
+  //loadSocialLinks();
+  window.addEventListener('scroll', function() {
+    document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
+  });
+});
+
+// ====== API ======
+async function apiCall(action, params = {}) {
+  const url = new URL(API_URL);
+  url.searchParams.set('page', 'api');
+  url.searchParams.set('action', action);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+  const res  = await fetch(url.toString());
+  const data = await res.json();
+  return data;
+}
+
+// ====== DANH MỤC ======
+async function loadDanhMuc() {
+  try {
+    const res = await apiCall('getDanhMuc');
+    if (!res.success) return;
+    const hangList = res.data.filter(d => d.loai === 'hang' || !d.loai);
+    hangList.sort((a, b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
+    const loaiList = res.data.filter(d => d.loai === 'loai');
+    loaiList.sort((a, b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
+    const fHang = document.getElementById('filter-hang');
+    hangList.forEach(d => { fHang.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+    const fLoai = document.getElementById('filter-loai');
+    loaiList.forEach(d => { fLoai.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+
+    // Fill cho trang sản phẩm riêng
+    const spFHang = document.getElementById('home-filter-hang');
+
+    hangList.forEach(d => { spFHang.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+    const spFLoai = document.getElementById('home-filter-loai');
+
+    loaiList.forEach(d => { spFLoai.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+  } catch(e) { console.error(e); }
+}
+
+// ====== SẢN PHẨM ======
+async function loadProducts() {
+  try {
+    document.getElementById('skeleton-list').style.display = 'grid';
+    const res = await apiCall('getSanPham');
+    document.getElementById('skeleton-list').style.display = 'none';
+    if (!res.success) { showToast('Không thể tải sản phẩm!','error'); return; }
+    allProducts = res.data;
+    productsLoaded = true;
+    
+    filteredCache.home = allProducts;
+    filteredCache.sanpham = allProducts;
+    updateBanFilter('home');
+    updateBanFilter('sanpham');
+    applyPage('home');
+    renderBrandScroll();
+
+    // Fill size options theo từng phân hệ
+    const getSizes = (phanHe) => {
+      const list = phanHe
+        ? allProducts.filter(sp => sp.phanHe && sp.phanHe.toString().split(',').map(s=>s.trim()).includes(phanHe))
+        : allProducts;
+      return [...new Set(list.flatMap(sp => sp.sizes||[]))].sort((a,b)=>parseFloat(a)-parseFloat(b));
+    };
+
+    // Fill bản cho trang chủ và sản phẩm
+    const banLabels = {
+      under_authentic: 'Under Authentic',
+      best_quality: 'Best Quality',
+      likeauth: 'Likeauth',
+      sieu_cap: 'Siêu Cấp',
+      rep_1_1: 'Rep 1:1'
+    };
+
+    const sizeMap = {
+      'home-filter-size': null,
+      'sp-filter-size':   null,
+      'nam-filter-size':  'nam',
+      'nu-filter-size':   'nu',
+      'dep-filter-size':  'dep',
+    };
+
+    Object.entries(sizeMap).forEach(([id, phanHe]) => {
+      const sel = document.getElementById(id);
+      if (!sel) return;
+      sel.innerHTML = '<option value="">Tất cả size</option>';
+      getSizes(phanHe).forEach(s => { sel.innerHTML += `<option value="${s}">${s}</option>`; });
+    });
+
+  } catch(e) {
+    document.getElementById('skeleton-list').style.display = 'none';
+    showToast('Lỗi kết nối!','error');
+  }
+}
+
+function renderProducts(list) {
+  const el = document.getElementById('product-list');
+  document.getElementById('sp-count').textContent = list.length + ' sản phẩm';
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="product-grid"><div class="empty-state"><div class="empty-icon">👟</div><p>Không tìm thấy sản phẩm phù hợp</p></div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-grid">` + list.map(sp => `
+    <div class="product-card" onclick="openProductModal('${sp.id}')">
+      <div class="product-img">
+        ${sp.hinhAnh && sp.hinhAnh[0]
+          ? `<img src="${sp.hinhAnh[0]}" alt="${sp.tenSanPham}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>👟</div>'">`
+          : `<div class="product-img-placeholder">👟</div>`}
+        <span class="product-badge">✨MiniSneaker✨</span>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
+        <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc">${sp.moTa || 'Minisneaker'}</div>
+        
+        <div class="product-footer">
+          <div>
+            ${sp.phanTramGiam > 0
+              ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                  <div class="product-price">${formatMoney(Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)))}</div>
+                  <span style="font-size:11px;background:#EF4444;color:#fff;padding:2px 7px;border-radius:20px;font-weight:700">-${sp.phanTramGiam}%</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);text-decoration:line-through">${formatMoney(sp.giaBan)}</div>`
+              : `<div class="product-price">${formatMoney(sp.giaBan)}</div>`
+            }
+          </div>
+          <div class="product-sizes">${sp.sizes && sp.sizes.length > 0 ? sp.sizes[0]+(sp.sizes.length>1?' - '+sp.sizes[sp.sizes.length-1]:'') : 'Liên hệ'}</div>
+        </div>
+
+      </div>
+    </div>
+  `).join('') + `</div>`;
+}
+
+function filterProducts() {
+  const kw   = document.getElementById('filter-search').value.toLowerCase();
+  const hang = document.getElementById('filter-hang').value;
+  const loai = document.getElementById('filter-loai').value;
+  const gia  = document.getElementById('filter-gia').value;
+  const ban  = document.getElementById('sp-filter-ban') ? document.getElementById('sp-filter-ban').value : '';
+  const size = document.getElementById('home-filter-size') ? document.getElementById('home-filter-size').value : '';
+  // trong filter thêm:
+  let filtered = allProducts.filter(sp => {
+    const matchKw   = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
+    const matchHang = !hang || sp.danhMucId === hang;
+    const matchLoai = !loai || sp.loaiId    === loai;
+    const matchBan  = !ban  || sp.ban === ban;
+    const matchSize = !size || (sp.sizes && sp.sizes.includes(size));
+    return matchKw && matchHang && matchLoai && matchBan && matchSize;
+  });
+  
+  const giaThucTe = sp => sp.phanTramGiam > 0 ? Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)) : sp.giaBan;
+  if (gia === 'asc')  filtered.sort((a,b) => giaThucTe(a) - giaThucTe(b));
+  if (gia === 'desc') filtered.sort((a,b) => giaThucTe(b) - giaThucTe(a));
+
+  filteredCache.sanpham = filtered;
+  pageState.sanpham.page = 1;
+  applyPage('sanpham');
+}
+
+function setSortTab(sort, btn) {
+  currentSort = sort;
+  document.querySelectorAll('.sort-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterProducts();
+}
+
+function searchProducts(kw) {
+  if (!productsLoaded) return;
+  showPage('home');
+  document.getElementById('filter-search').value = kw;
+  filterProducts();
+  setTimeout(() => document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'}), 150);
+}
+
+// ====== MODAL ======
+function openProductModal(id) {
+  const sp = allProducts.find(s => s.id === id);
+  if (!sp) return;
+  modalImgs  = sp.hinhAnh && sp.hinhAnh.length > 0 ? sp.hinhAnh : [];
+  currentImg = 0;
+  
+  document.getElementById('modal-content').innerHTML = `
+  <div style="display:flex;flex-direction:column;min-height:70vh">
+
+    <!-- HEADER -->
+    <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;
+      border-bottom:1px solid var(--border);position:sticky;top:0;
+      background:var(--white);z-index:10">
+      <button onclick="closeModal()" style="
+        display:flex;align-items:center;gap:6px;
+        background:var(--bg);border:1.5px solid var(--border);
+        border-radius:8px;padding:7px 14px;cursor:pointer;
+        font-size:13px;font-weight:700;color:var(--text);font-family:inherit">
+        ← Quay lại
+      </button>
+      <div style="font-size:13px;color:var(--text-muted)">
+        ${sp.danhMucTen||''} ${sp.loaiTen?'• '+sp.loaiTen:''}
+      </div>
+    </div>
+
+    <!-- NỘI DUNG -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;flex:1" class="modal-detail-grid">
+
+      <!-- ẢNH -->
+      <div style="background:var(--bg);padding:16px;display:flex;flex-direction:column;gap:10px">
+        <div style="border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--white);
+          display:flex;align-items:center;justify-content:center">
+          ${modalImgs[0]
+            ? `<img src="${modalImgs[0]}" id="main-img" style="width:100%;height:100%;object-fit:cover" />`
+            : `<div style="font-size:60px">👟</div>`}
+        </div>
+        ${modalImgs.length > 1
+          ? `<div style="display:flex;gap:8px;flex-wrap:wrap">
+              ${modalImgs.map((url,i)=>`
+                <div class="modal-thumb ${i===0?'active':''}" onclick="switchModalImg(${i})">
+                  <img src="${url}" />
+                </div>`).join('')}
+            </div>` : ''}
+      </div>
+
+      <!-- THÔNG TIN -->
+      <div style="padding:24px;display:flex;flex-direction:column;gap:14px;overflow-y:auto">
+
+        <!-- Tên -->
+        <h2 style="font-size:20px;font-weight:900;color:var(--text);line-height:1.3">
+          ${sp.tenSanPham}
+        </h2>
+
+        <!-- Thương hiệu + Mã SP -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <div style="background:var(--primary-light);color:var(--primary);
+            padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">
+            ${sp.danhMucTen||'—'}
+          </div>
+          <div style="background:var(--bg);color:var(--text-muted);
+            padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;
+            border:1px solid var(--border)">
+            Mã: ${sp.maSanPham}
+          </div>
+        </div>
+
+        <!-- Giá -->
+        ${sp.phanTramGiam > 0
+          ? `<div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <div style="font-size:26px;font-weight:900;color:var(--primary)">
+                  ${formatMoney(Math.round(sp.giaBan*(1-sp.phanTramGiam/100)))}
+                </div>
+                <span style="background:#EF4444;color:#fff;padding:3px 10px;
+                  border-radius:20px;font-size:13px;font-weight:700">
+                  -${sp.phanTramGiam}%
+                </span>
+              </div>
+              <div style="font-size:13px;color:var(--text-muted);text-decoration:line-through">
+                ${formatMoney(sp.giaBan)}
+              </div>
+            </div>`
+          : `<div style="font-size:26px;font-weight:900;color:var(--primary)">
+              ${formatMoney(sp.giaBan)}
+            </div>`
+        }
+
+        <!-- Bản -->
+        <div style="background:var(--bg);border-radius:10px;padding:12px 16px;
+          border:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);
+            text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Bản</div>
+          <div style="font-size:15px;font-weight:800;color:var(--primary)">
+            ${sp.ban==='under_authentic'?'Under Authentic':sp.ban==='best_quality'?'Best Quality':sp.ban==='likeauth'?'Likeauth':sp.ban==='sieu_cap'?'Siêu Cấp':sp.ban==='rep_1_1'?'Rep 1:1':sp.ban||'—'}
+          </div>
+        </div>
+
+        <!-- Size -->
+        ${sp.sizes && sp.sizes.length > 0
+          ? `<div>
+              <div style="font-size:11px;font-weight:700;color:var(--text-muted);
+                text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Size có sẵn</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                ${sp.sizes.map(s=>`
+                  <div style="min-width:36px;height:34px;padding:0 8px;
+                    border:1.5px solid var(--border);border-radius:6px;
+                    background:var(--white);font-size:12px;font-weight:700;
+                    color:var(--text);display:flex;align-items:center;justify-content:center">
+                    ${s}
+                  </div>`).join('')}
+              </div>
+            </div>` : ''}
+
+        
+        <!-- Liên hệ -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:8px">
+          <a href="https://www.facebook.com/nhjoi86/" target="_blank"
+            style="display:flex;align-items:center;justify-content:center;gap:8px;
+            background:#1877F2;color:#fff;border:none;border-radius:10px;
+            padding:11px 24px;font-size:14px;font-weight:700;cursor:pointer;
+            text-decoration:none;font-family:inherit;width:100%;box-sizing:border-box;
+            box-shadow:0 4px 15px rgba(24,119,242,0.35)">
+            <div style="width:22px;height:22px;background:#fff;border-radius:50%;
+              display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="12" height="22" viewBox="0 0 10 20" fill="#1877F2">
+                <path d="M6.5 7H9l-.5 3H6.5V20H3V10H1V7h2V5.5C3 3 4.5 2 7 2h2v3H7.5C7 5 6.5 5.2 6.5 6V7z"/>
+              </svg>
+            </div>
+            Đặt hàng qua Facebook
+          </a>
+
+          <button onclick="window.open('https://zalo.me/0358638603','_blank')"
+            style="display:flex;align-items:center;justify-content:center;gap:8px;
+            background:#0068FF;color:#fff;border:none;border-radius:10px;
+            padding:11px 24px;font-size:14px;font-weight:700;cursor:pointer;
+            font-family:inherit;width:100%;box-sizing:border-box;
+            box-shadow:0 4px 15px rgba(0,104,255,0.35)">
+            <span style="width:36px;height:28px;border-radius:6px;background:#fff;
+              display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+              font-size:11px;font-weight:900;color:#0068FF;font-family:Arial,sans-serif;
+              letter-spacing:-0.5px">Zalo</span>
+            Đặt hàng qua Zalo
+          </button>
+
+
+          <a href="tel:0358638603"
+            style="display:flex;align-items:center;justify-content:center;gap:8px;
+            background:#E8F5E9;color:#1B5E20;border:1.5px solid #A5D6A7;border-radius:10px;
+            padding:11px 24px;font-size:14px;font-weight:700;cursor:pointer;
+            text-decoration:none;font-family:inherit;width:100%;box-sizing:border-box">
+            📞 Gọi: 0358638603
+          </a>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>`;
+    
+  const overlay = document.getElementById('modal-sp');
+  overlay.style.display = 'flex';
+  setTimeout(() => overlay.classList.add('show'), 10);
+}
+
+function switchModalImg(i) {
+  currentImg = i;
+  const img = document.getElementById('main-img');
+  if (img) img.src = modalImgs[i];
+  document.querySelectorAll('.modal-thumb').forEach((t,j) => t.classList.toggle('active', j===i));
+}
+
+function closeModal() {
+  const o = document.getElementById('modal-sp');
+  o.classList.remove('show');
+  setTimeout(() => { o.style.display = 'none'; }, 300);
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+
+// ====== PHẢN HỒI ======
+async function submitPhanHoi() {
+  const ten     = document.getElementById('ph-ten').value.trim();
+  const sdt     = document.getElementById('ph-sdt').value.trim();
+  const email   = document.getElementById('ph-email').value.trim();
+  const loai    = document.getElementById('ph-loai').value;
+  const noiDung = document.getElementById('ph-noidung').value.trim();
+
+  if (!ten)     { showToast('Vui lòng nhập họ tên!','error');   document.getElementById('ph-ten').focus();     return; }
+  if (!noiDung) { showToast('Vui lòng nhập nội dung!','error'); document.getElementById('ph-noidung').focus(); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Đang gửi...';
+
+  try {
+    const res = await apiCall('submitPhanHoi', {
+      tenKhachHang: ten, soDienThoai: sdt, email: email, loai: loai, noiDung: noiDung
+    });
+    if (res.success) {
+      document.getElementById('form-wrap').style.display  = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    } else {
+      showToast(res.message || 'Gửi thất bại!','error');
+      btn.disabled = false;
+      btn.textContent = '✔️ Gửi Phản Hồi';
+    }
+  } catch(e) {
+    showToast('Lỗi kết nối!','error');
+    btn.disabled = false;
+    btn.textContent = '✔️ Gửi Phản Hồi';
+  }
+}
+
+function resetForm() {
+  ['ph-ten','ph-sdt','ph-email','ph-noidung'].forEach(id => document.getElementById(id).value = '');
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = false;
+  btn.textContent = '✔️ Gửi Phản Hồi';
+  document.getElementById('form-wrap').style.display   = 'block';
+  document.getElementById('success-msg').style.display = 'none';
+}
+
+
+
+function toggleMenu() {
+  var menu = document.getElementById('nav-menu');
+  var isOpen = menu.classList.toggle('open');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+function formatMoney(n) {
+  if (!n) return 'Liên hệ';
+  return new Intl.NumberFormat('vi-VN').format(n) + ' đ';
+}
+
+function showToast(msg, type = 'info') {
+  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.innerHTML = `<span>${icons[type]}</span>${msg}`;
+  document.getElementById('toast-wrap').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+// ====== TRANG SẢN PHẨM RIÊNG ======
+let currentSortSP = '';
+
+function renderProductsSP(list) {
+  const el = document.getElementById('sp-product-list');
+  if (!el) return;
+  document.getElementById('sp-count-2').textContent = list.length + ' sản phẩm';
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="product-grid"><div class="empty-state"><div class="empty-icon">👟</div><p>Không tìm thấy sản phẩm phù hợp</p></div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-grid">` + list.map(sp => `
+    <div class="product-card" onclick="openProductModal('${sp.id}')">
+      <div class="product-img">
+        ${sp.hinhAnh && sp.hinhAnh[0]
+          ? `<img src="${sp.hinhAnh[0]}" alt="${sp.tenSanPham}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>👟</div>'">`
+          : `<div class="product-img-placeholder">👟</div>`}
+        <span class="product-badge">✨MiniSneaker✨</span>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
+        <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc">${sp.moTa || 'Minisneaker'}</div>
+        
+        <div class="product-footer">
+          <div>
+            ${sp.phanTramGiam > 0
+              ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                  <div class="product-price">${formatMoney(Math.round(sp.giaBan*(1-sp.phanTramGiam/100)))}</div>
+                  <span style="font-size:11px;background:#EF4444;color:#fff;padding:2px 7px;border-radius:20px;font-weight:700">-${sp.phanTramGiam}%</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);text-decoration:line-through">${formatMoney(sp.giaBan)}</div>`
+              : `<div class="product-price">${formatMoney(sp.giaBan)}</div>`
+            }
+          </div>
+          <div class="product-sizes">${sp.sizes&&sp.sizes.length>0?sp.sizes[0]+(sp.sizes.length>1?' - '+sp.sizes[sp.sizes.length-1]:''):'Liên hệ'}</div>
+        </div>
+
+      </div>
+    </div>
+  `).join('') + `</div>`;
+}
+
+function filterProductsSP() {
+  const kw   = document.getElementById('sp-filter-search').value.toLowerCase();
+  const hang = document.getElementById('home-filter-hang') ? document.getElementById('home-filter-hang').value : '';
+  const loai = document.getElementById('home-filter-loai') ? document.getElementById('home-filter-loai').value : '';
+  const ban  = document.getElementById('home-filter-ban') ? document.getElementById('home-filter-ban').value : '';
+  const gia  = document.getElementById('home-filter-gia')  ? document.getElementById('home-filter-gia').value  : '';
+  const size = document.getElementById('home-filter-size') ? document.getElementById('home-filter-size').value : '';
+  // trong filter thêm:
+  
+  let filtered = allProducts.filter(sp => {
+    const matchKw   = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
+    const matchHang = !hang || sp.danhMucId === hang;
+    const matchLoai = !loai || sp.loaiId    === loai;
+    const matchBan  = !ban  || sp.ban === ban;
+    const matchSize = !size || (sp.sizes && sp.sizes.includes(size));
+    return matchKw && matchHang && matchLoai && matchBan && matchSize;
+  });
+
+  const giaThucTe = sp => sp.phanTramGiam > 0 ? Math.round(sp.giaBan * (1 - sp.phanTramGiam/100)) : sp.giaBan;
+  if (gia === 'asc')  filtered.sort((a,b) => giaThucTe(a) - giaThucTe(b));
+  if (gia === 'desc') filtered.sort((a,b) => giaThucTe(b) - giaThucTe(a));
+
+  filteredCache.home = filtered;
+  pageState.home.page = 1;
+  applyPage('home');
+}
+
+function setSortTabSP(sort, btn) {
+  currentSortSP = sort;
+  // Reset active chỉ trong trang sản phẩm
+  document.querySelectorAll('#page-sanpham .sort-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterProductsSP();
+}
+
+// ====== PHÂN HỆ NAM / NỮ ======
+let currentSortPhanHe = { nam: '', nu: '', dep: '' };
+
+function fillPhanHeFilters(phanHe, hangList, loaiList) {
+  const hSel = document.getElementById(phanHe + '-filter-hang');
+  const lSel = document.getElementById(phanHe + '-filter-loai');
+  if (!hSel || !lSel) return;
+
+  // Lấy sản phẩm theo phân hệ
+  const spTheoPhanhHe = allProducts.filter(sp =>
+    sp.phanHe && sp.phanHe.toString().split(',').map(s=>s.trim()).includes(phanHe)
+  );
+
+  // Lọc hãng chỉ có trong phân hệ
+  const hangIds = new Set(spTheoPhanhHe.map(sp => sp.danhMucId).filter(Boolean));
+  const loaiIds = new Set(spTheoPhanhHe.map(sp => sp.loaiId).filter(Boolean));
+
+  const filteredHang = hangList.filter(d => hangIds.has(d.id))
+    .sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
+  const filteredLoai = loaiList.filter(d => loaiIds.has(d.id))
+    .sort((a,b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc, 'vi'));
+
+  // Reset và fill lại mỗi lần vào trang
+  hSel.innerHTML = '<option value="">Tất thương hiệu</option>';
+  lSel.innerHTML = '<option value="">Tất cả danh mục</option>';
+
+  filteredHang.forEach(d => { hSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+  filteredLoai.forEach(d => { lSel.innerHTML += `<option value="${d.id}">${d.tenDanhMuc}</option>`; });
+
+}
+
+function renderProductsPhanHe(phanHe, list) {
+  const el = document.getElementById(phanHe + '-product-list');
+  const countEl = document.getElementById(phanHe + '-count');
+  if (!el) return;
+  if (countEl) countEl.textContent = list.length + ' sản phẩm';
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="product-grid"><div class="empty-state"><div class="empty-icon">${phanHe==='nam'?'':phanHe==='dep'?'':''}</div><p>Không có sản phẩm nào</p></div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-grid">` + list.map(sp => `
+    <div class="product-card" onclick="openProductModal('${sp.id}')">
+      <div class="product-img">
+        ${sp.hinhAnh && sp.hinhAnh[0]
+          ? `<img src="${sp.hinhAnh[0]}" alt="${sp.tenSanPham}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>${phanHe==='nam'?'':''}</div>'">`
+          : `<div class="product-img-placeholder">${phanHe==='nam'?'':''}</div>`}
+        <span class="product-badge">✨MiniSneaker✨</span>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
+        <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc">${sp.moTa || 'Minisneaker'}</div>
+        <div class="product-footer">
+          <div>
+            ${sp.phanTramGiam > 0
+              ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                   <div class="product-price">${formatMoney(Math.round(sp.giaBan*(1-sp.phanTramGiam/100)))}</div>
+                   <span style="font-size:11px;background:#EF4444;color:#fff;padding:2px 7px;border-radius:20px;font-weight:700">-${sp.phanTramGiam}%</span>
+                 </div>
+                 <div style="font-size:12px;color:var(--text-muted);text-decoration:line-through">${formatMoney(sp.giaBan)}</div>`
+              : `<div class="product-price">${formatMoney(sp.giaBan)}</div>`
+            }
+          </div>
+          <div class="product-sizes">${sp.sizes&&sp.sizes.length>0?sp.sizes[0]+(sp.sizes.length>1?' - '+sp.sizes[sp.sizes.length-1]:''):'Liên hệ'}</div>
+        </div>
+      </div>
+    </div>
+  `).join('') + `</div>`;
+}
+
+function filterProductsPhanHe(phanHe) {
+  const kw   = document.getElementById(phanHe + '-filter-search').value.toLowerCase();
+  const hang = document.getElementById(phanHe + '-filter-hang').value;
+  const loai = document.getElementById(phanHe + '-filter-loai').value;
+  const gia  = document.getElementById(phanHe + '-filter-gia')  ? document.getElementById(phanHe + '-filter-gia').value  : '';
+  const ban  = document.getElementById(phanHe + '-filter-ban')  ? document.getElementById(phanHe + '-filter-ban').value  : '';
+  let filtered = allProducts.filter(sp => {
+    const matchPhanHe = sp.phanHe && sp.phanHe.toString().split(',').map(s=>s.trim()).includes(phanHe);
+    const matchKw     = !kw   || sp.tenSanPham.toLowerCase().includes(kw) || sp.maSanPham.toLowerCase().includes(kw);
+    const matchHang   = !hang || sp.danhMucId === hang;
+    const matchLoai   = !loai || sp.loaiId    === loai;
+    const matchBan    = !ban  || sp.ban === ban;
+    return matchPhanHe && matchKw && matchHang && matchLoai && matchBan;
+  });
+  if (gia === 'asc')  filtered.sort((a,b) => a.giaBan - b.giaBan);
+  if (gia === 'desc') filtered.sort((a,b) => b.giaBan - a.giaBan);
+  filteredCache[phanHe] = filtered;
+  pageState[phanHe].page = 1;
+  applyPage(phanHe);
+}
+
+function setSortTabPhanHe(sort, phanHe, btn) {
+  currentSortPhanHe[phanHe] = sort;
+  document.querySelectorAll(`#page-${phanHe} .sort-tab`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterProductsPhanHe(phanHe);
+}
+
+
+// ====== PAGINATION ======
+function renderPagination(containerId, tab, total) {
+  const state = pageState[tab];
+  const totalPages = Math.ceil(total / state.size);
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (total === 0) { el.innerHTML = ''; return; }
+
+  const start = (state.page - 1) * state.size + 1;
+  const end   = Math.min(state.page * state.size, total);
+
+  let pagesHTML = '';
+  for (let i = 1; i <= totalPages; i++) {
+    if (totalPages > 7) {
+      if (i > 2 && i < totalPages - 1 && Math.abs(i - state.page) > 1) {
+        if (i === state.page - 2 || i === state.page + 2) {
+          pagesHTML += `<span class="pagination-info">...</span>`;
+        }
+        continue;
+      }
+    }
+    pagesHTML += `<button class="pagination-btn ${i === state.page ? 'active' : ''}" onclick="goPage('${tab}',${i})">${i}</button>`;
+  }
+
+  el.innerHTML = `
+    <div class="pagination">
+      <span class="pagination-info">Hiển thị</span>
+      <select class="page-size-select" onchange="changePageSize('${tab}', this.value)">
+        <option value="10" ${state.size==10?'selected':''}>10</option>
+        <option value="20" ${state.size==20?'selected':''}>20</option>
+        <option value="50" ${state.size==50?'selected':''}>50</option>
+      </select>
+      <span class="pagination-info">/ trang &nbsp; ${start}–${end} / ${total}</span>
+      <button class="pagination-btn" onclick="goPage('${tab}', ${state.page - 1})" ${state.page <= 1 ? 'disabled' : ''}>‹</button>
+      ${pagesHTML}
+      <button class="pagination-btn" onclick="goPage('${tab}', ${state.page + 1})" ${state.page >= totalPages ? 'disabled' : ''}>›</button>
+    </div>`;
+}
+function goPage(tab, page) {
+  pageState[tab].page = page;
+  applyPage(tab);
+  // Scroll lên đầu section
+  var sections = {home:'san-pham-section', sanpham:'sp-product-list', nam:'nam-product-list', nu:'nu-product-list', dep:'dep-product-list'};
+  var el = document.getElementById(sections[tab]);
+  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function changePageSize(tab, size) {
+  pageState[tab].size = parseInt(size);
+  pageState[tab].page = 1;
+  applyPage(tab);
+}
+
+function applyPage(tab) {
+  const list = filteredCache[tab] || [];
+  const state = pageState[tab];
+  const start = (state.page-1)*state.size;
+  const paged = list.slice(start, start+state.size);
+  
+  if (tab === 'home') {
+    _renderProductsRaw(paged, 'product-list', 'sp-count', list.length);
+    renderPagination('home-pagination', 'home', list.length);
+  } else if (tab === 'sanpham') {
+    _renderProductsSPRaw(paged, 'sp-product-list', 'sp-count-2', list.length);
+    renderPagination('sanpham-pagination', 'sanpham', list.length);
+  } else {
+    _renderPhanHeRaw(tab, paged, list.length);
+    renderPagination(tab+'-pagination', tab, list.length);
+  }
+}
+
+function _renderProductsRaw(list, elId, countId, total) {
+  const el = document.getElementById(elId);
+  document.getElementById(countId).textContent = total + ' sản phẩm';
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="product-grid"><div class="empty-state"><div class="empty-icon">👟</div><p>Không tìm thấy sản phẩm phù hợp</p></div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-grid">` + list.map(sp => _productCardHTML(sp)).join('') + `</div>`;
+}
+
+function _renderProductsSPRaw(list, elId, countId, total) {
+  _renderProductsRaw(list, elId, countId, total);
+}
+
+function _renderPhanHeRaw(phanHe, list, total) {
+  const el = document.getElementById(phanHe+'-product-list');
+  const countEl = document.getElementById(phanHe+'-count');
+  if (countEl) countEl.textContent = total + ' sản phẩm';
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="product-grid"><div class="empty-state"><div class="empty-icon">👟</div><p>Không có sản phẩm nào</p></div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-grid">` + list.map(sp => _productCardHTML(sp)).join('') + `</div>`;
+}
+
+function _productCardHTML(sp) {
+  return `
+    <div class="product-card" onclick="openProductModal('${sp.id}')">
+      <div class="product-img">
+        ${sp.hinhAnh && sp.hinhAnh[0]
+          ? `<img src="${sp.hinhAnh[0]}" alt="${sp.tenSanPham}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>👟</div>'">`
+          : `<div class="product-img-placeholder">👟</div>`}
+        <span class="product-badge">✨MiniSneaker✨</span>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
+        <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc">Bản: ${sp.ban==='under_authentic'?'Under Authentic':sp.ban==='best_quality'?'Best Quality':sp.ban==='likeauth'?'Likeauth':sp.ban==='sieu_cap'?'Siêu Cấp':sp.ban==='rep_1_1'?'Rep 1:1':sp.ban||'—'}</div>
+        <div class="product-footer">
+          <div>
+            ${sp.phanTramGiam > 0
+              ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                   <div class="product-price">${formatMoney(Math.round(sp.giaBan*(1-sp.phanTramGiam/100)))}</div>
+                   <span style="font-size:11px;background:#EF4444;color:#fff;padding:2px 7px;border-radius:20px;font-weight:700">-${sp.phanTramGiam}%</span>
+                 </div>
+                 <div style="font-size:12px;color:var(--text-muted);text-decoration:line-through">${formatMoney(sp.giaBan)}</div>`
+              : `<div class="product-price">${formatMoney(sp.giaBan)}</div>`
+            }
+          </div>
+          <div class="product-sizes">${sp.sizes&&sp.sizes.length>0?sp.sizes[0]+(sp.sizes.length>1?' - '+sp.sizes[sp.sizes.length-1]:''):'Liên hệ'}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function updateBanFilter(tab) {
+  // Lấy danh sách sản phẩm thuộc tab này
+  let products;
+  if (tab === 'home' || tab === 'sanpham') {
+    products = allProducts;
+  } else {
+    products = allProducts.filter(sp =>
+      sp.phanHe && sp.phanHe.toString().split(',').map(s=>s.trim()).includes(tab)
+    );
+  }
+
+  // Lấy các bản có trong sản phẩm của tab này
+  const banCoTrong = [...new Set(products.map(sp => sp.ban).filter(b => b))];
+
+  const BAN_LABELS = {
+    under_authentic: 'Under Authentic',
+    best_quality:    'Best Quality',
+    likeauth:        'Likeauth',
+    sieu_cap:        'Siêu Cấp',
+    rep_1_1:         'Rep 1:1',
+  };
+  const BAN_ORDER = ['under_authentic','best_quality','likeauth','sieu_cap','rep_1_1'];
+
+  // ID select của từng tab
+  const selectIdMap = {
+    home:    'home-filter-ban',
+    sanpham: 'sp-filter-ban',
+    nam:     'nam-filter-ban',
+    nu:      'nu-filter-ban',
+    dep:     'dep-filter-ban',
+  };
+  const sel = document.getElementById(selectIdMap[tab]);
+  if (!sel) return;
+
+  const current = sel.value; // giữ lại giá trị đang chọn
+  sel.innerHTML = '<option value="">Tất cả phiên bản</option>';
+  BAN_ORDER.forEach(val => {
+    if (banCoTrong.includes(val)) {
+      sel.innerHTML += `<option value="${val}"${current===val?' selected':''}>${BAN_LABELS[val]}</option>`;
+    }
+  });
+}
+
+function renderBrandScroll() {
+  const BRAND_LOGOS = {
+    'Adidas':   '18218X4_L4YJWEwHbK9oW45Hq_YxMo36n',
+    'Asics':    '1cyCni5-CdUPXOLtbykqRa0O3enIzM84p',
+    'Converse': '1qnwjLhMwaSHYo0ok6it3kMECwsObsBy0',
+    'Golden Goose Deluxe Brand': '14LVRaHZ8hcwFTdqGwS1KA-cMtNVqn3zT',
+    'Hoka':     '1mXVyGUg-iyQwQ7gmfTmhMMel0Zk9mQ4l',
+    'Jordan':   '1rFD5ZxmAOPi-3EJpXDiBI7CJ-rqYQunS',
+    'Louis Vuitton': '1eUtWToYE0tBbrL42PNj9S_5aUayd6xqU',
+    'New Balance':   '15pOjfWWejhvXzy6XwHZOgYuvU-yBt-ie',
+    'Nike':     '1eDfVmtUM2I549TpN5JtqQmOHdso7AkvQ',
+    'On':       '1qLN0ytgxVpTlw87W-NRt68by4RF3A7s2',
+    'On Running': '1qLN0ytgxVpTlw87W-NRt68by4RF3A7s2',
+    'Puma':     '1CH2V0kRRWOr1Wx4wDWrMc1KCLEJmdPU-',
+    'Tiger':    '1UQJsAgEcYE969HDKuQNltjuEL6xGd12d',
+    'Onitsuka Tiger': '1UQJsAgEcYE969HDKuQNltjuEL6xGd12d',
+    'Vans':     '1Wzm4c8o6lzA0FwtTF-iW3o4O0Wx0NTwq',
+  };
+
+  const hangMap = new Map();
+  allProducts.forEach(sp => {
+    if (sp.danhMucId && sp.danhMucTen) hangMap.set(sp.danhMucId, sp.danhMucTen);
+  });
+
+  const brandItems = [];
+  hangMap.forEach((tenDanhMuc, id) => {
+    if (tenDanhMuc === 'Golden Goose Deluxe Brand') return; // bỏ logo này
+    const logoId = BRAND_LOGOS[tenDanhMuc] || BRAND_LOGOS[Object.keys(BRAND_LOGOS).find(k => k.toLowerCase() === tenDanhMuc.toLowerCase())];
+    if (logoId) {
+      brandItems.push({ id, ten: tenDanhMuc, logoId });
+    }
+  });
+
+  if (brandItems.length === 0) return;
+
+  const renderItem = b => `
+    <div class="brand-item" onclick="goToBrand('${b.id}')">
+      <img src="https://drive.google.com/thumbnail?id=${b.logoId}&sz=w200" alt="${b.ten}" />
+    </div>`;
+
+  const track = document.getElementById('brand-scroll');
+  const REPEAT = 9; // lặp 9 lần để tạo cảm giác vô tận
+  let trackHTML = '';
+  for (let i = 0; i < REPEAT; i++) {
+    trackHTML += brandItems.map(renderItem).join('');
+  }
+  track.innerHTML = trackHTML;
+
+  const wrap = track.parentElement;
+  const isMobile = window.innerWidth <= 768;
+  const visibleCount = isMobile ? 3 : 5;
+  const gap = isMobile ? 12 : 24;
+  const itemWidth = (wrap.clientWidth - gap * (visibleCount - 1)) / visibleCount;
+  track.style.setProperty('--gap', gap + 'px');
+  document.querySelectorAll('.brand-item').forEach(el => {
+    el.style.width = itemWidth + 'px';
+    el.style.minWidth = itemWidth + 'px';
+    el.style.maxWidth = itemWidth + 'px';
+  });
+
+  window._brandItemWidth = itemWidth + gap;
+  window._brandTotal = brandItems.length;
+  window._brandRepeat = REPEAT;
+  window._brandIndex = brandItems.length * 4; // bắt đầu ở giữa (copy thứ 4/9)
+  track.style.transition = 'none';
+  track.style.transform = `translateX(-${window._brandIndex * window._brandItemWidth}px)`;
+  void track.offsetHeight;
+  track.style.transition = 'transform 0.4s ease';
+}
+
+function brandNext() {
+  const track = document.getElementById('brand-scroll');
+  window._brandIndex++;
+  track.style.transition = 'transform 0.2s ease';
+  track.style.transform = `translateX(-${window._brandIndex * window._brandItemWidth}px)`;
+
+  setTimeout(() => {
+    var total  = window._brandTotal;
+    var repeat = window._brandRepeat;
+    // Nếu vượt quá copy thứ (repeat-2), nhảy lùi lại 3 copy (vẫn cùng vị trí hình ảnh)
+    if (window._brandIndex >= total * (repeat - 2)) {
+      window._brandIndex -= total * 3;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${window._brandIndex * window._brandItemWidth}px)`;
+    }
+  }, 420);
+}
+
+function brandPrev() {
+  const track = document.getElementById('brand-scroll');
+  window._brandIndex--;
+  track.style.transition = 'transform 0.2s ease';
+  track.style.transform = `translateX(-${window._brandIndex * window._brandItemWidth}px)`;
+
+  setTimeout(() => {
+    var total  = window._brandTotal;
+    // Nếu lùi quá copy thứ 2, nhảy tiến lại 3 copy (vẫn cùng vị trí hình ảnh)
+    if (window._brandIndex <= total * 1) {
+      window._brandIndex += total * 3;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${window._brandIndex * window._brandItemWidth}px)`;
+    }
+  }, 420);
+}
+
+function goToBrand(hangId) {
+  showPage('sanpham', document.getElementById('nav-sp'));
+  setTimeout(() => {
+    const sel = document.getElementById('filter-hang');
+    if (sel) {
+      const exists = Array.from(sel.options).some(o => o.value === hangId);
+      if (exists) {
+        sel.value = hangId;
+        filterProducts();
+      }
+    }
+  }, 300);
+}
+
+window.addEventListener('resize', function() {
+  if (window._brandResizeTimer) clearTimeout(window._brandResizeTimer);
+  window._brandResizeTimer = setTimeout(function() {
+    if (allProducts.length > 0) renderBrandScroll();
+  }, 300);
+});
+function toggleFloatingChat() {
+  var items = document.getElementById('floating-chat-items');
+  var toggleBtn = document.getElementById('floating-chat-toggle');
+  var isHidden = items.style.display !== 'flex';
+  if (isHidden) {
+    items.style.display = 'flex';
+    toggleBtn.innerHTML = '✕';
+    toggleBtn.style.background = 'var(--text-muted)';
+  } else {
+    items.style.display = 'none';
+    toggleBtn.innerHTML = '💬';
+    toggleBtn.style.background = 'var(--primary)';
+  }
+}
+
+</script>
