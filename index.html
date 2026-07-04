@@ -140,7 +140,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text);
 .container { max-width:1200px; margin:0 auto; padding:0 20px; }
 #san-pham-section { padding:48px 0; }
 .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
-.section-title { font-size:22px; font-weight:800; color:var(--text); }
+.section-title { font-size:clamp(16px,4vw,22px); font-weight:800; color:var(--text); }
 .section-title span { color:var(--primary); }
 
 /* FILTER */
@@ -645,9 +645,16 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 }
 
 @media(max-width:768px) {
-  #review-display { grid-template-columns:1fr !important; }
+  .review-two-col { grid-template-columns:1fr !important; }
+  #review-display { grid-template-columns:1fr 1fr !important; }
+  #review-stats-box { grid-template-columns:1fr !important; }
+  #review-stats-box > div:first-child {
+    border-right:none !important;
+    border-bottom:1px solid var(--border);
+    padding:0 0 16px !important;
+    margin-bottom:16px;
+  }
 }
-
 </style>
 </head>
 <body>
@@ -1072,131 +1079,138 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
   </section>
 
   <!-- ============== 8.5 ĐÁNH GIÁ KHÁCH HÀNG ========-->
-  <section style="padding:24px 0 0">
-  <div class="container">
-    <div class="section-title" style="margin-bottom:20px">⭐ Đánh Giá <span>Của Khách Hàng</span></div>
-    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
-      padding:24px;box-shadow:var(--shadow);max-width:600px">
-      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:16px">✍️ Gửi đánh giá của bạn</div>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        
-        <!-- Họ tên -->
-        <input type="text" id="review-ten" class="form-input" placeholder="Họ và tên *" />
-        
-        <!-- Chọn sao -->
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:8px">Đánh giá sao *</div>
-          <div id="star-selector" style="display:flex;gap:8px">
-            <span onclick="selectStar(1)" data-star="1" style="font-size:32px;cursor:pointer;opacity:0.3;transition:all 0.15s">⭐</span>
-            <span onclick="selectStar(2)" data-star="2" style="font-size:32px;cursor:pointer;opacity:0.3;transition:all 0.15s">⭐</span>
-            <span onclick="selectStar(3)" data-star="3" style="font-size:32px;cursor:pointer;opacity:0.3;transition:all 0.15s">⭐</span>
-            <span onclick="selectStar(4)" data-star="4" style="font-size:32px;cursor:pointer;opacity:0.3;transition:all 0.15s">⭐</span>
-            <span onclick="selectStar(5)" data-star="5" style="font-size:32px;cursor:pointer;opacity:0.3;transition:all 0.15s">⭐</span>
-          </div>
-          <div id="star-label" style="font-size:12px;color:var(--text-muted);margin-top:6px">Chọn số sao</div>
-        </div>
-        
-        <!-- Nội dung -->
-        <textarea id="review-noidung" class="form-input" rows="3"
-          placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm..."
-          style="resize:vertical"></textarea>
-        
-        <!-- Nút gửi -->
-        <button class="btn btn-primary" style="align-self:flex-start;padding:10px 28px"
-          onclick="submitReview()">
-          ✔️ Gửi Đánh Giá
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-
-<!-- ============== 9. KHÁCH HÀNG NÓI GÌ + MINI SNEAKER TRONG CON SỐ ========--> 
-  <section style="padding:24px 0">
+  <section style="padding:48px 0;background:linear-gradient(180deg,#FFF5F8 0%,#fff 100%)">
     <div class="container">
-      <div class="testimonial-stats-grid" style="display:grid;grid-template-columns:1.3fr 1fr;gap:24px">
 
-        <!-- KHÁCH HÀNG NÓI GÌ -->
-        <div>
-          <div class="section-title" style="margin-bottom:16px">💬 Khách Hàng Nói Gì <span>Về Chúng Tôi?</span></div>
-          <div id="review-display" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px"></div>            
-          <div class="testimonial-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <!-- HEADER -->
+      <div style="text-align:center;margin-bottom:32px">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:var(--primary-light);color:var(--primary);
+          padding:6px 16px;border-radius:20px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">
+          ⭐ Đánh Giá Thực Tế
+        </div>
+        <h2 style="font-size:clamp(22px,4vw,32px);font-weight:900;color:var(--text);margin-bottom:10px;line-height:1.3">
+          Khách Hàng Nói Gì Về <span style="color:var(--secondary)">Mini Sneaker</span>?
+        </h2>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.6">
+          Sự hài lòng của bạn là động lực lớn nhất giúp shop mang về những mẫu Sneaker chất lượng và thời thượng nhất.
+        </p>
+      </div>
 
+      <!-- STATS BOX -->
+      <div id="review-stats-box" style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+        padding:24px 32px;margin-bottom:28px;box-shadow:var(--shadow);display:flex;gap:32px;align-items:center;flex-wrap:wrap">
+        <div style="text-align:center;min-width:130px">
+          <div id="review-avg-score" style="font-size:56px;font-weight:900;color:var(--text);line-height:1">–</div>
+          <div id="review-avg-stars" style="font-size:24px;margin:6px 0;color:#FFC94A;letter-spacing:2px"></div>
+          <div id="review-total-count" style="font-size:12px;color:var(--text-muted);margin-top:4px">Đang tải...</div>
+        </div>
+        <div style="width:1px;height:80px;background:var(--border);flex-shrink:0"></div>
+        <div style="flex:1;min-width:200px">
+          <div id="review-star-bars" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+      </div>
 
-            <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
-              padding:16px;box-shadow:var(--shadow)">
-              <div style="color:var(--secondary);font-size:14px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
-              <div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:14px;
-                min-height:60px">
-                "Giày đẹp, chất lượng xứng đáng đồng tiền. Shop tư vấn rất nhiệt tình, giao hàng nhanh nữa!"
-              </div>
-              <div style="display:flex;align-items:center;gap:8px">
-                <div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);
-                  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--primary)">N</div>
-                <div style="font-size:12px;font-weight:700;color:var(--text)">Nguyễn Minh Tuấn</div>
+      <!-- TWO COLUMNS -->
+      <div class="review-two-col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:28px;align-items:start">
+
+        <!-- TRÁI: FORM -->
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <div style="width:38px;height:38px;border-radius:10px;background:var(--primary-light);
+              display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">✍️</div>
+            <div>
+              <div style="font-size:16px;font-weight:800;color:var(--text)">Gửi đánh giá của bạn</div>
+              <div style="font-size:12px;color:var(--text-muted)">Đóng góp ý kiến để giúp shop cải thiện chất lượng</div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--border);margin:16px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+
+            <!-- Tên -->
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Họ và tên của bạn *</label>
+              <div style="display:flex;align-items:center;gap:8px;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;background:var(--bg)">
+                <span style="color:var(--text-muted);font-size:15px">👤</span>
+                <input type="text" id="review-ten" placeholder="Nhập họ và tên..."
+                  style="border:none;background:none;outline:none;font-size:13px;font-family:inherit;color:var(--text);width:100%" />
               </div>
             </div>
 
-            <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
-              padding:16px;box-shadow:var(--shadow)">
-              <div style="color:var(--secondary);font-size:14px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
-              <div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:14px;
-                min-height:60px">
-                "Mua nhiều lần ở Mini Sneaker rồi, lúc nào cũng hài lòng. Sẽ ủng hộ shop dài dài!"
-              </div>
-              <div style="display:flex;align-items:center;gap:8px">
-                <div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);
-                  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--primary)">T</div>
-                <div style="font-size:12px;font-weight:700;color:var(--text)">Trần Thảo Vy</div>
+            <!-- Sản phẩm -->
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Sản phẩm đã mua</label>
+              <input type="text" id="review-sanpham" class="form-input" placeholder="VD: LV - 01" />
+            </div>
+
+            <!-- Sao -->
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Đánh giá sao *</label>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <div id="star-selector" style="display:flex;gap:2px">
+                  <span onclick="selectStar(1)" style="font-size:38px;cursor:pointer;opacity:0.25;transition:all 0.15s;filter:grayscale(1)">⭐</span>
+                  <span onclick="selectStar(2)" style="font-size:38px;cursor:pointer;opacity:0.25;transition:all 0.15s;filter:grayscale(1)">⭐</span>
+                  <span onclick="selectStar(3)" style="font-size:38px;cursor:pointer;opacity:0.25;transition:all 0.15s;filter:grayscale(1)">⭐</span>
+                  <span onclick="selectStar(4)" style="font-size:38px;cursor:pointer;opacity:0.25;transition:all 0.15s;filter:grayscale(1)">⭐</span>
+                  <span onclick="selectStar(5)" style="font-size:38px;cursor:pointer;opacity:0.25;transition:all 0.15s;filter:grayscale(1)">⭐</span>
+                </div>
+                <div id="star-label" style="font-size:13px;font-weight:700;color:var(--text-muted);
+                  background:var(--bg);padding:5px 14px;border-radius:20px;border:1.5px solid var(--border)">Chọn số sao</div>
               </div>
             </div>
 
-            <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
-              padding:16px;box-shadow:var(--shadow)">
-              <div style="color:var(--secondary);font-size:14px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
-              <div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:14px;
-                min-height:60px">
-                "Sản phẩm giống hình 100%, gói cẩn thận. Rất recommend shop!"
-              </div>
-              <div style="display:flex;align-items:center;gap:8px">
-                <div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);
-                  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--primary)">L</div>
-                <div style="font-size:12px;font-weight:700;color:var(--text)">Lê Hoàng Nam</div>
-              </div>
+            <!-- Nội dung -->
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Chia sẻ trải nghiệm *</label>
+              <textarea id="review-noidung" class="form-input" rows="4"
+                placeholder="Nhập cảm nhận của bạn về sản phẩm, cách tư vấn, thời gian giao hàng..."
+                style="resize:vertical"></textarea>
             </div>
 
+            <!-- Upload ảnh -->
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Thêm hình ảnh sản phẩm (Khuyến dùng)</label>
+              <div id="review-img-drop" onclick="document.getElementById('review-img-input').click()"
+                style="border:2px dashed var(--border);border-radius:10px;padding:18px;text-align:center;cursor:pointer;
+                background:var(--bg);transition:border-color 0.2s;display:flex;flex-direction:column;align-items:center;gap:5px">
+                <div style="font-size:28px;color:var(--primary)">🖼️</div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-muted)">Nhấn để tải hoặc thả ảnh vào đây</div>
+                <div style="font-size:11px;color:var(--text-muted)">JPEG, PNG lên tới 5MB</div>
+              </div>
+              <input type="file" id="review-img-input" accept="image/*" multiple style="display:none" onchange="previewReviewImages(this)" />
+              <div id="review-img-preview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
+            </div>
+
+            <!-- Submit -->
+            <button class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;font-size:15px"
+              onclick="submitReview()">
+              ✈️ Gửi Đánh Giá Ngay
+            </button>
           </div>
         </div>
 
-        <!-- MINI SNEAKER TRONG CON SỐ -->
+        <!-- PHẢI: REVIEWS -->
         <div>
-          <div class="section-title" style="margin-bottom:16px">📊 Mini Sneaker <span>Trong Con Số</span></div>
-          <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
-            padding:20px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(2,1fr);gap:20px;height:calc(100% - 36px)">
+          <!-- Filter tabs -->
+          <div id="review-filter-tabs" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+            <span style="font-size:13px;font-weight:700;color:var(--text-muted)">LỌC XEM:</span>
+            <button class="sort-tab active" onclick="filterReviewsByStar('all',this)"
+              style="background:var(--primary);color:#fff;border-color:var(--primary)">Tất cả</button>
+            <button class="sort-tab" onclick="filterReviewsByStar(5,this)">⭐ 5 sao</button>
+            <button class="sort-tab" onclick="filterReviewsByStar('img',this)">🖼️ Có hình ảnh</button>
+          </div>
 
-            <div style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-              <div style="font-size:28px;font-weight:900;color:var(--primary)">15.000+</div>
-              <div style="font-size:12px;color:var(--text-muted);font-weight:600">Khách hàng hài lòng</div>
-            </div>
+          <!-- Cards -->
+          <div id="review-display" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;min-height:200px"></div>
 
-            <div style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-              <div style="font-size:28px;font-weight:900;color:var(--primary)">300+</div>
-              <div style="font-size:12px;color:var(--text-muted);font-weight:600">Mẫu giày</div>
-            </div>
-
-            <div style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-              <div style="font-size:28px;font-weight:900;color:var(--primary)">50+</div>
-              <div style="font-size:12px;color:var(--text-muted);font-weight:600">Thương hiệu</div>
-            </div>
-
-            <div style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-              <div style="font-size:28px;font-weight:900;color:var(--primary)">99%</div>
-              <div style="font-size:12px;color:var(--text-muted);font-weight:600">Đánh giá 5 sao</div>
-            </div>
-
+          <!-- Dots + nav -->
+          <div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-top:16px">
+            <button onclick="reviewPrev()" style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);
+              background:var(--white);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
+              color:var(--text);transition:all 0.2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">‹</button>
+            <div id="review-page-dots" style="display:flex;gap:6px;align-items:center"></div>
+            <button onclick="reviewNext()" style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);
+              background:var(--white);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
+              color:var(--text);transition:all 0.2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">›</button>
           </div>
         </div>
 
@@ -2471,10 +2485,18 @@ function showPage(name, navBtn) {
 window.addEventListener('DOMContentLoaded', function() {
   loadDanhMuc();
   loadProducts();
+  loadReviews();
   //loadSocialLinks();
   window.addEventListener('scroll', function() {
     document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
   });
+});
+
+window.addEventListener('resize', function() {
+  if (window._reviewResizeTimer) clearTimeout(window._reviewResizeTimer);
+  window._reviewResizeTimer = setTimeout(function() {
+    _applyReviewSlide();
+  }, 300);
 });
 
 // ====== API ======
@@ -2619,16 +2641,6 @@ async function loadProducts() {
       sel.innerHTML = '<option value="">Tất cả size</option>';
       getSizes(phanHe).forEach(s => { sel.innerHTML += `<option value="${s}">${s}</option>`; });
     });
-
-    // Load đánh giá đã duyệt từ API
-    apiCall('getDanhGiaPublic', {}).then(function(res) {
-      if (res.success && res.data && res.data.length > 0) {
-        reviewList = res.data.map(function(d) {
-          return { ten: d.tenKhachHang, star: parseInt(d.soSao)||5, noidung: d.noiDung };
-        });
-        renderReviews();
-      }
-    }).catch(function(){});
 
   } catch(e) {
     document.getElementById('skeleton-list').style.display = 'none';
@@ -3281,6 +3293,7 @@ function _productCardHTML(sp) {
       <div class="product-info">
         <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
         <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc" style="font-size:11px;color:var(--text-muted);margin-bottom:2px">Mã: ${sp.maSanPham||'—'}</div>
         <div class="product-desc">Bản: ${sp.ban==='under_authentic'?'Under Authentic':sp.ban==='best_quality'?'Best Quality':sp.ban==='likeauth'?'Likeauth':sp.ban==='sieu_cap'?'Siêu Cấp':sp.ban==='rep_1_1'?'Rep 1:1':sp.ban||'—'}</div>
         <div class="product-footer">
           <div>
@@ -3311,6 +3324,7 @@ function _productCardHTMLWithBadge(sp, badgeText) {
       <div class="product-info">
         <div class="product-brand">${sp.danhMucTen || 'Giày'}</div>
         <div class="product-name">${sp.tenSanPham}</div>
+        <div class="product-desc" style="font-size:11px;color:var(--text-muted);margin-bottom:2px">Mã: ${sp.maSanPham||'—'}</div>
         <div class="product-desc">Bản: ${sp.ban==='under_authentic'?'Under Authentic':sp.ban==='best_quality'?'Best Quality':sp.ban==='likeauth'?'Likeauth':sp.ban==='sieu_cap'?'Siêu Cấp':sp.ban==='rep_1_1'?'Rep 1:1':sp.ban||'—'}</div>
         <div class="product-footer">
           <div>
@@ -3555,70 +3569,371 @@ async function submitDatHang(formPrefix) {
 // ====== ĐÁNH GIÁ KHÁCH HÀNG ======
 var selectedStar = 0;
 var reviewList = [];
+var reviewListFull = [];
+var reviewFilterStar = 'all';
+var reviewIndex = 0;
+var reviewImagesBase64 = [];
 var starLabels = ['','Rất tệ 😞','Tệ 😕','Bình thường 😐','Tốt 😊','Tuyệt vời 🤩'];
 
 function selectStar(n) {
   selectedStar = n;
   document.querySelectorAll('#star-selector span').forEach(function(s, i) {
-    s.style.opacity = (i < n) ? '1' : '0.3';
-    s.style.transform = (i < n) ? 'scale(1.2)' : 'scale(1)';
+    if (i < n) {
+      s.style.opacity = '1';
+      s.style.filter = 'none';
+      s.style.transform = 'scale(1.15)';
+    } else {
+      s.style.opacity = '0.25';
+      s.style.filter = 'grayscale(1)';
+      s.style.transform = 'scale(1)';
+    }
   });
-  document.getElementById('star-label').textContent = starLabels[n] + ' (' + n + '/5)';
-  document.getElementById('star-label').style.color = 'var(--primary)';
+  var lbl = document.getElementById('star-label');
+  lbl.textContent = starLabels[n] + ' (' + n + '/5)';
+  lbl.style.color = 'var(--primary)';
+  lbl.style.background = 'var(--primary-light)';
+  lbl.style.borderColor = 'var(--primary)';
+}
+
+function previewReviewImages(input) {
+  var preview = document.getElementById('review-img-preview');
+  preview.innerHTML = '';
+  reviewImagesBase64 = [];
+  Array.from(input.files).slice(0, 3).forEach(function(file) {
+    if (file.size > 5 * 1024 * 1024) { showToast('Ảnh không vượt quá 5MB!', 'error'); return; }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      reviewImagesBase64.push(e.target.result);
+      preview.innerHTML += '<div style="position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid var(--border)">'
+        + '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover" /></div>';
+    };
+    reader.readAsDataURL(file);
+  });
+  // Cập nhật drop zone
+  var drop = document.getElementById('review-img-drop');
+  if (drop && input.files.length > 0) drop.style.borderColor = 'var(--primary)';
+}
+
+var isSubmittingReview = false;
+
+// Hàm fetch có giới hạn thời gian chờ (timeout), tránh treo vô thời hạn
+function fetchWithTimeout(url, options, timeoutMs) {
+  return new Promise(function(resolve, reject) {
+    var timer = setTimeout(function() {
+      reject(new Error('Hết thời gian chờ (mạng quá chậm hoặc mất kết nối)'));
+    }, timeoutMs);
+
+    fetch(url, options).then(function(res) {
+      clearTimeout(timer);
+      resolve(res);
+    }).catch(function(err) {
+      clearTimeout(timer);
+      reject(err);
+    });
+  });
 }
 
 async function submitReview() {
-  var ten = (document.getElementById('review-ten').value || '').trim();
-  var noidung = (document.getElementById('review-noidung').value || '').trim();
-  if (!ten) { showToast('Vui lòng nhập họ tên!','error'); document.getElementById('review-ten').focus(); return; }
-  if (!selectedStar || selectedStar < 1) { showToast('Vui lòng chọn số sao!','error'); return; }
-  if (!noidung) { showToast('Vui lòng nhập nội dung đánh giá!','error'); document.getElementById('review-noidung').focus(); return; }
+  if (isSubmittingReview) return;
+
+  var ten = (document.getElementById('review-ten') || {}).value || '';
+  var maSP = (document.getElementById('review-sanpham') || {}).value || '';
+  var noidung = (document.getElementById('review-noidung') || {}).value || '';
+  ten = ten.trim(); noidung = noidung.trim();
+
+  if (!ten) { showToast('Vui lòng nhập họ và tên!', 'error'); return; }
+  if (!selectedStar) { showToast('Vui lòng chọn số sao!', 'error'); return; }
+  if (!noidung) { showToast('Vui lòng chia sẻ trải nghiệm!', 'error'); return; }
+
+  isSubmittingReview = true;
+  var btn = document.querySelector('button[onclick="submitReview()"]');
+  var btnOriginalText = '';
+  if (btn) {
+    btnOriginalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btn.style.cursor = 'not-allowed';
+    btn.innerHTML = '⏳ Đang gửi...';
+  }
+
   try {
-    var url = API_URL 
-      + '?page=api&action=submitPhanHoi'
-      + '&tenKhachHang=' + encodeURIComponent(ten)
-      + '&noiDung=' + encodeURIComponent(noidung)
-      + '&loai=danh_gia'
-      + '&soSao=' + selectedStar;
-    await new Promise(function(resolve) {
-        var img = new Image();
-        img.onload = img.onerror = resolve;
-        img.src = url;
-        setTimeout(resolve, 3000);
-      });
-      var res = {success: true};
+    // Upload ảnh nếu có (giới hạn 25 giây)
+    var hinhAnh = '';
+    var fileInput = document.getElementById('review-img-input');
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      try {
+        showToast('Đang upload ảnh...', 'info');
+        var file = fileInput.files[0];
+        var base64 = await new Promise(function(resolve, reject) {
+          var r = new FileReader();
+          r.onload = function() { resolve(r.result.split(',')[1]); };
+          r.onerror = function() { reject(new Error('Không đọc được file ảnh')); };
+          r.readAsDataURL(file);
+        });
+
+        var upRes = await fetchWithTimeout(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'uploadHinhDanhGia',
+            fileName: file.name,
+            mimeType: file.type,
+            base64: base64
+          })
+        }, 5000).then(function(r) { return r.json(); });
+
+        if (upRes.success) {
+          hinhAnh = upRes.url;
+        } else {
+          showToast('Upload ảnh lỗi, đã gửi đánh giá không kèm ảnh.', 'info');
+        }
+      } catch(e) {
+        console.log('Upload ảnh lỗi:', e);
+        showToast('Upload ảnh quá lâu, đang gửi đánh giá không kèm ảnh...', 'info');
+      }
+    }
+
+    // Gửi đánh giá (giới hạn 20 giây)
+    var res = await Promise.race([
+      apiCall('submitPhanHoi', {
+        tenKhachHang: ten,
+        maSanPham: maSP,
+        soDienThoai: '',
+        email: '',
+        soSao: selectedStar,
+        noiDung: noidung,
+        hinhAnh: hinhAnh,
+        loai: 'danh_gia'
+      }),
+      new Promise(function(_, reject) {
+        setTimeout(function() { reject(new Error('Hết thời gian chờ gửi đánh giá')); }, 10000);
+      })
+    ]);
+
     if (res.success) {
+      showToast('🎉 Cảm ơn bạn đã đánh giá!', 'success');
       document.getElementById('review-ten').value = '';
+      if (document.getElementById('review-sanpham')) document.getElementById('review-sanpham').value = '';
       document.getElementById('review-noidung').value = '';
+      if (fileInput) fileInput.value = '';
+      var previewEl = document.getElementById('review-img-preview');
+      if (previewEl) previewEl.innerHTML = '';
       selectedStar = 0;
-      document.querySelectorAll('#star-selector span').forEach(function(s) {
-        s.style.opacity = '0.3'; s.style.transform = 'scale(1)';
-      });
+      document.querySelectorAll('#star-selector span').forEach(function(s) { s.style.opacity = '0.3'; });
       document.getElementById('star-label').textContent = 'Chọn số sao';
-      document.getElementById('star-label').style.color = 'var(--text-muted)';
-      showToast('🎉 Cảm ơn bạn đã đánh giá! Sẽ hiển thị sau khi được duyệt.','success');
     } else {
-      showToast(res.message || 'Gửi thất bại!','error');
+      showToast(res.message || 'Có lỗi xảy ra!', 'error');
     }
   } catch(e) {
-    showToast('Lỗi kết nối!','error');
+    showToast(e.message && e.message.indexOf('thời gian') !== -1
+      ? '⚠️ Mạng quá chậm! Vui lòng kiểm tra lại danh sách đánh giá trước khi gửi lại (tránh gửi trùng).'
+      : 'Lỗi kết nối!', 'error');
+  } finally {
+    isSubmittingReview = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      btn.innerHTML = btnOriginalText;
+    }
   }
+}
+
+async function loadReviews() {
+  // Kiểm tra element tồn tại trước
+  if (!document.getElementById('review-avg-score')) return;
+  try {
+    const res = await apiCall('getDanhGiaPublic', {});
+    reviewListFull = (res.success && res.data && res.data.length > 0)
+      ? res.data.map(function(d) {
+          return {
+            ten: d.tenKhachHang || 'Ẩn danh',
+            star: parseInt(d.soSao) || 5,
+            noidung: d.noiDung || '',
+            hinhAnh: d.hinhAnh || ''
+          };
+        })
+      : [];
+  } catch(e) {
+    reviewListFull = [];
+  }
+  reviewList = reviewListFull.slice();
+  renderReviewStats();
+  renderReviews();
+}
+
+function renderReviewStats() {
+  var scoreEl = document.getElementById('review-avg-score');
+  var starsEl = document.getElementById('review-avg-stars');
+  var countEl = document.getElementById('review-total-count');
+  var barsEl  = document.getElementById('review-star-bars');
+  if (!scoreEl) return;
+
+  var total = reviewListFull.length;
+  if (total === 0) {
+    scoreEl.textContent = '–';
+    if (starsEl) starsEl.innerHTML = '<span style="color:#ddd">★★★★★</span>';
+    if (countEl) countEl.textContent = 'Chưa có đánh giá nào';
+    if (barsEl)  barsEl.innerHTML = '';
+    return;
+  }
+
+  // Đếm từng sao
+  var counts = {5:0, 4:0, 3:0, 2:0, 1:0};
+  reviewListFull.forEach(function(r) { if (counts[r.star] !== undefined) counts[r.star]++; });
+
+  // Công thức: (5*S5 + 4*S4 + 3*S3 + 2*S2 + 1*S1) / total
+  var sum = 5*counts[5] + 4*counts[4] + 3*counts[3] + 2*counts[2] + 1*counts[1];
+  var avg = sum / total;
+
+  scoreEl.textContent = avg.toFixed(1);
+
+  // Render sao (tròn đến 0.5)
+  var fullStars = Math.floor(avg);
+  var half = (avg - fullStars) >= 0.25 && (avg - fullStars) < 0.75;
+  var starStr = '';
+  for (var i = 1; i <= 5; i++) {
+    starStr += (i <= fullStars || (i === fullStars + 1 && half)) ? '★' : '☆';
+  }
+  if (starsEl) starsEl.innerHTML = starStr;
+  if (countEl) countEl.textContent = 'Dựa trên ' + total.toLocaleString('vi-VN') + ' lượt đánh giá thực tế';
+
+  // Thanh phần trăm
+  var rows = [
+    {label:'5 Sao', cnt: counts[5]},
+    {label:'4 Sao', cnt: counts[4]},
+    {label:'3 Sao', cnt: counts[3]},
+    {label:'1-2 Sao', cnt: counts[1] + counts[2]}
+  ];
+  if (barsEl) {
+    barsEl.innerHTML = rows.map(function(r) {
+      var pct = total > 0 ? (r.cnt / total * 100) : 0;
+      var pctLabel = pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(1);
+      return '<div style="display:flex;align-items:center;gap:10px">'
+        + '<div style="width:60px;font-size:12px;font-weight:700;color:var(--text);flex-shrink:0">' + r.label + '</div>'
+        + '<div style="flex:1;height:8px;background:var(--bg);border-radius:20px;overflow:hidden">'
+        + '<div style="width:' + pct.toFixed(2) + '%;height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));'
+        + 'border-radius:20px;transition:width 0.8s ease"></div></div>'
+        + '<div style="width:44px;font-size:12px;color:var(--text-muted);text-align:right;flex-shrink:0">' + pctLabel + '%</div>'
+        + '</div>';
+    }).join('');
+  }
+}
+
+function filterReviewsByStar(star, btn) {
+  reviewFilterStar = star;
+  document.querySelectorAll('#review-filter-tabs .sort-tab').forEach(function(b) {
+    b.classList.remove('active');
+    b.style.background = ''; b.style.color = ''; b.style.borderColor = '';
+  });
+  if (btn) {
+    btn.classList.add('active');
+    btn.style.background = 'var(--primary)';
+    btn.style.color = '#fff';
+    btn.style.borderColor = 'var(--primary)';
+  }
+  if (star === 'all') {
+    reviewList = reviewListFull.slice();
+  } else if (star === 'img') {
+    reviewList = reviewListFull.filter(function(r) { return r.hinhAnh; });
+  } else {
+    reviewList = reviewListFull.filter(function(r) { return r.star === star; });
+  }
+  reviewIndex = 0;
+  renderReviews();
 }
 
 function renderReviews() {
   var el = document.getElementById('review-display');
   if (!el) return;
-  if (reviewList.length === 0) { el.innerHTML = ''; return; }
-  el.innerHTML = reviewList.slice(0, 6).map(function(r) {
-    return '<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)">'
-      + '<div style="font-size:14px;margin-bottom:8px">' + '⭐'.repeat(r.star) + '</div>'
-      + '<div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:12px;min-height:40px">"' + r.noidung + '"</div>'
-      + '<div style="display:flex;align-items:center;gap:8px">'
-      + '<div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--primary)">' + r.ten.charAt(0).toUpperCase() + '</div>'
-      + '<div style="font-size:12px;font-weight:700;color:var(--text)">' + r.ten + '</div>'
-      + '</div></div>';
+  var perPage = 2;
+  var paged = reviewList.slice(reviewIndex, reviewIndex + perPage);
+
+  if (reviewList.length === 0) {
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--text-muted)">'
+      + '<div style="font-size:40px;margin-bottom:10px">⭐</div>'
+      + '<div style="font-size:14px">Chưa có đánh giá nào</div></div>';
+    _renderReviewDots();
+    return;
+  }
+
+  el.innerHTML = paged.map(function(r) {
+    // Tách tên sản phẩm nếu có prefix [SP: ...]
+    var spName = '';
+    var nd = r.noidung;
+    var m = nd.match(/^\[SP:\s*(.*?)\]\s*([\s\S]*)$/);
+    if (m) { spName = m[1]; nd = m[2]; }
+
+    return '<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);'
+      + 'padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px">'
+      // Stars + badge
+      + '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap">'
+      + '<span style="color:#FFC94A;font-size:16px;letter-spacing:1px">'
+      + '★'.repeat(r.star) + '<span style="color:#ddd">' + '★'.repeat(5 - r.star) + '</span></span>'
+      + '<span style="display:inline-flex;align-items:center;gap:4px;background:#ECFDF5;color:#059669;'
+      + 'font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid #A7F3D0">'
+      + '✓ Đã mua hàng</span>'
+      + '</div>'
+      // Product label
+      + (spName ? '<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">SẢN PHẨM: ' + spName + '</div>' : '')
+      // Content
+      + '<div style="font-size:13px;color:var(--text);line-height:1.75;font-style:italic">"' + nd + '"</div>'
+      // Hình ảnh khách gửi kèm
+      + (r.hinhAnh ? '<div style="border-radius:10px;overflow:hidden;background:var(--bg)">'
+          + '<img src="' + r.hinhAnh + '" loading="lazy" style="width:100%;max-height:220px;object-fit:cover;cursor:pointer" '
+          + 'onclick="window.open(\'' + r.hinhAnh + '\',\'_blank\')" alt="Ảnh khách hàng" />'
+          + '</div>' : '')
+      // Product big highlight
+      + (spName ? '<div style="font-size:15px;font-weight:800;color:var(--primary);text-align:center;'
+      + 'padding:8px 0;border-top:1px solid var(--border);margin-top:2px">' + spName + '</div>' : '')
+      // Avatar
+      + '<div style="display:flex;align-items:center;gap:10px">'
+      + '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));'
+      + 'display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0">'
+      + r.ten.charAt(0).toUpperCase() + '</div>'
+      + '<div><div style="font-size:13px;font-weight:700;color:var(--text)">' + r.ten + '</div>'
+      + '<div style="font-size:11px;color:var(--text-muted)">Đánh giá thực tế</div></div>'
+      + '</div>'
+      + '</div>';
   }).join('');
+
+  _renderReviewDots();
 }
+
+function _renderReviewDots() {
+  var el = document.getElementById('review-page-dots');
+  if (!el) return;
+  var perPage = 2;
+  var total = Math.ceil(reviewList.length / perPage);
+  var cur   = Math.floor(reviewIndex / perPage);
+  el.innerHTML = '';
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement('div');
+    d.style.cssText = 'width:' + (i===cur?'22':'8') + 'px;height:8px;border-radius:20px;cursor:pointer;'
+      + 'background:' + (i===cur?'var(--primary)':'var(--border)') + ';transition:all 0.3s';
+    (function(page){ d.onclick = function(){ reviewIndex = page * perPage; renderReviews(); }; })(i);
+    el.appendChild(d);
+  }
+}
+
+function reviewNext() {
+  var perPage = 2;
+  var max = Math.max(0, reviewList.length - perPage);
+  if (reviewIndex < max) { reviewIndex = Math.min(reviewIndex + perPage, max); renderReviews(); }
+}
+
+function reviewPrev() {
+  var perPage = 2;
+  if (reviewIndex > 0) { reviewIndex = Math.max(reviewIndex - perPage, 0); renderReviews(); }
+}
+
+window.addEventListener('resize', function() {
+  if (window._reviewResizeTimer) clearTimeout(window._reviewResizeTimer);
+  window._reviewResizeTimer = setTimeout(renderReviews, 300);
+});
+</script>
+</body>
+</html>
 
 </script>
 </body>
