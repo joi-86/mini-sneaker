@@ -736,21 +736,21 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
             <span>🚚</span>
             <div>
               <div class="hero-trust-title">Miễn phí vận chuyển</div>
-              <div class="hero-trust-sub">Đơn từ 500K</div>
+              <div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div>
             </div>
           </div>
           <div class="hero-trust-item">
-            <span>🔄</span>
+            <span>🎧</span>
             <div>
-              <div class="hero-trust-title">Đổi trả dễ dàng</div>
-              <div class="hero-trust-sub">Trong 7 ngày</div>
+              <div class="hero-trust-title">Hỗ trợ tận tâm</div>
+              <div class="hero-trust-sub">Giải đáp mọi thắc mắc</div>
             </div>
           </div>
           <div class="hero-trust-item">
             <span>💯</span>
             <div>
-              <div class="hero-trust-title">100% chính hãng</div>
-              <div class="hero-trust-sub">Cam kết chất lượng</div>
+              <div class="hero-trust-title">Cam kết chất lượng</div>
+              <div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div>
             </div>
           </div>
         </div>
@@ -1019,19 +1019,19 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
         <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px">
           <div style="font-size:32px">↩️</div>
           <div style="font-size:13px;font-weight:800;color:var(--text)">Đổi trả dễ dàng</div>
-          <div style="font-size:11px;color:var(--text-muted)">Trong vòng 7 ngày</div>
+          <div style="font-size:11px;color:var(--text-muted)">Trong vòng 24 kể từ khi nhận hàng</div>
+        </div>
+
+        <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px">
+          <div style="font-size:32px">🎧</div>
+          <div style="font-size:13px;font-weight:800;color:var(--text)">Hỗ trợ tận tâm</div>
+          <div style="font-size:11px;color:var(--text-muted)">Giải đáp mọi thắc mắc</div>
         </div>
 
         <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px">
           <div style="font-size:32px">🏅</div>
           <div style="font-size:13px;font-weight:800;color:var(--text)">Cam kết chất lượng</div>
-          <div style="font-size:11px;color:var(--text-muted)">100% chính hãng</div>
-        </div>
-
-        <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px">
-          <div style="font-size:32px">🎧</div>
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Tư vấn tận tâm</div>
-          <div style="font-size:11px;color:var(--text-muted)">Hỗ trợ 24/7</div>
+          <div style="font-size:11px;color:var(--text-muted)">Theo đúng thông tin sản phẩm</div>
         </div>
 
       </div>
@@ -1170,14 +1170,29 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
             <div>
               <label style="display:block;font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Thêm hình ảnh sản phẩm (Khuyến dùng)</label>
               <div id="review-img-drop" onclick="document.getElementById('review-img-input').click()"
-                style="border:2px dashed var(--border);border-radius:10px;padding:18px;text-align:center;cursor:pointer;
-                background:var(--bg);transition:border-color 0.2s;display:flex;flex-direction:column;align-items:center;gap:5px">
-                <div style="font-size:28px;color:var(--primary)">🖼️</div>
-                <div style="font-size:13px;font-weight:600;color:var(--text-muted)">Nhấn để tải hoặc thả ảnh vào đây</div>
-                <div style="font-size:11px;color:var(--text-muted)">JPEG, PNG lên tới 5MB</div>
+                style="border:2px dashed var(--border);border-radius:10px;cursor:pointer;
+                background:var(--bg);transition:border-color 0.2s,border-style 0.2s;
+                position:relative;height:170px;overflow:hidden;
+                display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+
+                <div id="review-img-placeholder" style="display:flex;flex-direction:column;align-items:center;gap:5px">
+                  <div style="font-size:28px;color:var(--primary)">🖼️</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--text-muted)">Nhấn để tải hoặc thả ảnh vào đây</div>
+                  <div style="font-size:11px;color:var(--text-muted)">JPEG, PNG lên tới 5MB</div>
+                </div>
+
+                <img id="review-img-preview-img" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0" />
+
+                <div id="review-img-change-hint" style="display:none;position:absolute;bottom:6px;right:8px;
+                  background:rgba(0,0,0,0.55);color:#fff;font-size:11px;padding:3px 8px;border-radius:20px;
+                  pointer-events:none">🔄 Nhấn để đổi ảnh</div>
+
+                <button type="button" id="review-img-remove-btn" onclick="event.stopPropagation();removeReviewImage()"
+                  style="display:none;position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;
+                  background:rgba(0,0,0,0.55);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;
+                  display:none;align-items:center;justify-content:center;line-height:1;z-index:2">✕</button>
               </div>
-              <input type="file" id="review-img-input" accept="image/*" multiple style="display:none" onchange="previewReviewImages(this)" />
-              <div id="review-img-preview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
+              <input type="file" id="review-img-input" accept="image/*" style="display:none" onchange="previewReviewImages(this)" />
             </div>
 
             <!-- Submit -->
@@ -1268,7 +1283,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
             display:flex;flex-direction:column;justify-content:center;gap:12px">
 
             <div style="font-size:13px;color:var(--text-muted);margin-bottom:4px">
-              Đăng ký ngay để nhận voucher 50K được áp dụng cho tất cả sản phẩm tại Mini Sneaker!
+              Đăng ký ngay để nhận <span style="color:var(--primary);font-weight:900;font-size:15px">voucher 50K</span> được áp dụng cho tất cả sản phẩm tại Mini Sneaker!
             </div>
 
             <div class="form-group" style="margin-bottom:0">
@@ -1282,7 +1297,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
             </div>
 
             <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px" onclick="submitUuDai()">
-              🔔 Đăng Ký
+              🔔 Đăng Ký Nhận Ngay Voucher 50K
             </button>
           </div>
         </div>
@@ -1379,15 +1394,15 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
     <div class="container hero-layout">
       <div class="hero-content">
         <div class="hero-badge">✨ Mini Sneaker ✨</div>
-        <h1>BƯỚC CHẤT RIÊNG<span>SỐNG ĐÚNG GU</span></h1>
+        <h1>ĐẾ CHẠM ĐẤT<span>CHẤT CHẠM ĐỈNH </span></h1>
         <p>Khám phá hàng nghìn mẫu giày thời trang từ các thương hiệu nổi tiếng.</p>
         <div class="hero-btns">
           <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
         </div>
         <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Đơn từ 500K</div></div></div>
-          <div class="hero-trust-item"><span>🔄</span><div><div class="hero-trust-title">Đổi trả dễ dàng</div><div class="hero-trust-sub">Trong 7 ngày</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">100% chính hãng</div><div class="hero-trust-sub">Cam kết chất lượng</div></div></div>
+          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
+          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
+          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
         </div>
       </div>
       <div class="hero-shoe-wrap">
@@ -1592,9 +1607,9 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
         </div>
         <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Đơn từ 500K</div></div></div>
-          <div class="hero-trust-item"><span>🔄</span><div><div class="hero-trust-title">Đổi trả dễ dàng</div><div class="hero-trust-sub">Trong 7 ngày</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">100% chính hãng</div><div class="hero-trust-sub">Cam kết chất lượng</div></div></div>
+          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
+          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
+          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
         </div>
       </div>
       <div class="hero-shoe-wrap">
@@ -1793,9 +1808,9 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
         </div>
         <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Đơn từ 500K</div></div></div>
-          <div class="hero-trust-item"><span>🔄</span><div><div class="hero-trust-title">Đổi trả dễ dàng</div><div class="hero-trust-sub">Trong 7 ngày</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">100% chính hãng</div><div class="hero-trust-sub">Cam kết chất lượng</div></div></div>
+          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
+          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
+          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
         </div>
       </div>
       <div class="hero-shoe-wrap">
@@ -1993,9 +2008,9 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
         </div>
         <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Đơn từ 500K</div></div></div>
-          <div class="hero-trust-item"><span>🔄</span><div><div class="hero-trust-title">Đổi trả dễ dàng</div><div class="hero-trust-sub">Trong 7 ngày</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">100% chính hãng</div><div class="hero-trust-sub">Cam kết chất lượng</div></div></div>
+          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
+          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
+          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
         </div>
       </div>
       <div class="hero-shoe-wrap">
@@ -2161,9 +2176,9 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
         </div>
         <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Đơn từ 500K</div></div></div>
-          <div class="hero-trust-item"><span>🔄</span><div><div class="hero-trust-title">Đổi trả dễ dàng</div><div class="hero-trust-sub">Trong 7 ngày</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">100% chính hãng</div><div class="hero-trust-sub">Cam kết chất lượng</div></div></div>
+          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
+          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
+          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
         </div>
       </div>
       <div class="hero-shoe-wrap">
@@ -3596,22 +3611,49 @@ function selectStar(n) {
 }
 
 function previewReviewImages(input) {
-  var preview = document.getElementById('review-img-preview');
-  preview.innerHTML = '';
-  reviewImagesBase64 = [];
-  Array.from(input.files).slice(0, 3).forEach(function(file) {
-    if (file.size > 5 * 1024 * 1024) { showToast('Ảnh không vượt quá 5MB!', 'error'); return; }
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      reviewImagesBase64.push(e.target.result);
-      preview.innerHTML += '<div style="position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid var(--border)">'
-        + '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover" /></div>';
-    };
-    reader.readAsDataURL(file);
-  });
-  // Cập nhật drop zone
-  var drop = document.getElementById('review-img-drop');
-  if (drop && input.files.length > 0) drop.style.borderColor = 'var(--primary)';
+  var placeholder = document.getElementById('review-img-placeholder');
+  var imgEl  = document.getElementById('review-img-preview-img');
+  var hint   = document.getElementById('review-img-change-hint');
+  var drop   = document.getElementById('review-img-drop');
+  var removeBtn = document.getElementById('review-img-remove-btn');
+
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  if (file.size > 5 * 1024 * 1024) { showToast('Ảnh không vượt quá 5MB!', 'error'); return; }
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    imgEl.src = e.target.result;
+    imgEl.style.display = 'block';
+    placeholder.style.display = 'none';
+    hint.style.display = 'block';
+    removeBtn.style.display = 'flex';
+    drop.style.borderColor = 'var(--primary)';
+    drop.style.borderStyle = 'solid';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeReviewImage() {
+  var input = document.getElementById('review-img-input');
+  if (input) input.value = '';
+  resetReviewImagePreview();
+}
+
+function resetReviewImagePreview() {
+  var placeholder = document.getElementById('review-img-placeholder');
+  var imgEl  = document.getElementById('review-img-preview-img');
+  var hint   = document.getElementById('review-img-change-hint');
+  var drop   = document.getElementById('review-img-drop');
+  var removeBtn = document.getElementById('review-img-remove-btn');
+  if (!drop) return;
+  imgEl.src = '';
+  imgEl.style.display = 'none';
+  hint.style.display = 'none';
+  removeBtn.style.display = 'none';
+  placeholder.style.display = 'flex';
+  drop.style.borderColor = 'var(--border)';
+  drop.style.borderStyle = 'dashed';
 }
 
 var isSubmittingReview = false;
@@ -3711,13 +3753,12 @@ async function submitReview() {
     ]);
 
     if (res.success) {
-      showToast('🎉 Cảm ơn bạn đã đánh giá!', 'success');
+      showToast('Cảm ơn bạn đã đánh giá!', 'success');
       document.getElementById('review-ten').value = '';
       if (document.getElementById('review-sanpham')) document.getElementById('review-sanpham').value = '';
       document.getElementById('review-noidung').value = '';
       if (fileInput) fileInput.value = '';
-      var previewEl = document.getElementById('review-img-preview');
-      if (previewEl) previewEl.innerHTML = '';
+      resetReviewImagePreview();
       selectedStar = 0;
       document.querySelectorAll('#star-selector span').forEach(function(s) { s.style.opacity = '0.3'; });
       document.getElementById('star-label').textContent = 'Chọn số sao';
@@ -3878,11 +3919,16 @@ function renderReviews() {
       + (spName ? '<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">SẢN PHẨM: ' + spName + '</div>' : '')
       // Content
       + '<div style="font-size:13px;color:var(--text);line-height:1.75;font-style:italic">"' + nd + '"</div>'
-      // Hình ảnh khách gửi kèm
-      + (r.hinhAnh ? '<div style="border-radius:10px;overflow:hidden;background:var(--bg)">'
-          + '<img src="' + r.hinhAnh + '" loading="lazy" style="width:100%;max-height:220px;object-fit:cover;cursor:pointer" '
-          + 'onclick="window.open(\'' + r.hinhAnh + '\',\'_blank\')" alt="Ảnh khách hàng" />'
-          + '</div>' : '')
+      // Hình ảnh khách gửi kèm — nếu không có ảnh thì để khung trống cùng kích thước để đồng bộ bố cục
+      + (r.hinhAnh
+          ? '<div style="border-radius:10px;overflow:hidden;background:var(--bg);height:220px">'
+            + '<img src="' + r.hinhAnh + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;cursor:pointer" '
+            + 'onclick="window.open(\'' + r.hinhAnh + '\',\'_blank\')" alt="Ảnh khách hàng" />'
+            + '</div>'
+          : '<div style="border-radius:10px;background:var(--bg);height:220px;display:flex;align-items:center;justify-content:center;'
+            + 'color:var(--text-muted);border:1px dashed var(--border)">'
+            + '<span style="font-size:28px;opacity:0.35">🖼️</span>'
+            + '</div>')
       // Product big highlight
       + (spName ? '<div style="font-size:15px;font-weight:800;color:var(--primary);text-align:center;'
       + 'padding:8px 0;border-top:1px solid var(--border);margin-top:2px">' + spName + '</div>' : '')
