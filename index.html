@@ -827,36 +827,6 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
       </div>
     </div>
   </section>
-  <section style="padding:24px 0 0">
-    <div class="container">
-      <div class="filter-wrap">
-        <div class="filter-search">
-          <span style="color:var(--primary)">🔍</span>
-          <input type="text" id="sp-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsSP()" />
-        </div>
-        <select id="home-filter-hang" onchange="filterProductsSP()" style="min-width:140px">
-          <option value="">Tất thương hiệu</option>
-        </select>
-        <select id="home-filter-loai" onchange="filterProductsSP()" style="min-width:130px">
-          <option value="">Tất cả danh mục</option>
-        </select>
-
-        <select id="home-filter-gia" onchange="filterProductsSP()" style="min-width:150px">
-          <option value="">Sắp xếp giá</option>
-          <option value="asc">Thấp ⬆ Cao</option>
-          <option value="desc">Cao ⬇ thấp</option>
-        </select>
-
-        <select id="home-filter-ban" onchange="filterProductsSP()" style="min-width:130px">
-          <option value="">Tất cả phiên bản</option>
-        </select>
-
-        <select id="home-filter-size" onchange="filterProductsSP()" style="min-width:110px">
-          <option value="">Tất cả size</option>
-        </select>
-      </div>
-    </div>
-  </section>
 
   <section style="padding:40px 0 0">
   <div class="container">
@@ -1056,6 +1026,37 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
 <!-- ============== 8. Sản phẩm của tôi ========--> 
 
+  <section style="padding:24px 0 0">
+    <div class="container">
+      <div class="filter-wrap">
+        <div class="filter-search">
+          <span style="color:var(--primary)">🔍</span>
+          <input type="text" id="sp-filter-search" placeholder="Tìm tên, mã sản phẩm..." oninput="filterProductsSP()" />
+        </div>
+        <select id="home-filter-hang" onchange="filterProductsSP()" style="min-width:140px">
+          <option value="">Tất thương hiệu</option>
+        </select>
+        <select id="home-filter-loai" onchange="filterProductsSP()" style="min-width:130px">
+          <option value="">Tất cả danh mục</option>
+        </select>
+
+        <select id="home-filter-gia" onchange="filterProductsSP()" style="min-width:150px">
+          <option value="">Sắp xếp giá</option>
+          <option value="asc">Thấp ⬆ Cao</option>
+          <option value="desc">Cao ⬇ thấp</option>
+        </select>
+
+        <select id="home-filter-ban" onchange="filterProductsSP()" style="min-width:130px">
+          <option value="">Tất cả phiên bản</option>
+        </select>
+
+        <select id="home-filter-size" onchange="filterProductsSP()" style="min-width:110px">
+          <option value="">Tất cả size</option>
+        </select>
+      </div>
+    </div>
+  </section>
+  
   <section id="san-pham-section">
     <div class="container">
       <div class="section-header">
