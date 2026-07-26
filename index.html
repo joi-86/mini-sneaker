@@ -548,6 +548,9 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 }
 @media(max-width:768px) {
   .category-grid-3 { grid-template-columns:1fr !important; }
+  .category-grid-3 .product-img { aspect-ratio:16/9 !important; }
+  .category-grid-3 .product-name { font-size:14px !important; }
+  .category-grid-3 .product-desc { font-size:12px !important; }
 }
 .badge-new {
   position:absolute; top:10px; left:10px;
@@ -712,120 +715,13 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 <div class="page active" id="page-home">
 
   <!-- ===== HERO ===== -->
-  <section class="hero">
-    <div class="hero-particles">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </div>
-    <div class="container hero-layout">
-      <!-- LEFT -->
-      <div class="hero-content">
-        <div class="hero-badge">✨ Mini Sneaker ✨</div>
-        <h1>PHONG CÁCH TẠO DẤU ẤN.<span>CHẤT LƯỢNG TẠO NIỀM TIN.</span></h1>
-        <p>Mỗi đôi giày không chỉ là một sản phẩm thời trang mà còn là người bạn đồng hành trên hành trình mỗi ngày của bạn. Tại Mini Sneaker, chúng tôi lựa chọn kỹ lưỡng từng mẫu giày với mong muốn mang đến sự cân bằng giữa thiết kế hiện đại, chất lượng bền bỉ và cảm giác thoải mái khi sử dụng. Dù bạn yêu thích phong cách năng động, tối giản hay cá tính, chúng tôi luôn tin rằng sẽ có một đôi giày phù hợp để giúp bạn tự tin thể hiện dấu ấn riêng và tận hưởng từng bước chân theo cách của chính mình.</p>
-        <div class="hero-btns">
-          <button class="btn btn-primary" onclick="document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'})">
-            👟 Xem Sản Phẩm
-          </button>
-          <button class="btn btn-outline" onclick="showPage('lienhe')">
-            📞 Liên Hệ Ngay
-          </button>
-        </div>
-        <div class="hero-trust">
-          <div class="hero-trust-item">
-            <span>🚚</span>
-            <div>
-              <div class="hero-trust-title">Miễn phí vận chuyển</div>
-              <div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div>
-            </div>
-          </div>
-          <div class="hero-trust-item">
-            <span>🎧</span>
-            <div>
-              <div class="hero-trust-title">Hỗ trợ tận tâm</div>
-              <div class="hero-trust-sub">Giải đáp mọi thắc mắc</div>
-            </div>
-          </div>
-          <div class="hero-trust-item">
-            <span>💯</span>
-            <div>
-              <div class="hero-trust-title">Cam kết chất lượng</div>
-              <div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT: ảnh giày -->
-      <div class="hero-shoe-wrap">
-
-        <!-- Tia sáng tỏa ra -->
-        <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden">
-          <div style="position:absolute;bottom:15%;left:50%;transform:translateX(-50%);
-            width:220%;height:220%;
-            background:radial-gradient(ellipse at 50% 75%,rgba(255,40,150,0.45) 0%,rgba(200,0,130,0.25) 25%,rgba(150,0,100,0.1) 45%,transparent 65%);
-            filter:blur(4px)"></div>
-          <div style="position:absolute;bottom:22%;left:50%;transform:translateX(-50%) rotate(-30deg);
-            width:3px;height:45%;background:linear-gradient(to top,rgba(255,100,180,0.7),transparent);
-            filter:blur(2px);transform-origin:bottom center"></div>
-          <div style="position:absolute;bottom:22%;left:50%;transform:translateX(-50%) rotate(30deg);
-            width:3px;height:45%;background:linear-gradient(to top,rgba(255,100,180,0.7),transparent);
-            filter:blur(2px);transform-origin:bottom center"></div>
-          <div style="position:absolute;bottom:22%;left:50%;transform:translateX(-50%) rotate(-60deg);
-            width:2px;height:35%;background:linear-gradient(to top,rgba(255,80,160,0.4),transparent);
-            filter:blur(1px);transform-origin:bottom center"></div>
-          <div style="position:absolute;bottom:22%;left:50%;transform:translateX(-50%) rotate(60deg);
-            width:2px;height:35%;background:linear-gradient(to top,rgba(255,80,160,0.4),transparent);
-            filter:blur(1px);transform-origin:bottom center"></div>
-          <div style="position:absolute;bottom:22%;left:50%;transform:translateX(-50%) rotate(-10deg);
-            width:2px;height:50%;background:linear-gradient(to top,rgba(255,120,200,0.5),transparent);
-            filter:blur(1px);transform-origin:bottom center"></div>
-          <div style="position:absolute;bottom:22%;left:50%;transform:translateX(-50%) rotate(10deg);
-            width:2px;height:50%;background:linear-gradient(to top,rgba(255,120,200,0.5),transparent);
-            filter:blur(1px);transform-origin:bottom center"></div>
-        </div>
-
-        <!-- Tam giác neon -->
-        <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none"
-          viewBox="0 0 500 480" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <filter id="ng1"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <polygon points="250,60 50,440 450,440" fill="none" stroke="rgba(255,140,60,0.5)" stroke-width="8" filter="url(#ng1)"/>
-          <polygon points="250,60 50,440 450,440" fill="rgba(255,80,140,0.03)" stroke="rgba(255,160,80,0.85)" stroke-width="1.5"/>
-          <polygon points="250,60 50,440 450,440" fill="none" stroke="rgba(255,200,230,0.4)" stroke-width="0.5"/>
-          <circle cx="250" cy="60"  r="5" fill="rgba(255,180,100,1)" filter="url(#ng1)"/>
-          <circle cx="50"  cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1)"/>
-          <circle cx="450" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1)"/>
-        </svg>
-
-        <!-- Ảnh giày -->
-        <img id="hero-shoe-img"
-          src="https://lh3.googleusercontent.com/d/10razNIDq9_dk3jOi3Zt_Li--C88nMuZz"
-          alt="Mini Sneaker"
-          style="position:relative;z-index:4;width:100%;max-width:560px;
-          filter:drop-shadow(0 0 30px rgba(255,80,160,0.6)) drop-shadow(0 10px 30px rgba(0,0,0,0.5));
-          animation:floatShoe 3.5s ease-in-out infinite;" />
-
-        <!-- Vòng đế neon -->
-        <div style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);
-          width:75%;z-index:3;pointer-events:none">
-          <div style="width:100%;height:40px;border-radius:50%;
-            background:radial-gradient(ellipse,rgba(255,40,160,1) 0%,rgba(220,0,140,0.6) 45%,transparent 75%);
-            filter:blur(10px)"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            width:88%;height:16px;border-radius:50%;
-            border:1.5px solid rgba(255,120,200,0.9);
-            box-shadow:0 0 12px rgba(255,80,180,0.8),0 0 30px rgba(255,60,160,0.5),inset 0 0 12px rgba(255,80,180,0.3)">
-          </div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            width:60%;height:10px;border-radius:50%;
-            background:radial-gradient(ellipse,rgba(255,100,200,0.6) 0%,transparent 70%);
-            filter:blur(3px)"></div>
-        </div>
-
-      </div>
-    </div>
+  <section class="hero" style="padding:0;position:relative;line-height:0;overflow:hidden">
+    <img src="https://lh3.googleusercontent.com/d/136cSN-MO-yI111WosOsOx4_oyzdC9uRL"
+        alt="Mini Sneaker" style="width:100%;height:auto;display:block" />
+    <a onclick="document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'})"
+      style="position:absolute;left:1%;top:85%;width:15%;height:11%;cursor:pointer"></a>
+    <a onclick="showPage('lienhe', document.getElementById('nav-lienhe'))"
+      style="position:absolute;left:17%;top:85%;width:14%;height:11%;cursor:pointer"></a>
   </section>
 
   <section style="padding:40px 0 0">
@@ -1420,48 +1316,14 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 
 <div class="page" id="page-sanpham">
 
-  <!-- HERO giống trang chủ -->
-  <section class="hero">
-    <div class="hero-particles">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </div>
-    <div class="container hero-layout">
-      <div class="hero-content">
-        <div class="hero-badge">✨ Mini Sneaker ✨</div>
-        <h1>PHONG CÁCH TẠO DẤU ẤN.<span>CHẤT LƯỢNG TẠO NIỀM TIN.</span></h1>
-        <p>Chúng tôi tin rằng một đôi giày tốt không chỉ đẹp về thiết kế mà còn phải mang lại sự thoải mái và bền bỉ trong quá trình sử dụng. Vì vậy, Mini Sneaker luôn lựa chọn những mẫu giày chất lượng, đa dạng phong cách và phù hợp với nhiều đối tượng, giúp bạn tự tin đồng hành trên mọi chặng đường.</p>
-        <div class="hero-btns">
-          <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
-        </div>
-        <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
-          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
-        </div>
-      </div>
-      <div class="hero-shoe-wrap">
-        <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden">
-          <div style="position:absolute;bottom:15%;left:50%;transform:translateX(-50%);width:220%;height:220%;background:radial-gradient(ellipse at 50% 75%,rgba(255,40,150,0.45) 0%,rgba(200,0,130,0.25) 25%,rgba(150,0,100,0.1) 45%,transparent 65%);filter:blur(4px)"></div>
-        </div>
-        <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none" viewBox="0 0 500 480" preserveAspectRatio="xMidYMid meet">
-          <defs><filter id="ng1b"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-          <polygon points="250,60 50,440 450,440" fill="none" stroke="rgba(255,140,60,0.5)" stroke-width="8" filter="url(#ng1b)"/>
-          <polygon points="250,60 50,440 450,440" fill="rgba(255,80,140,0.03)" stroke="rgba(255,160,80,0.85)" stroke-width="1.5"/>
-          <circle cx="250" cy="60" r="5" fill="rgba(255,180,100,1)" filter="url(#ng1b)"/>
-          <circle cx="50" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-          <circle cx="450" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-        </svg>
-        <img src="https://lh3.googleusercontent.com/d/10razNIDq9_dk3jOi3Zt_Li--C88nMuZz" alt="Mini Sneaker"
-          style="position:relative;z-index:4;width:100%;max-width:560px;
-          filter:drop-shadow(0 0 30px rgba(255,80,160,0.6)) drop-shadow(0 10px 30px rgba(0,0,0,0.5));
-          animation:floatShoe 3.5s ease-in-out infinite;" />
-        <div style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);width:75%;z-index:3;pointer-events:none">
-          <div style="width:100%;height:40px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,40,160,1) 0%,rgba(220,0,140,0.6) 45%,transparent 75%);filter:blur(10px)"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:88%;height:16px;border-radius:50%;border:1.5px solid rgba(255,120,200,0.9);box-shadow:0 0 12px rgba(255,80,180,0.8),0 0 30px rgba(255,60,160,0.5)"></div>
-        </div>
-      </div>
-    </div>
+  <!-- ===== HERO ===== -->
+  <section class="hero" style="padding:0;position:relative;line-height:0;overflow:hidden">
+    <img src="https://lh3.googleusercontent.com/d/136cSN-MO-yI111WosOsOx4_oyzdC9uRL"
+        alt="Mini Sneaker" style="width:100%;height:auto;display:block" />
+    <a onclick="document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'})"
+      style="position:absolute;left:1%;top:85%;width:15%;height:11%;cursor:pointer"></a>
+    <a onclick="showPage('lienhe', document.getElementById('nav-lienhe'))"
+      style="position:absolute;left:17%;top:85%;width:14%;height:11%;cursor:pointer"></a>
   </section>
 
   <section id="san-pham-section" style="padding:48px 0">
@@ -1489,7 +1351,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           </div>
           <div class="form-group" style="margin-bottom:0;grid-column:1/-1">
             <label class="form-label">Ghi Chú</label>
-            <input type="text" id="sp-order-note" class="form-input" placeholder="Size, màu sắc, yêu cầu thêm..." />
+            <input type="text" id="sp-order-note" class="form-input" placeholder="Thời gian có thể nhận hàng,..." />
           </div>
         </div>
         <button id="sp-order-btn" class="btn btn-primary"
@@ -1627,48 +1489,14 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 <!-- ===== TRANG GIÀY NAM ===== -->
 <div class="page" id="page-nam">
 
-  <!-- HERO giống trang chủ -->
-  <section class="hero">
-    <div class="hero-particles">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </div>
-    <div class="container hero-layout">
-      <div class="hero-content">
-        <div class="hero-badge">✨ Mini Sneaker ✨</div>
-        <h1>PHONG CÁCH TẠO DẤU ẤN.<span>CHẤT LƯỢNG TẠO NIỀM TIN.</span></h1>
-        <p>Khám phá bộ sưu tập giày nam tại Mini Sneaker với nhiều kiểu dáng hiện đại, dễ phối đồ và phù hợp với nhiều phong cách khác nhau. Chúng tôi luôn chú trọng đến chất lượng, sự thoải mái và từng chi tiết, để mỗi đôi giày không chỉ đẹp mắt mà còn đồng hành cùng bạn trong mọi bước chân mỗi ngày.</p>
-        <div class="hero-btns">
-          <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
-        </div>
-        <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
-          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
-        </div>
-      </div>
-      <div class="hero-shoe-wrap">
-        <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden">
-          <div style="position:absolute;bottom:15%;left:50%;transform:translateX(-50%);width:220%;height:220%;background:radial-gradient(ellipse at 50% 75%,rgba(255,40,150,0.45) 0%,rgba(200,0,130,0.25) 25%,rgba(150,0,100,0.1) 45%,transparent 65%);filter:blur(4px)"></div>
-        </div>
-        <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none" viewBox="0 0 500 480" preserveAspectRatio="xMidYMid meet">
-          <defs><filter id="ng1b"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-          <polygon points="250,60 50,440 450,440" fill="none" stroke="rgba(255,140,60,0.5)" stroke-width="8" filter="url(#ng1b)"/>
-          <polygon points="250,60 50,440 450,440" fill="rgba(255,80,140,0.03)" stroke="rgba(255,160,80,0.85)" stroke-width="1.5"/>
-          <circle cx="250" cy="60" r="5" fill="rgba(255,180,100,1)" filter="url(#ng1b)"/>
-          <circle cx="50" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-          <circle cx="450" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-        </svg>
-        <img src="https://lh3.googleusercontent.com/d/10razNIDq9_dk3jOi3Zt_Li--C88nMuZz" alt="Mini Sneaker"
-          style="position:relative;z-index:4;width:100%;max-width:560px;
-          filter:drop-shadow(0 0 30px rgba(255,80,160,0.6)) drop-shadow(0 10px 30px rgba(0,0,0,0.5));
-          animation:floatShoe 3.5s ease-in-out infinite;" />
-        <div style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);width:75%;z-index:3;pointer-events:none">
-          <div style="width:100%;height:40px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,40,160,1) 0%,rgba(220,0,140,0.6) 45%,transparent 75%);filter:blur(10px)"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:88%;height:16px;border-radius:50%;border:1.5px solid rgba(255,120,200,0.9);box-shadow:0 0 12px rgba(255,80,180,0.8),0 0 30px rgba(255,60,160,0.5)"></div>
-        </div>
-      </div>
-    </div>
+  <!-- ===== HERO ===== -->
+  <section class="hero" style="padding:0;position:relative;line-height:0;overflow:hidden">
+    <img src="https://lh3.googleusercontent.com/d/136cSN-MO-yI111WosOsOx4_oyzdC9uRL"
+        alt="Mini Sneaker" style="width:100%;height:auto;display:block" />
+    <a onclick="document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'})"
+      style="position:absolute;left:1%;top:85%;width:15%;height:11%;cursor:pointer"></a>
+    <a onclick="showPage('lienhe', document.getElementById('nav-lienhe'))"
+      style="position:absolute;left:17%;top:85%;width:14%;height:11%;cursor:pointer"></a>
   </section>
 
   <section style="padding:48px 0">
@@ -1698,7 +1526,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           </div>
           <div class="form-group" style="margin-bottom:0;grid-column:1/-1">
             <label class="form-label">Ghi Chú</label>
-            <input type="text" id="nam-order-note" class="form-input" placeholder="Size, màu sắc, yêu cầu thêm..." />
+            <input type="text" id="nam-order-note" class="form-input" placeholder="Thời gian có thể nhận hàng,..." />
           </div>
         </div>
         <button id="nam-order-btn" class="btn btn-primary"
@@ -1830,50 +1658,16 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 <!-- ===== TRANG GIÀY NỮ ===== -->
 <div class="page" id="page-nu">
 
-  <!-- HERO giống trang chủ -->
-  <section class="hero">
-    <div class="hero-particles">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </div>
-    <div class="container hero-layout">
-      <div class="hero-content">
-        <div class="hero-badge">✨ Mini Sneaker ✨</div>
-        <h1>PHONG CÁCH TẠO DẤU ẤN.<span>CHẤT LƯỢNG TẠO NIỀM TIN.</span></h1>
-        <p>Khám phá bộ sưu tập giày nữ tại Mini Sneaker với những thiết kế hiện đại, thanh lịch và dễ dàng phối hợp cùng nhiều phong cách thời trang. Mỗi sản phẩm đều được tuyển chọn kỹ lưỡng, chú trọng đến chất lượng, sự thoải mái và tính thẩm mỹ, giúp bạn tự tin thể hiện cá tính, tỏa sáng trong từng bước chân và đồng hành cùng bạn trong mọi hoạt động hằng ngày. m </p>
-        <div class="hero-btns">
-          <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
-        </div>
-        <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
-          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
-        </div>
-      </div>
-      <div class="hero-shoe-wrap">
-        <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden">
-          <div style="position:absolute;bottom:15%;left:50%;transform:translateX(-50%);width:220%;height:220%;background:radial-gradient(ellipse at 50% 75%,rgba(255,40,150,0.45) 0%,rgba(200,0,130,0.25) 25%,rgba(150,0,100,0.1) 45%,transparent 65%);filter:blur(4px)"></div>
-        </div>
-        <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none" viewBox="0 0 500 480" preserveAspectRatio="xMidYMid meet">
-          <defs><filter id="ng1b"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-          <polygon points="250,60 50,440 450,440" fill="none" stroke="rgba(255,140,60,0.5)" stroke-width="8" filter="url(#ng1b)"/>
-          <polygon points="250,60 50,440 450,440" fill="rgba(255,80,140,0.03)" stroke="rgba(255,160,80,0.85)" stroke-width="1.5"/>
-          <circle cx="250" cy="60" r="5" fill="rgba(255,180,100,1)" filter="url(#ng1b)"/>
-          <circle cx="50" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-          <circle cx="450" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-        </svg>
-        <img src="https://lh3.googleusercontent.com/d/10razNIDq9_dk3jOi3Zt_Li--C88nMuZz" alt="Mini Sneaker"
-          style="position:relative;z-index:4;width:100%;max-width:560px;
-          filter:drop-shadow(0 0 30px rgba(255,80,160,0.6)) drop-shadow(0 10px 30px rgba(0,0,0,0.5));
-          animation:floatShoe 3.5s ease-in-out infinite;" />
-        <div style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);width:75%;z-index:3;pointer-events:none">
-          <div style="width:100%;height:40px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,40,160,1) 0%,rgba(220,0,140,0.6) 45%,transparent 75%);filter:blur(10px)"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:88%;height:16px;border-radius:50%;border:1.5px solid rgba(255,120,200,0.9);box-shadow:0 0 12px rgba(255,80,180,0.8),0 0 30px rgba(255,60,160,0.5)"></div>
-        </div>
-      </div>
-    </div>
+  <!-- ===== HERO ===== -->
+  <section class="hero" style="padding:0;position:relative;line-height:0;overflow:hidden">
+    <img src="https://lh3.googleusercontent.com/d/136cSN-MO-yI111WosOsOx4_oyzdC9uRL"
+        alt="Mini Sneaker" style="width:100%;height:auto;display:block" />
+    <a onclick="document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'})"
+      style="position:absolute;left:1%;top:85%;width:15%;height:11%;cursor:pointer"></a>
+    <a onclick="showPage('lienhe', document.getElementById('nav-lienhe'))"
+      style="position:absolute;left:17%;top:85%;width:14%;height:11%;cursor:pointer"></a>
   </section>
-  
+
   <section style="padding:48px 0">
     <div class="container">
       
@@ -1899,7 +1693,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           </div>
           <div class="form-group" style="margin-bottom:0;grid-column:1/-1">
             <label class="form-label">Ghi Chú</label>
-            <input type="text" id="nu-order-note" class="form-input" placeholder="Size, màu sắc, yêu cầu thêm..." />
+            <input type="text" id="nu-order-note" class="form-input" placeholder="Thời gian có thể nhận hàng,..." />
           </div>
         </div>
         <button id="nu-order-btn" class="btn btn-primary"
@@ -2030,48 +1824,14 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 <!-- ===== TRANG DÉP ===== -->
 <div class="page" id="page-dep">
 
-  <!-- HERO giống trang chủ -->
-  <section class="hero">
-    <div class="hero-particles">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </div>
-    <div class="container hero-layout">
-      <div class="hero-content">
-        <div class="hero-badge">✨ Mini Sneaker ✨</div>
-        <h1>PHONG CÁCH TẠO DẤU ẤN.<span>CHẤT LƯỢNG TẠO NIỀM TIN.</span></h1>
-        <p>Khám phá bộ sưu tập dép tại Mini Sneaker với nhiều thiết kế hiện đại, chất liệu bền đẹp và cảm giác mang thoải mái. Mỗi sản phẩm đều được tuyển chọn kỹ lưỡng, kết hợp giữa tính thẩm mỹ và sự tiện dụng, giúp bạn tự tin đồng hành trong mọi hoạt động và tận hưởng sự êm ái trong từng bước chân.</p>
-        <div class="hero-btns">
-          <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
-        </div>
-        <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
-          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
-        </div>
-      </div>
-      <div class="hero-shoe-wrap">
-        <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden">
-          <div style="position:absolute;bottom:15%;left:50%;transform:translateX(-50%);width:220%;height:220%;background:radial-gradient(ellipse at 50% 75%,rgba(255,40,150,0.45) 0%,rgba(200,0,130,0.25) 25%,rgba(150,0,100,0.1) 45%,transparent 65%);filter:blur(4px)"></div>
-        </div>
-        <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none" viewBox="0 0 500 480" preserveAspectRatio="xMidYMid meet">
-          <defs><filter id="ng1b"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-          <polygon points="250,60 50,440 450,440" fill="none" stroke="rgba(255,140,60,0.5)" stroke-width="8" filter="url(#ng1b)"/>
-          <polygon points="250,60 50,440 450,440" fill="rgba(255,80,140,0.03)" stroke="rgba(255,160,80,0.85)" stroke-width="1.5"/>
-          <circle cx="250" cy="60" r="5" fill="rgba(255,180,100,1)" filter="url(#ng1b)"/>
-          <circle cx="50" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-          <circle cx="450" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-        </svg>
-        <img src="https://lh3.googleusercontent.com/d/10razNIDq9_dk3jOi3Zt_Li--C88nMuZz" alt="Mini Sneaker"
-          style="position:relative;z-index:4;width:100%;max-width:560px;
-          filter:drop-shadow(0 0 30px rgba(255,80,160,0.6)) drop-shadow(0 10px 30px rgba(0,0,0,0.5));
-          animation:floatShoe 3.5s ease-in-out infinite;" />
-        <div style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);width:75%;z-index:3;pointer-events:none">
-          <div style="width:100%;height:40px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,40,160,1) 0%,rgba(220,0,140,0.6) 45%,transparent 75%);filter:blur(10px)"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:88%;height:16px;border-radius:50%;border:1.5px solid rgba(255,120,200,0.9);box-shadow:0 0 12px rgba(255,80,180,0.8),0 0 30px rgba(255,60,160,0.5)"></div>
-        </div>
-      </div>
-    </div>
+  <!-- ===== HERO ===== -->
+  <section class="hero" style="padding:0;position:relative;line-height:0;overflow:hidden">
+    <img src="https://lh3.googleusercontent.com/d/136cSN-MO-yI111WosOsOx4_oyzdC9uRL"
+        alt="Mini Sneaker" style="width:100%;height:auto;display:block" />
+    <a onclick="document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'})"
+      style="position:absolute;left:1%;top:85%;width:15%;height:11%;cursor:pointer"></a>
+    <a onclick="showPage('lienhe', document.getElementById('nav-lienhe'))"
+      style="position:absolute;left:17%;top:85%;width:14%;height:11%;cursor:pointer"></a>
   </section>
   
   <section style="padding:48px 0">
@@ -2099,7 +1859,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
           </div>
           <div class="form-group" style="margin-bottom:0;grid-column:1/-1">
             <label class="form-label">Ghi Chú</label>
-            <input type="text" id="dep-order-note" class="form-input" placeholder="Size, màu sắc, yêu cầu thêm..." />
+            <input type="text" id="dep-order-note" class="form-input" placeholder="Thời gian có thể nhận hàng,..." />
           </div>
         </div>
         <button id="dep-order-btn" class="btn btn-primary"
@@ -2198,51 +1958,16 @@ footer { background:var(--dark); color:rgba(255,255,255,0.8); padding:40px 0 20p
 <!-- ===== TRANG LIÊN HỆ ===== -->
 <div class="page" id="page-lienhe">
 
-  <!-- HERO giống trang chủ -->
-  <section class="hero">
-    <div class="hero-particles">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </div>
-    <div class="container hero-layout">
-      <div class="hero-content">
-        <div class="hero-badge">✨ Mini Sneaker ✨</div>
-        <h1>CHẤT LƯỢNG TẠO NIỀM TIN.<span>CHẤT LƯỢNG TẠO NIỀM TIN.</span></h1>
-        <p>Chúng tôi tin rằng một đôi giày tốt không chỉ đẹp về thiết kế mà còn phải mang lại sự thoải mái và bền bỉ trong quá trình sử dụng. Vì vậy, Mini Sneaker luôn lựa chọn những mẫu giày chất lượng, đa dạng phong cách và phù hợp với nhiều đối tượng, giúp bạn tự tin đồng hành trên mọi chặng đường.</p>
-        <div class="hero-btns">
-          <button class="btn btn-primary" onclick="showPage('lienhe')">📞 Liên Hệ Ngay</button>
-        </div>
-        <div class="hero-trust">
-          <div class="hero-trust-item"><span>🚚</span><div><div class="hero-trust-title">Miễn phí vận chuyển</div><div class="hero-trust-sub">Cho tất cả đơn hàng được đặt qua web</div></div></div>
-          <div class="hero-trust-item"><span>🎧</span><div><div class="hero-trust-title">Hỗ trợ tận tâm</div><div class="hero-trust-sub">Giải đáp mọi thắc mắc</div></div></div>
-          <div class="hero-trust-item"><span>💯</span><div><div class="hero-trust-title">Cam kết chất lượng</div><div class="hero-trust-sub">Theo đúng thông tin sản phẩm</div></div></div>
-        </div>
-      </div>
-      <div class="hero-shoe-wrap">
-        <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden">
-          <div style="position:absolute;bottom:15%;left:50%;transform:translateX(-50%);width:220%;height:220%;background:radial-gradient(ellipse at 50% 75%,rgba(255,40,150,0.45) 0%,rgba(200,0,130,0.25) 25%,rgba(150,0,100,0.1) 45%,transparent 65%);filter:blur(4px)"></div>
-        </div>
-        <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none" viewBox="0 0 500 480" preserveAspectRatio="xMidYMid meet">
-          <defs><filter id="ng1b"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-          <polygon points="250,60 50,440 450,440" fill="none" stroke="rgba(255,140,60,0.5)" stroke-width="8" filter="url(#ng1b)"/>
-          <polygon points="250,60 50,440 450,440" fill="rgba(255,80,140,0.03)" stroke="rgba(255,160,80,0.85)" stroke-width="1.5"/>
-          <circle cx="250" cy="60" r="5" fill="rgba(255,180,100,1)" filter="url(#ng1b)"/>
-          <circle cx="50" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-          <circle cx="450" cy="440" r="5" fill="rgba(255,100,180,1)" filter="url(#ng1b)"/>
-        </svg>
-        <img src="https://lh3.googleusercontent.com/d/10razNIDq9_dk3jOi3Zt_Li--C88nMuZz" alt="Mini Sneaker"
-          style="position:relative;z-index:4;width:100%;max-width:560px;
-          filter:drop-shadow(0 0 30px rgba(255,80,160,0.6)) drop-shadow(0 10px 30px rgba(0,0,0,0.5));
-          animation:floatShoe 3.5s ease-in-out infinite;" />
-        <div style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);width:75%;z-index:3;pointer-events:none">
-          <div style="width:100%;height:40px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,40,160,1) 0%,rgba(220,0,140,0.6) 45%,transparent 75%);filter:blur(10px)"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:88%;height:16px;border-radius:50%;border:1.5px solid rgba(255,120,200,0.9);box-shadow:0 0 12px rgba(255,80,180,0.8),0 0 30px rgba(255,60,160,0.5)"></div>
-        </div>
-      </div>
-    </div>
+  <!-- ===== HERO ===== -->
+  <section class="hero" style="padding:0;position:relative;line-height:0;overflow:hidden">
+    <img src="https://lh3.googleusercontent.com/d/136cSN-MO-yI111WosOsOx4_oyzdC9uRL"
+        alt="Mini Sneaker" style="width:100%;height:auto;display:block" />
+    <a onclick="document.getElementById('san-pham-section').scrollIntoView({behavior:'smooth'})"
+      style="position:absolute;left:1%;top:85%;width:15%;height:11%;cursor:pointer"></a>
+    <a onclick="showPage('lienhe', document.getElementById('nav-lienhe'))"
+      style="position:absolute;left:17%;top:85%;width:14%;height:11%;cursor:pointer"></a>
   </section>
   
-
   <section class="lienhe-section">
     <div class="container">
       <div class="contact-wrap">
